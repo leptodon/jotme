@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Jot-me</string>
+    <string name="main_title">Jot me</string>
+    <string name="fab_title">New note</string>
+    <string name="hint_search">Search</string>
+</resources>
