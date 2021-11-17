@@ -10,6 +10,9 @@ import ru.cactus.jotme.R
 import ru.cactus.jotme.contract.ContractInterface
 import ru.cactus.jotme.presenter.MainActivityPresenter
 
+/** Сохранение происходит при нажатии на ImageView кнопки назад
+ *  или при нажатии системной кнопки назад и срабатывании события onBackPressed() **/
+
 class MainActivity : AppCompatActivity(), ContractInterface.View {
 
     private var presenter: MainActivityPresenter? = null
