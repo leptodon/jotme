@@ -1,9 +1,9 @@
 package ru.cactus.jotme.model
 
 import ru.cactus.jotme.Note
-import ru.cactus.jotme.contract.ContractInterface
+import ru.cactus.jotme.contract.ModelInterface
 
-class MainActivityModel : ContractInterface.Model {
+class MainActivityModel : ModelInterface {
 
     override fun getNote(id: Int): Note {
         val lNote = Note(1,"Title", "Body text")

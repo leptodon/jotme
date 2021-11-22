@@ -7,13 +7,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.cactus.jotme.R
-import ru.cactus.jotme.contract.ContractInterface
+import ru.cactus.jotme.contract.ViewInterface
 import ru.cactus.jotme.presenter.MainActivityPresenter
 
-/** Сохранение происходит при нажатии на ImageView кнопки назад
- *  или при нажатии системной кнопки назад и срабатывании события onBackPressed() **/
 
-class MainActivity : AppCompatActivity(), ContractInterface.View {
+class MainActivity : AppCompatActivity(), ViewInterface {
 
     private var presenter: MainActivityPresenter? = null
     private lateinit var mSetting: SharedPreferences
@@ -34,7 +32,6 @@ class MainActivity : AppCompatActivity(), ContractInterface.View {
 
         iv_back_btn.setOnClickListener {
             presenter?.addNewNote(et_note_title.text.toString(), et_note_body.text.toString())
-            showSaveToast()
         }
     }
 
@@ -48,6 +45,6 @@ class MainActivity : AppCompatActivity(), ContractInterface.View {
 
     override fun onBackPressed() {
         presenter?.addNewNote(et_note_title.text.toString(), et_note_body.text.toString())
-        showSaveToast()
+        super.onBackPressed()
     }
 }
