@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.MainActivity">
+    tools:context=".ui.note.NoteActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:paddingTop="40dp"
-        android:paddingBottom="20dp"
-        android:orientation="horizontal">
+        android:paddingBottom="20dp">
 
         <ImageView
             android:id="@+id/iv_back_btn"
@@ -21,10 +21,12 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:background="@drawable/shape_tags"
+            android:clickable="true"
+            android:focusable="true"
             android:padding="7dp"
             android:src="@drawable/ic_back_btn" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_note_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -36,11 +38,14 @@
             android:hint="New note" />
 
         <ImageView
+            android:id="@+id/ib_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="20dp"
             android:background="@drawable/shape_tags"
+            android:clickable="true"
+            android:focusable="true"
             android:padding="7dp"
             android:src="@drawable/ic_baseline_share_24" />
     </LinearLayout>
@@ -49,9 +54,9 @@
         android:id="@+id/et_note_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="30dp"
-        android:gravity="top|start"
         android:background="@null"
+        android:gravity="top|start"
+        android:padding="30dp"
         tools:hint="Some text in body..." />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
