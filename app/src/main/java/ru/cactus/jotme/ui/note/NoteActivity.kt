@@ -10,7 +10,9 @@ import kotlinx.android.synthetic.main.new_note_activity.*
 import ru.cactus.jotme.R
 import ru.cactus.jotme.repository.entity.Note
 
-
+/**
+ * Экран редактирования заметки
+ */
 class NoteActivity : AppCompatActivity(), NoteContract.View {
 
     private var presenter: NotePresenter? = null

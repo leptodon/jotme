@@ -8,6 +8,9 @@ import leakcanary.AppWatcher
 import ru.cactus.jotme.R
 import ru.cactus.jotme.ui.note.NoteActivity
 
+/**
+ * Основной экран приложения
+ */
 class MainActivity: AppCompatActivity(), MainActivityContract.View {
 
     private var presenter: MainPresenter? = null

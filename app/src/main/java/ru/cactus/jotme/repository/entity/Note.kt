@@ -6,10 +6,10 @@ data class Note(
     val body: String
 ){
     override fun toString(): String {
-        val sbText = StringBuilder()
-        sbText.append(title)
-        sbText.append("\n")
-        sbText.append(body)
-        return sbText.toString()
+        val fullText = StringBuilder()
+        fullText.append(title)
+        fullText.append("\n")
+        fullText.append(body)
+        return fullText.toString()
     }
 }

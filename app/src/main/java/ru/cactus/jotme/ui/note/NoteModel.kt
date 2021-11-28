@@ -1,6 +1,7 @@
 package ru.cactus.jotme.ui.note
 
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import ru.cactus.jotme.repository.entity.Note
 
 class NoteModel : NoteContract.Model {
