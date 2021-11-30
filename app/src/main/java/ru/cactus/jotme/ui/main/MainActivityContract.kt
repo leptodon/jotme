@@ -1,5 +1,7 @@
 package ru.cactus.jotme.ui.main
 
+import android.content.SharedPreferences
+
 interface MainActivityContract {
 
     interface View {
@@ -7,6 +9,6 @@ interface MainActivityContract {
     }
 
     interface Presenter {
-        fun addNewNote()
+        fun addNewNoteBtn()
     }
 }

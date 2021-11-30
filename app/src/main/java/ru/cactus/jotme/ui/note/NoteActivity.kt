@@ -6,63 +6,68 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.new_note_activity.*
 import ru.cactus.jotme.R
+import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.entity.Note
 
 /**
  * Экран редактирования заметки
  */
 class NoteActivity : AppCompatActivity(), NoteContract.View {
-
+    private lateinit var binding: NewNoteActivityBinding
     private var presenter: NotePresenter? = null
     private lateinit var mSetting: SharedPreferences
     private lateinit var notes: List<Note>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.new_note_activity)
-        mSetting = getPreferences(Context.MODE_PRIVATE)
-        presenter = NotePresenter(this)
+        binding = NewNoteActivityBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        initView()
+        mSetting = getPreferences(Context.MODE_PRIVATE)
+        presenter = NotePresenter(mSetting, this)
     }
 
     override fun onStart() {
-        notes = presenter?.getAllNotes(mSetting)!!
-
-        et_note_title.setText(notes[0].title)
-        et_note_body.setText(notes[0].body)
-
+        initView()
         super.onStart()
     }
 
     private fun initView() {
-        iv_back_btn.setOnClickListener {
-            presenter?.addNewNote(
-                mSetting,
-                et_note_title.text.toString(),
-                et_note_body.text.toString()
-            )
-            onBackPressed()
-        }
+        with(binding) {
+            notes = presenter?.getAllNotes()?: emptyList()
 
-        ib_share.setOnClickListener {
-            presenter!!.shareNote(
-                Note(
-                    0,
-                    et_note_title.text.toString(),
-                    et_note_body.text.toString()
+            if (presenter?.checkNote() == false) {
+                etNoteTitle.setText(notes[0].title)
+                etNoteBody.setText(notes[0].body)
+            } else {
+                etNoteTitle.setText("")
+                etNoteBody.setText("")
+            }
+
+            ivBackBtn.setOnClickListener {
+                onBackPressed()
+            }
+
+            ibShare.setOnClickListener {
+                shareNote(
+                    Note(
+                        0,
+                        etNoteTitle.text.toString(),
+                        etNoteBody.text.toString()
+                    )
                 )
-            )
+            }
         }
-    }
-
-    override fun updateViewData() {
     }
 
     override fun showSaveToast() {
-        Toast.makeText(applicationContext, "Note was save...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, R.string.save_note, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showDeleteToast() {
+        Toast.makeText(applicationContext, R.string.delete_note, Toast.LENGTH_SHORT).show()
     }
 
     override fun shareNote(note: Note) {
@@ -77,7 +82,14 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
     }
 
     override fun onBackPressed() {
-        presenter?.addNewNote(mSetting, et_note_title.text.toString(), et_note_body.text.toString())
+        if (binding.etNoteTitle.text.toString().isEmpty()) {
+            presenter?.deleteNote(0)
+        } else {
+            presenter?.addNewNote(
+                binding.etNoteTitle.text.toString(),
+                binding.etNoteBody.text.toString()
+            )
+        }
         super.onBackPressed()
     }
 

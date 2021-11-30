@@ -5,22 +5,23 @@ import ru.cactus.jotme.repository.entity.Note
 
 interface NoteContract {
     interface View {
-        fun updateViewData()
         fun showSaveToast()
+        fun showDeleteToast()
         fun shareNote(note: Note)
     }
 
     interface Presenter {
-        fun addNewNote(sharedPref: SharedPreferences, title: String, body: String)
-        fun getAllNotes(sharedPref: SharedPreferences): List<Note>
+        fun addNewNote(title: String, body: String)
+        fun getAllNotes(): List<Note>
         fun shareNote(note:Note)
+        fun deleteNote(id: Int)
+        fun checkNote():Boolean
     }
 
     interface Model {
-        fun getNote(id: Int): Note
         fun getAllNote(sharedPref: SharedPreferences): List<Note>
         fun saveNote(sharedPref: SharedPreferences, note: Note)
-        fun updateNote(note: Note): Note
-        fun deleteNote(id: Int)
+        fun updateNote(sharedPref: SharedPreferences, note: Note): Note
+        fun deleteNote(sharedPref: SharedPreferences, id: Int)
     }
 }

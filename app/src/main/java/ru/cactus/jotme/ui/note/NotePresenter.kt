@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import ru.cactus.jotme.repository.entity.Note
 
 class NotePresenter(
+    private val sharedPref: SharedPreferences,
     private val view: NoteContract.View
 ) : NoteContract.Presenter {
     private var model: NoteContract.Model = NoteModel()
@@ -14,7 +15,7 @@ class NotePresenter(
      * @param title текст заголовка заметки
      * @param body основной текст заметки
      */
-    override fun addNewNote(sharedPref: SharedPreferences, title: String, body: String) {
+    override fun addNewNote(title: String, body: String) {
         model.saveNote(sharedPref, Note(0, title, body))
         view.showSaveToast()
     }
@@ -23,7 +24,7 @@ class NotePresenter(
      * Получаем все заметки сохраненные в shared preferences
      * @param sharedPref передаем из активити
      */
-    override fun getAllNotes(sharedPref: SharedPreferences): List<Note> {
+    override fun getAllNotes(): List<Note> {
         return model.getAllNote(sharedPref)
     }
 
@@ -33,4 +34,20 @@ class NotePresenter(
     override fun shareNote(note: Note) {
         view.shareNote(note)
     }
+
+    /**
+     * Удаление заметки
+     */
+    override fun deleteNote(id: Int) {
+        model.deleteNote(sharedPref, 0)
+        view.showDeleteToast()
+    }
+
+    /**
+     * Проверяем есть ли сохраненная заметка
+     */
+    override fun checkNote(): Boolean {
+        return model.getAllNote(sharedPref).isNullOrEmpty()
+    }
+
 }

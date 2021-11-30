@@ -6,34 +6,41 @@ import ru.cactus.jotme.repository.entity.Note
 
 class NoteModel : NoteContract.Model {
 
-    override fun getNote(id: Int): Note {
-        val lNote = Note(1, "Title", "Body text")
-        return lNote
-    }
-
     override fun getAllNote(sharedPref: SharedPreferences): List<Note> {
-        val title = sharedPref.getString("NOTE_TITLE", "New note") ?: "New note"
-        val body = sharedPref.getString("NOTE_BODY", "Empty body") ?: "Empty body"
+        val json = sharedPref.getString(NOTE, "")
         val list = mutableListOf<Note>()
-        list.add(Note(1, title, body))
+
+        if (!json.isNullOrEmpty()) {
+            val note = Gson().fromJson(json, Note::class.java)
+            list.add(note)
+        }
+
         return list
     }
 
     override fun saveNote(sharedPref: SharedPreferences, note: Note) {
+        val json = Gson().toJson(note)
         with(sharedPref.edit()) {
-            putString("NOTE_TITLE", note.title)
-            putString("NOTE_BODY", note.body)
+            putString("Note", json)
             apply()
         }
     }
 
-    override fun updateNote(note: Note): Note {
-        val lNote = Note(1, "Title", "Body text")
-        return lNote
+    override fun updateNote(sharedPref: SharedPreferences, note: Note): Note {
+        TODO(
+            "Реализация будет добавлена при имплементации БД," +
+                    " или при отображении нескольких заметок на главной"
+        )
     }
 
-    override fun deleteNote(id: Int) {
-        TODO("Not yet implemented")
+    override fun deleteNote(sharedPref: SharedPreferences, id: Int) {
+        with(sharedPref.edit()) {
+            putString(NOTE, null)
+            apply()
+        }
     }
 
+    companion object {
+        private const val NOTE = "Note"
+    }
 }

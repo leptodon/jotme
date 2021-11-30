@@ -3,4 +3,6 @@
     <string name="main_title">Jot me</string>
     <string name="fab_title">New note</string>
     <string name="hint_search">Search</string>
+    <string name="save_note">Note was save…</string>
+    <string name="delete_note">Note was delete…</string>
 </resources>

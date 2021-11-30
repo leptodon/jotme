@@ -1,33 +1,45 @@
 package ru.cactus.jotme.ui.main
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.main_activity.*
-import leakcanary.AppWatcher
-import ru.cactus.jotme.R
+import ru.cactus.jotme.databinding.MainActivityBinding
 import ru.cactus.jotme.ui.note.NoteActivity
 
 /**
  * Основной экран приложения
  */
-class MainActivity: AppCompatActivity(), MainActivityContract.View {
+class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     private var presenter: MainPresenter? = null
+    private lateinit var binding: MainActivityBinding
+    private lateinit var mSetting: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+
+        binding = MainActivityBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        mSetting = getPreferences(Context.MODE_PRIVATE)
         presenter = MainPresenter(this)
 
-        ll_add_new_note.setOnClickListener {
-            presenter!!.addNewNote()
+        with(binding) {
+            llAddNewNote.setOnClickListener {
+                presenter?.addNewNoteBtn()
+            }
         }
     }
 
     override fun startNoteActivity() {
-        val intent = Intent(this, NoteActivity::class.java)
-        startActivity(intent)
+        val intentNewNote = Intent(this, NoteActivity::class.java)
+        startActivity(intentNewNote)
+    }
+
+    companion object {
+        private const val NOTE = "Note"
     }
 
 }
