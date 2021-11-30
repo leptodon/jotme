@@ -16,8 +16,13 @@ class NotePresenter(
      * @param body основной текст заметки
      */
     override fun addNewNote(title: String, body: String) {
-        model.saveNote(sharedPref, Note(0, title, body))
-        view.showSaveToast()
+        if (title.isNotEmpty()) {
+            model.saveNote(sharedPref, Note(0, title, body))
+            view.showSaveToast()
+        } else {
+            deleteNote(0)
+        }
+
     }
 
     /**

@@ -14,7 +14,7 @@ import ru.cactus.jotme.repository.entity.Note
  * Экран редактирования заметки
  */
 class NoteActivity : AppCompatActivity(), NoteContract.View {
-    private lateinit var binding: NewNoteActivityBinding
+    private var binding: NewNoteActivityBinding? = null
     private var presenter: NotePresenter? = null
     private lateinit var mSetting: SharedPreferences
     private lateinit var notes: List<Note>
@@ -22,8 +22,7 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = NewNoteActivityBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding?.root)
 
         mSetting = getPreferences(Context.MODE_PRIVATE)
         presenter = NotePresenter(mSetting, this)
@@ -35,8 +34,8 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
     }
 
     private fun initView() {
-        with(binding) {
-            notes = presenter?.getAllNotes()?: emptyList()
+        binding?.apply {
+            notes = presenter?.getAllNotes() ?: emptyList()
 
             if (presenter?.checkNote() == false) {
                 etNoteTitle.setText(notes[0].title)
@@ -82,15 +81,16 @@ class NoteActivity : AppCompatActivity(), NoteContract.View {
     }
 
     override fun onBackPressed() {
-        if (binding.etNoteTitle.text.toString().isEmpty()) {
-            presenter?.deleteNote(0)
-        } else {
-            presenter?.addNewNote(
-                binding.etNoteTitle.text.toString(),
-                binding.etNoteBody.text.toString()
-            )
-        }
+        presenter?.addNewNote(
+            binding?.etNoteTitle?.text.toString(),
+            binding?.etNoteBody?.text.toString()
+        )
         super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        binding = null
+        super.onDestroy()
     }
 
 }

@@ -14,19 +14,19 @@ import ru.cactus.jotme.ui.note.NoteActivity
 class MainActivity : AppCompatActivity(), MainActivityContract.View {
 
     private var presenter: MainPresenter? = null
-    private lateinit var binding: MainActivityBinding
+    private var binding: MainActivityBinding? = null
     private lateinit var mSetting: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = MainActivityBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding?.root)
+
         mSetting = getPreferences(Context.MODE_PRIVATE)
         presenter = MainPresenter(this)
 
-        with(binding) {
+        binding?.apply {
             llAddNewNote.setOnClickListener {
                 presenter?.addNewNoteBtn()
             }
@@ -38,8 +38,9 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         startActivity(intentNewNote)
     }
 
-    companion object {
-        private const val NOTE = "Note"
+    override fun onDestroy() {
+        binding = null
+        super.onDestroy()
     }
 
 }
