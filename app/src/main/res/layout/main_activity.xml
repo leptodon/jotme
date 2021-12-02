@@ -49,6 +49,13 @@
             android:layout_marginStart="20dp"
             android:background="@drawable/shape_tags"
             android:src="@drawable/ic_baseline_add_24" />
+
+        <fragment
+            android:id="@+id/rv_fragment"
+            class="ru.cactus.jotme.ui.main.NotesFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     </LinearLayout>
 
     <LinearLayout

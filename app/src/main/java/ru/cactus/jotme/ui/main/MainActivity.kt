@@ -5,8 +5,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.MainActivityBinding
-import ru.cactus.jotme.ui.note.NoteActivity
+import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 
 /**
  * Основной экран приложения
@@ -31,10 +32,12 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
                 presenter?.addNewNoteBtn()
             }
         }
+
+        supportFragmentManager.findFragmentById(R.id.rv_fragment)
     }
 
-    override fun startNoteActivity() {
-        val intentNewNote = Intent(this, NoteActivity::class.java)
+    override fun startEditNoteActivity() {
+        val intentNewNote = Intent(this, NoteEditActivity::class.java)
         startActivity(intentNewNote)
     }
 
@@ -42,5 +45,4 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         binding = null
         super.onDestroy()
     }
-
 }

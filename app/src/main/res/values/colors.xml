@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lavander">#9A5DBA</color>
     <color name="bezh">#F6D390</color>
+    <color name="transparent">#00000000</color>
 </resources>

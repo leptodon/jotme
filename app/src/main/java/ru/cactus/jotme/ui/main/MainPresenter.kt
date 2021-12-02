@@ -8,7 +8,7 @@ class MainPresenter(
      * Открытие экрана редактирования заметки при нажатии "New Note"
      */
     override fun addNewNoteBtn() {
-        view.startNoteActivity()
+        view.startEditNoteActivity()
     }
 
 }

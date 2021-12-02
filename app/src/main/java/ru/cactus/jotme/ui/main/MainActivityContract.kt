@@ -1,11 +1,11 @@
 package ru.cactus.jotme.ui.main
 
-import android.content.SharedPreferences
+import ru.cactus.jotme.repository.entity.Note
 
 interface MainActivityContract {
 
     interface View {
-        fun startNoteActivity()
+        fun startEditNoteActivity()
     }
 
     interface Presenter {
