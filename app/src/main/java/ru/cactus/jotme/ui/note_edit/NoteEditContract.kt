@@ -16,6 +16,8 @@ interface NoteEditContract {
         fun shareNote(note:Note)
         fun deleteNote(id: Int)
         fun checkNote():Boolean
+        fun saveIntent(note: Note)
+        fun getNote():Note
     }
 
     interface Model {

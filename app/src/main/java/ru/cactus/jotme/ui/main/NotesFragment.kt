@@ -2,6 +2,7 @@ package ru.cactus.jotme.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,10 +48,10 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     }
 
     override fun startEditNoteActivity(note: Note) {
-        val intentEditNote = Intent(activity?.baseContext, NoteEditActivity::class.java)
-        intentEditNote.putExtra("TITLE", note.title)
-        intentEditNote.putExtra("BODY", note.body)
-        startActivity(intentEditNote)
+        Intent(requireContext(), NoteEditActivity::class.java).apply {
+            putExtra("TITLE", note.title)
+            putExtra("BODY", note.body)
+        }.also { startActivity(it) }
     }
 
     override fun startPreviewDialog(note: Note) {

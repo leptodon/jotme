@@ -15,45 +15,49 @@ import ru.cactus.jotme.repository.entity.Note
  */
 class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     private var binding: NewNoteActivityBinding? = null
-    private var editPresenter: NoteEditPresenter? = null
+    private var presenter: NoteEditPresenter? = null
     private lateinit var mSetting: SharedPreferences
-
-    //    private lateinit var notes: List<Note>
-    private lateinit var note: Note
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = NewNoteActivityBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        val myIntent = intent.extras
         mSetting = getPreferences(Context.MODE_PRIVATE)
-        editPresenter = NoteEditPresenter(mSetting, this)
+        presenter = NoteEditPresenter(mSetting, this)
+
+        presenter?.saveIntent(
+            Note(
+                0,
+                myIntent?.getString("TITLE").orEmpty(),
+                myIntent?.getString("BODY").orEmpty()
+            )
+        )
+
     }
 
     override fun onStart() {
         super.onStart()
         initView()
-
-        //TODO Не работает получение данных из интента intent = null
-        note = Note(
-            0,
-            intent?.getStringExtra("TITLE") ?: "",
-            intent?.getStringExtra("BODY") ?: ""
-        )
-
     }
 
     private fun initView() {
-        binding?.apply {
-//            notes = editPresenter?.getAllNotes() ?: emptyList()
+        val note = presenter?.getNote()
 
-            if (editPresenter?.checkNote() == false) {
+        binding?.apply {
+
+/*            if (editPresenter?.checkNote() == false) {
                 etNoteTitle.setText(note.title)
                 etNoteBody.setText(note.body)
             } else {
                 etNoteTitle.setText("")
                 etNoteBody.setText("")
             }
+*/
+
+            etNoteTitle.setText(note?.title)
+            etNoteBody.setText(note?.body)
 
             ivBackBtn.setOnClickListener {
                 onBackPressed()
@@ -91,7 +95,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     }
 
     override fun onBackPressed() {
-        editPresenter?.addNewNote(
+        presenter?.addNewNote(
             binding?.etNoteTitle?.text.toString(),
             binding?.etNoteBody?.text.toString()
         )

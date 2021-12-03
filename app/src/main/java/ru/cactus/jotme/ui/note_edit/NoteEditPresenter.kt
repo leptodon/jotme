@@ -8,6 +8,7 @@ class NoteEditPresenter(
     private val view: NoteEditContract.View
 ) : NoteEditContract.Presenter {
     private var model: NoteEditContract.Model = NoteEditModel()
+    private lateinit var note: Note
 
     /**
      * Сохраняем заметку в shared preferences
@@ -54,5 +55,19 @@ class NoteEditPresenter(
     override fun checkNote(): Boolean {
         return model.getAllNote(sharedPref).isNullOrEmpty()
     }
+
+
+    /**
+     * Сохранение объекта Note из intent в MainActivity
+     */
+    override fun saveIntent(note: Note) {
+        this.note = note
+    }
+
+    /**
+     * Отдаем сохраненный Note
+     */
+    override fun getNote(): Note = note
+
 
 }
