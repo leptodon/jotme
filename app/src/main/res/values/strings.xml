@@ -12,5 +12,8 @@
     <string name="test_note_next_5">Curabitur congue ex diam, viverra convallis nulla pretium sollicitudin. Vivamus.</string>
     <string name="test_note_next_6">Donec luctus enim non iaculis rhoncus. Cras vel neque lacus. Vestibulum at lacus et nisl dapibus rhoncus eu non ante. Donec mollis, augue id maximus tempor, enim magna suscipit metus, sed ultricies lorem tortor ut tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada.</string>
     <string name="test_note_next_7">Praesent malesuada urna urna. Integer sit amet magna et arcu dictum volutpat. Morbi sed tortor velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque pretium ex purus, at porttitor arcu hendrerit ut. Phasellus et lacus id arcu pulvinar tincidunt vitae in diam. Nam arcu felis, venenatis eget tortor eu, aliquet cursus diam. Fusce laoreet sodales faucibus. Cras quis euismod libero. Maecenas auctor vestibulum purus.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_note_hint">New note</string>
 
 </resources>

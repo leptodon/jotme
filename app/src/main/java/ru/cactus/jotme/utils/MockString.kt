@@ -1,4 +1,4 @@
-package ru.cactus.jotme.mock
+package ru.cactus.jotme.utils
 
 object MockString {
     val testNoteText1 = "Phasellus eu auctor risus. Maecenas quis lectus ipsum. Nam auctor dolor nec nulla pharetra, vitae scelerisque diam fringilla. Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec dolor turpis, tincidunt at purus sit amet, tempus sodales libero. Cras vel blandit turpis. Aenean sed ante scelerisque, tincidunt metus non, vehicula augue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi pellentesque ligula a congue aliquam. Fusce et turpis quis diam hendrerit tincidunt sit amet quis dolor. Etiam a varius lacus."

@@ -7,16 +7,16 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.cactus.jotme.databinding.NotesItemLayoutBinding
 import ru.cactus.jotme.repository.entity.Note
 
-class NotesAdapter(private val onViewClick: (Note) -> Unit,
-                   private val onEditClick: (Note) -> Unit) :
+class NotesAdapter(
+    private val onViewClick: (Note) -> Unit
+) :
     RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
-    private val items = mutableListOf<Note>()
+    private lateinit var items:List<Note>
 
     inner class NoteViewHolder(
         private val binding: NotesItemLayoutBinding,
-        private val onViewClick: (Note) -> Unit,
-        private val onEditClick: (Note) -> Unit
+        private val onViewClick: (Note) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(note: Note) {
@@ -36,25 +36,21 @@ class NotesAdapter(private val onViewClick: (Note) -> Unit,
                 root.setOnClickListener {
                     onViewClick.invoke(note)
                 }
-
-                ibCardEdit.setOnClickListener {
-                    onEditClick.invoke(note)
-                }
             }
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun showList(list: List<Note>) {
-        items.clear()
-        items.addAll(list)
+    fun setItems(list: List<Note>) {
+        items = emptyList()
+        items = list
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val itemBinding =
             NotesItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NoteViewHolder(itemBinding, onViewClick, onEditClick)
+        return NoteViewHolder(itemBinding, onViewClick)
     }
 
     override fun onBindViewHolder(holderNote: NoteViewHolder, position: Int) {

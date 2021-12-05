@@ -42,20 +42,11 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"/>
 
-        <ImageButton
-            android:id="@+id/ib_add_tag"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/shape_tags"
-            android:src="@drawable/ic_baseline_add_24" />
-
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/rv_fragment"
-            class="ru.cactus.jotme.ui.main.NotesFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
+            android:layout_height="match_parent"
+            />
     </LinearLayout>
 
     <LinearLayout

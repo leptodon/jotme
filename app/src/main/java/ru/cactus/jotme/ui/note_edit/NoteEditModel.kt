@@ -3,19 +3,17 @@ package ru.cactus.jotme.ui.note_edit
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.utils.EXTRA_NOTE
 
 class NoteEditModel : NoteEditContract.Model {
 
     override fun getAllNote(sharedPref: SharedPreferences): List<Note> {
-//        val json = sharedPref.all
-//        val list = mutableListOf<Note>()
-        val json = sharedPref.getString(NOTE, "")
+        val json = sharedPref.getString(EXTRA_NOTE, "")
         val list = mutableListOf<Note>()
 
         if (!json.isNullOrEmpty()) {
             val note = Gson().fromJson(json, Note::class.java)
             list.add(note)
-//            json.forEach { list.add(Note(0, it.key, it.value.toString())) }
         }
 
         return list
@@ -25,7 +23,7 @@ class NoteEditModel : NoteEditContract.Model {
         val json = Gson().toJson(note)
 
         with(sharedPref.edit()) {
-            putString(NOTE, json)
+            putString(EXTRA_NOTE, json)
             apply()
         }
     }
@@ -39,12 +37,9 @@ class NoteEditModel : NoteEditContract.Model {
 
     override fun deleteNote(sharedPref: SharedPreferences, id: Int) {
         with(sharedPref.edit()) {
-            putString(NOTE, null)
+            putString(EXTRA_NOTE, null)
             apply()
         }
     }
 
-    companion object {
-        private const val NOTE = "Note"
-    }
 }

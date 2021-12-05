@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.utils.EXTRA_BODY
+import ru.cactus.jotme.utils.EXTRA_TITLE
+
 
 /**
  * Экран редактирования заметки
@@ -24,14 +27,15 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         setContentView(binding?.root)
 
         val myIntent = intent.extras
+
         mSetting = getPreferences(Context.MODE_PRIVATE)
         presenter = NoteEditPresenter(mSetting, this)
 
         presenter?.saveIntent(
             Note(
                 0,
-                myIntent?.getString("TITLE").orEmpty(),
-                myIntent?.getString("BODY").orEmpty()
+                myIntent?.getString(EXTRA_TITLE).orEmpty(),
+                myIntent?.getString(EXTRA_BODY).orEmpty()
             )
         )
 
@@ -46,15 +50,6 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         val note = presenter?.getNote()
 
         binding?.apply {
-
-/*            if (editPresenter?.checkNote() == false) {
-                etNoteTitle.setText(note.title)
-                etNoteBody.setText(note.body)
-            } else {
-                etNoteTitle.setText("")
-                etNoteBody.setText("")
-            }
-*/
 
             etNoteTitle.setText(note?.title)
             etNoteBody.setText(note?.body)

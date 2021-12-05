@@ -1,20 +1,22 @@
-package ru.cactus.jotme.ui.main
+package ru.cactus.jotme.ui.notes
 
-import ru.cactus.jotme.mock.MockString
+import ru.cactus.jotme.utils.MockString
 import ru.cactus.jotme.repository.entity.Note
 
-class NotesPresenter(private val view: NotesFragment) : NotesContract.Presenter {
+class NotesPresenter(private val view: NotesContract.View) : NotesContract.Presenter {
     private val noteList = mutableListOf<Note>()
 
+    /**
+     * Открытие экрана просмотра заметки
+     * @param note
+     */
     override fun onNoteClick(note: Note) {
-        view.startPreviewDialog(note)
-
+        view.startPreviewFragment(note)
     }
 
-    override fun onEditBtnNoteClick(note: Note) {
-        view.startEditNoteActivity(note)
-    }
-
+    /**
+     * Список тестовых данных для отображения на главном экране
+     */
     override fun getNotes(): List<Note>{
         noteList.add(
             Note(

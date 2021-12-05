@@ -11,19 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="40dp"
-        android:paddingBottom="20dp">
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv_back_btn"
+            style="@android:style/Widget.Material.ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
-            android:background="@drawable/shape_tags"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="7dp"
+            android:background="@color/transparent"
             android:src="@drawable/ic_back_btn" />
 
         <com.google.android.material.textfield.TextInputEditText
@@ -35,18 +33,16 @@
             android:layout_marginEnd="30dp"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="New note" />
+            android:hint="@string/new_note_hint" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/ib_share"
+            style="@android:style/Widget.Material.ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/shape_tags"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="7dp"
+            android:background="@color/transparent"
             android:src="@drawable/ic_baseline_share_24" />
     </LinearLayout>
 
@@ -56,7 +52,10 @@
         android:layout_height="match_parent"
         android:background="@null"
         android:gravity="top|start"
-        android:padding="30dp"
+        android:paddingTop="10dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingBottom="30dp"
         tools:hint="Some text in body..." />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
