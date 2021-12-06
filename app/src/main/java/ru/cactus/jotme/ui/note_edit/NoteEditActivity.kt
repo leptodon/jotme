@@ -10,6 +10,7 @@ import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.utils.EXTRA_BODY
+import ru.cactus.jotme.utils.EXTRA_NOTE
 import ru.cactus.jotme.utils.EXTRA_TITLE
 
 
@@ -26,7 +27,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         binding = NewNoteActivityBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        val myIntent = intent.extras
+        val myIntent = intent.extras?.getParcelable<Note>(EXTRA_NOTE)
 
         mSetting = getPreferences(Context.MODE_PRIVATE)
         presenter = NoteEditPresenter(mSetting, this)
@@ -34,8 +35,8 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         presenter?.saveIntent(
             Note(
                 0,
-                myIntent?.getString(EXTRA_TITLE).orEmpty(),
-                myIntent?.getString(EXTRA_BODY).orEmpty()
+                myIntent?.title.orEmpty(),
+                myIntent?.body.orEmpty()
             )
         )
 

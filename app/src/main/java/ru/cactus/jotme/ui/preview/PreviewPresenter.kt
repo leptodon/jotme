@@ -1,6 +1,5 @@
 package ru.cactus.jotme.ui.preview
 
-import com.google.gson.Gson
 import ru.cactus.jotme.repository.entity.Note
 
 class PreviewPresenter(private val view: PreviewContract.View) : PreviewContract.Presenter {
@@ -16,8 +15,8 @@ class PreviewPresenter(private val view: PreviewContract.View) : PreviewContract
      * Сохранение объекта Note из intent в MainActivity
      * @param json объект Note в JSON формате
      */
-    override fun saveIntent(json: String) {
-        note = Gson().fromJson(json, Note::class.java)
+    override fun saveIntent(note: Note) {
+        this.note = note
     }
 
     /**

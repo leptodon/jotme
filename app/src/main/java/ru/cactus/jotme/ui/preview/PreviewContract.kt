@@ -9,7 +9,7 @@ interface PreviewContract {
 
     interface Presenter {
         fun onEditNoteClick()
-        fun saveIntent(json: String)
+        fun saveIntent(note:Note)
         fun getNote():Note
     }
 }

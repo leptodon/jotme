@@ -17,7 +17,7 @@ import ru.cactus.jotme.utils.FRG_PREV
 /**
  * Основной экран приложения
  */
-class MainActivity : AppCompatActivity(), MainActivityContract.View {
+class MainActivity : AppCompatActivity(), MainActivityContract.View, ButtonController {
 
     private var presenter: MainPresenter? = null
     private var binding: MainActivityBinding? = null
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         super.onDestroy()
     }
 
-    fun hideNewNoteBtn(isVisible: Boolean) {
+    override fun hideNewNoteBtn(isVisible: Boolean) {
         binding?.llAddNewNote?.isVisible = isVisible
     }
 
@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         } else {
             super.onBackPressed()
         }
-
     }
 
 }

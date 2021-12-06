@@ -12,7 +12,7 @@ class NotesAdapter(
 ) :
     RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
-    private lateinit var items:List<Note>
+    private var items:List<Note> = emptyList()
 
     inner class NoteViewHolder(
         private val binding: NotesItemLayoutBinding,
@@ -42,7 +42,6 @@ class NotesAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun setItems(list: List<Note>) {
-        items = emptyList()
         items = list
         notifyDataSetChanged()
     }

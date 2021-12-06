@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.gson.Gson
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.FragmentPreviewBinding
 import ru.cactus.jotme.repository.entity.Note
-import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 import ru.cactus.jotme.ui.notes.NotesFragment
 import ru.cactus.jotme.utils.*
@@ -26,7 +24,7 @@ class PreviewFragment : Fragment(), PreviewContract.View {
         super.onCreate(savedInstanceState)
         presenter = PreviewPresenter(this)
         arguments?.let {
-            presenter?.saveIntent(it.getString(EXTRA_NOTE).orEmpty())
+            it.getParcelable<Note>(EXTRA_NOTE)?.let { note -> presenter?.saveIntent(note) }
         }
     }
 
@@ -73,8 +71,7 @@ class PreviewFragment : Fragment(), PreviewContract.View {
 
     override fun startEditNoteActivity() {
         Intent(requireContext(), NoteEditActivity::class.java).apply {
-            putExtra(EXTRA_TITLE, presenter?.getNote()?.title)
-            putExtra(EXTRA_BODY, presenter?.getNote()?.body)
+            putExtra(EXTRA_NOTE, presenter?.getNote())
         }.also { startActivity(it) }
     }
 
@@ -83,7 +80,7 @@ class PreviewFragment : Fragment(), PreviewContract.View {
         fun newInstance(note: Note) =
             PreviewFragment().apply {
                 arguments = Bundle().apply {
-                    this.putString(EXTRA_NOTE, Gson().toJson(note))
+                    putParcelable(EXTRA_NOTE, note)
                 }
             }
     }

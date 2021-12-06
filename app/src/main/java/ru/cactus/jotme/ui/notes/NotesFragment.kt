@@ -10,6 +10,7 @@ import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NotesListLayoutBinding
 import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.ui.adapters.NotesAdapter
+import ru.cactus.jotme.ui.main.ButtonController
 import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.ui.preview.PreviewFragment
 import ru.cactus.jotme.utils.FRG_PREV
@@ -42,12 +43,12 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
 
     override fun onStart() {
         super.onStart()
-        (requireActivity() as MainActivity).hideNewNoteBtn(true)
+        (requireActivity() as? ButtonController)?.hideNewNoteBtn(true)
     }
 
     override fun onStop() {
         super.onStop()
-        (requireActivity() as MainActivity).hideNewNoteBtn(false)
+        (requireActivity() as? ButtonController)?.hideNewNoteBtn(false)
     }
 
     override fun onDestroyView() {
