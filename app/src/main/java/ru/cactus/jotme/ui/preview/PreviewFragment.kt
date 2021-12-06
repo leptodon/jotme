@@ -53,7 +53,7 @@ class PreviewFragment : Fragment(), PreviewContract.View {
             ivFragmentBackBtn.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.rv_fragment, NotesFragment::class.java, null)
+                    .replace(R.id.rv_fragment, NotesFragment::class.java, null, FRG_MAIN)
                     .commit()
             }
 

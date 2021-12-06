@@ -11,6 +11,8 @@ import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.MainActivityBinding
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 import ru.cactus.jotme.ui.notes.NotesFragment
+import ru.cactus.jotme.utils.FRG_MAIN
+import ru.cactus.jotme.utils.FRG_PREV
 
 /**
  * Основной экран приложения
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         initViews()
     }
 
-    private fun initViews(){
+    private fun initViews() {
         binding?.apply {
             llAddNewNote.setOnClickListener {
                 presenter?.addNewNoteBtn()
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         }
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.rv_fragment, NotesFragment::class.java, null)
+            .add(R.id.rv_fragment, NotesFragment::class.java, null, FRG_MAIN)
             .commit()
     }
 
@@ -53,7 +55,20 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View {
         super.onDestroy()
     }
 
-    fun hideNewNoteBtn(isVisible:Boolean){
+    fun hideNewNoteBtn(isVisible: Boolean) {
         binding?.llAddNewNote?.isVisible = isVisible
     }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.findFragmentByTag(FRG_PREV)?.isVisible == true) {
+            supportFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.rv_fragment, NotesFragment::class.java, null, FRG_MAIN)
+                .commit()
+        } else {
+            super.onBackPressed()
+        }
+
+    }
+
 }

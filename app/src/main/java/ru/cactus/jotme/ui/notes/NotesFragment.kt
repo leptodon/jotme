@@ -12,6 +12,7 @@ import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.ui.preview.PreviewFragment
+import ru.cactus.jotme.utils.FRG_PREV
 import ru.cactus.jotme.utils.SPAN_COUNT
 
 /**
@@ -65,7 +66,7 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
 
     override fun startPreviewFragment(note: Note) {
         parentFragmentManager.beginTransaction()
-            .replace(R.id.rv_fragment, PreviewFragment.newInstance(note))
+            .replace(R.id.rv_fragment, PreviewFragment.newInstance(note), FRG_PREV)
             .commit()
     }
 

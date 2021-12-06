@@ -7,3 +7,7 @@ const val SPAN_COUNT = 3
 const val EXTRA_NOTE = "NOTE"
 const val EXTRA_TITLE = "TITLE"
 const val EXTRA_BODY = "BODY"
+
+/** Названия фрагментов */
+const val FRG_PREV = "PREVIEW"
+const val FRG_MAIN = "MAIN"
