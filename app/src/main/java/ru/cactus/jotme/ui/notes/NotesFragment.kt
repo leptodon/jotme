@@ -11,7 +11,6 @@ import ru.cactus.jotme.databinding.NotesListLayoutBinding
 import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.ButtonController
-import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.ui.preview.PreviewFragment
 import ru.cactus.jotme.utils.FRG_PREV
 import ru.cactus.jotme.utils.SPAN_COUNT

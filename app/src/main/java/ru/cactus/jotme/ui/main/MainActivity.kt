@@ -1,10 +1,7 @@
 package ru.cactus.jotme.ui.main
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import ru.cactus.jotme.R

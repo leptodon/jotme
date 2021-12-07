@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -35,9 +35,6 @@ android {
         viewBinding = true
     }
 
-    androidExtensions {
-        experimental = true
-    }
 }
 
 dependencies {
