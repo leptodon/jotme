@@ -1,4 +1,4 @@
-package ru.cactus.jotme.ui.note
+package ru.cactus.jotme.ui.note_edit
 
 import android.content.Context
 import android.content.Intent
@@ -9,41 +9,49 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.utils.EXTRA_NOTE
+
 
 /**
  * Экран редактирования заметки
  */
-class NoteActivity : AppCompatActivity(), NoteContract.View {
+class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     private var binding: NewNoteActivityBinding? = null
-    private var presenter: NotePresenter? = null
+    private var presenter: NoteEditPresenter? = null
     private lateinit var mSetting: SharedPreferences
-    private lateinit var notes: List<Note>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = NewNoteActivityBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        val myIntent = intent.extras?.getParcelable<Note>(EXTRA_NOTE)
+
         mSetting = getPreferences(Context.MODE_PRIVATE)
-        presenter = NotePresenter(mSetting, this)
+        presenter = NoteEditPresenter(mSetting, this)
+
+        presenter?.saveIntent(
+            Note(
+                0,
+                myIntent?.title.orEmpty(),
+                myIntent?.body.orEmpty()
+            )
+        )
+
     }
 
     override fun onStart() {
-        initView()
         super.onStart()
+        initView()
     }
 
     private fun initView() {
-        binding?.apply {
-            notes = presenter?.getAllNotes() ?: emptyList()
+        val note = presenter?.getNote()
 
-            if (presenter?.checkNote() == false) {
-                etNoteTitle.setText(notes[0].title)
-                etNoteBody.setText(notes[0].body)
-            } else {
-                etNoteTitle.setText("")
-                etNoteBody.setText("")
-            }
+        binding?.apply {
+
+            etNoteTitle.setText(note?.title)
+            etNoteBody.setText(note?.body)
 
             ivBackBtn.setOnClickListener {
                 onBackPressed()

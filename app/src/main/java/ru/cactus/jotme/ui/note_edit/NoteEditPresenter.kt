@@ -1,13 +1,14 @@
-package ru.cactus.jotme.ui.note
+package ru.cactus.jotme.ui.note_edit
 
 import android.content.SharedPreferences
 import ru.cactus.jotme.repository.entity.Note
 
-class NotePresenter(
+class NoteEditPresenter(
     private val sharedPref: SharedPreferences,
-    private val view: NoteContract.View
-) : NoteContract.Presenter {
-    private var model: NoteContract.Model = NoteModel()
+    private val view: NoteEditContract.View
+) : NoteEditContract.Presenter {
+    private var model: NoteEditContract.Model = NoteEditModel()
+    private lateinit var note: Note
 
     /**
      * Сохраняем заметку в shared preferences
@@ -54,5 +55,19 @@ class NotePresenter(
     override fun checkNote(): Boolean {
         return model.getAllNote(sharedPref).isNullOrEmpty()
     }
+
+
+    /**
+     * Сохранение объекта Note из intent в MainActivity
+     */
+    override fun saveIntent(note: Note) {
+        this.note = note
+    }
+
+    /**
+     * Отдаем сохраненный Note
+     */
+    override fun getNote(): Note = note
+
 
 }

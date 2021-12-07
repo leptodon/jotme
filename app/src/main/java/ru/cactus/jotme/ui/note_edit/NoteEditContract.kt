@@ -1,9 +1,9 @@
-package ru.cactus.jotme.ui.note
+package ru.cactus.jotme.ui.note_edit
 
 import android.content.SharedPreferences
 import ru.cactus.jotme.repository.entity.Note
 
-interface NoteContract {
+interface NoteEditContract {
     interface View {
         fun showSaveToast()
         fun showDeleteToast()
@@ -16,6 +16,8 @@ interface NoteContract {
         fun shareNote(note:Note)
         fun deleteNote(id: Int)
         fun checkNote():Boolean
+        fun saveIntent(note: Note)
+        fun getNote():Note
     }
 
     interface Model {
