@@ -1,14 +1,21 @@
 package ru.cactus.jotme.ui.note_edit
 
-import android.content.SharedPreferences
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
+import kotlin.coroutines.CoroutineContext
 
 class NoteEditPresenter(
-    private val sharedPref: SharedPreferences,
-    private val view: NoteEditContract.View
-) : NoteEditContract.Presenter {
-    private var model: NoteEditContract.Model = NoteEditModel()
-    private lateinit var note: Note
+    private val view: NoteEditContract.View,
+    private val notesRepository: NotesRepository
+) : NoteEditContract.Presenter, CoroutineScope {
+//    private var model: NoteEditContract.Model = NoteEditModel()
+
+    private var job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     /**
      * Сохраняем заметку в shared preferences
@@ -17,21 +24,12 @@ class NoteEditPresenter(
      * @param body основной текст заметки
      */
     override fun addNewNote(title: String, body: String) {
-        if (title.isNotEmpty()) {
-            model.saveNote(sharedPref, Note(0, title, body))
-            view.showSaveToast()
-        } else {
-            deleteNote(0)
+        launch(coroutineContext) {
+            notesRepository.updateInsert(
+                Note(null, title, body)
+            ).catch {}
+                .collect {}
         }
-
-    }
-
-    /**
-     * Получаем все заметки сохраненные в shared preferences
-     * @param sharedPref передаем из активити
-     */
-    override fun getAllNotes(): List<Note> {
-        return model.getAllNote(sharedPref)
     }
 
     /**
@@ -44,30 +42,24 @@ class NoteEditPresenter(
     /**
      * Удаление заметки
      */
-    override fun deleteNote(id: Int) {
-        model.deleteNote(sharedPref, 0)
+    override fun deleteNote(id:Int) {
+        launch(coroutineContext) {
+            notesRepository.delete(id).catch{}.collect {}
+        }
+//        model.deleteNote(sharedPref, 0)
         view.showDeleteToast()
     }
 
-    /**
-     * Проверяем есть ли сохраненная заметка
-     */
-    override fun checkNote(): Boolean {
-        return model.getAllNote(sharedPref).isNullOrEmpty()
-    }
-
-
-    /**
-     * Сохранение объекта Note из intent в MainActivity
-     */
-    override fun saveIntent(note: Note) {
-        this.note = note
-    }
-
-    /**
-     * Отдаем сохраненный Note
-     */
-    override fun getNote(): Note = note
+//    /**
+//     * Отдаем сохраненный Note
+//     */
+//    override fun getNote(id: Int) {
+//        launch(coroutineContext) {
+//            notesRepository.getNote(id).catch { }.collect {
+//                view.showNote(it)
+//            }
+//        }
+//    }
 
 
 }

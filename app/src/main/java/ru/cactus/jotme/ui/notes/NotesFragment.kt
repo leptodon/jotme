@@ -6,15 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import ru.cactus.jotme.FragmentSwipeContainer
+import ru.cactus.jotme.ui.preview.FragmentSwipeContainer
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NotesListLayoutBinding
 import ru.cactus.jotme.repository.AppDatabase
-import ru.cactus.jotme.repository.GetDataImpl
-import ru.cactus.jotme.repository.NotesList
 import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
-import ru.cactus.jotme.repository.model.NotesDataSource
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.ButtonController
 import ru.cactus.jotme.ui.preview.PreviewFragment
@@ -28,13 +25,20 @@ import ru.cactus.jotme.utils.SPAN_COUNT
 class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     private var binding: NotesListLayoutBinding? = null
     private var presenter: NotesPresenter? = null
+    private lateinit var db: AppDatabase
+    private lateinit var notesRepository: NotesRepository
+    private lateinit var notesList: List<Note>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        presenter = NotesPresenter(this)
+
+        db = AppDatabase(requireContext())
+        notesRepository = NotesRepository(db)
+
+        presenter = NotesPresenter(this, notesRepository)
         binding = NotesListLayoutBinding.inflate(inflater, container, false)
         initViews()
         return binding?.root
@@ -65,14 +69,19 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     private val adapter = NotesAdapter(
         onViewClick = {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.rv_fragment, FragmentSwipeContainer(it.id?:0), FRG_SWC)
+                .replace(R.id.rv_fragment, FragmentSwipeContainer(notesList.indexOf(it), notesList), FRG_SWC)
                 .commit()
         }
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        presenter?.getNotes()
+    }
+
+    override fun addListToView(list: List<Note>) {
         binding?.rvNotesList?.adapter = adapter
-        adapter.setItems(presenter?.getNotes() ?: emptyList())
+        notesList = list
+        adapter.setItems(list)
     }
 
     override fun startPreviewFragment(note: Note) {

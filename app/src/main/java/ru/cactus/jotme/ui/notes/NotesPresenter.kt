@@ -1,10 +1,23 @@
 package ru.cactus.jotme.ui.notes
 
-import ru.cactus.jotme.utils.MockString
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
+import kotlin.coroutines.CoroutineContext
 
-class NotesPresenter(private val view: NotesContract.View) : NotesContract.Presenter {
-    private val noteList = mutableListOf<Note>()
+class NotesPresenter(
+    private val view: NotesContract.View,
+    private val notesRepository: NotesRepository
+) : NotesContract.Presenter,
+    CoroutineScope {
+    private var job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     /**
      * Открытие экрана просмотра заметки
@@ -17,56 +30,12 @@ class NotesPresenter(private val view: NotesContract.View) : NotesContract.Prese
     /**
      * Список тестовых данных для отображения на главном экране
      */
-    override fun getNotes(): List<Note>{
-        noteList.add(
-            Note(
-                0,
-                MockString.testNoteText1.substring(0..10),
-                MockString.testNoteText1
-            )
-        )
-        noteList.add(
-            Note(
-                0,
-                MockString.testNoteText2.substring(0..10),
-                MockString.testNoteText2
-            )
-        )
-        noteList.add(
-            Note(
-                0,
-                MockString.testNoteText3.substring(0..10),
-                MockString.testNoteText3
-            )
-        )
-        noteList.add(
-            Note(
-                0,
-                MockString.testNoteText4.substring(0..10),
-                MockString.testNoteText4
-            )
-        )
-        noteList.add(
-            Note(
-                0,
-                MockString.testNoteText5.substring(0..10),
-                MockString.testNoteText5
-            )
-        )
-        noteList.add(
-            Note(
-                0,
-                MockString.testNoteText6.substring(0..10),
-                MockString.testNoteText6
-            )
-        )
-        noteList.add(
-            Note(
-                0,
-                MockString.testNoteText7.substring(0..10),
-                MockString.testNoteText7
-            )
-        )
-        return noteList
+    override fun getNotes() {
+        launch(coroutineContext){
+            notesRepository.getAll().catch {}.collect {
+                    value -> view.addListToView(value)
+            }
+        }
     }
 }
+

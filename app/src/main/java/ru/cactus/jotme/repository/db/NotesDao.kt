@@ -11,12 +11,11 @@ interface NotesDao {
     fun insertUpdateNote(note: Note)
 
     @Query("Select * from notes")
-//    fun gelAll(): Flow<List<Note>>
-    fun gelAll(): List<Note>
+    fun gelAll(): Flow<List<Note>>
 
     @Query("SELECT * FROM notes WHERE id LIKE :id LIMIT 1")
-    fun getNote(id:Int): Note
+    fun getNote(id:Int): Flow<Note>
 
-    @Delete
-    fun deleteNote(note: Note)
+    @Query("DELETE FROM notes WHERE id = :id")
+    fun deleteNote(id: Int)
 }

@@ -29,22 +29,13 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View, ButtonContr
         setContentView(binding?.root)
         setSupportActionBar(binding?.toolbar)
         supportActionBar?.title = ""
+
         presenter = MainPresenter(this)
+
         initViews()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.app_menu, menu)
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_save) {
-            SaveDialogFragment().show(supportFragmentManager, "TAG")
-            Toast.makeText(this, "SAVE", Toast.LENGTH_LONG).show()
-        }
-        return true
-    }
 
     private fun initViews() {
         binding?.apply {

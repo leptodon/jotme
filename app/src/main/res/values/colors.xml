@@ -10,5 +10,6 @@
     <color name="lavander">#9A5DBA</color>
     <color name="bezh">#F6D390</color>
     <color name="bezh2">#E8BF6F</color>
+    <color name="grey">#D8D8D8</color>
     <color name="transparent">#00000000</color>
 </resources>

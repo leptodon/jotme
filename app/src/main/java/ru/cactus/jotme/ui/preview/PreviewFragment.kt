@@ -65,7 +65,7 @@ class PreviewFragment : Fragment(), PreviewContract.View {
 
     override fun startEditNoteActivity() {
         Intent(requireContext(), NoteEditActivity::class.java).apply {
-//            putExtra(EXTRA_NOTE, presenter?.getNote())
+            putExtra(EXTRA_NOTE, presenter?.getNote())
         }.also { startActivity(it) }
     }
 

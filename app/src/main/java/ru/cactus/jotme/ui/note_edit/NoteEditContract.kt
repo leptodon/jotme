@@ -7,17 +7,15 @@ interface NoteEditContract {
     interface View {
         fun showSaveToast()
         fun showDeleteToast()
-        fun shareNote(note: Note)
+//        fun showNote(note: Note?)
+        fun shareNote(note: Note?)
     }
 
     interface Presenter {
         fun addNewNote(title: String, body: String)
-        fun getAllNotes(): List<Note>
         fun shareNote(note:Note)
-        fun deleteNote(id: Int)
-        fun checkNote():Boolean
-        fun saveIntent(note: Note)
-        fun getNote():Note
+        fun deleteNote(id:Int)
+//        fun getNote(id:Int)
     }
 
     interface Model {

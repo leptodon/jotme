@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import ru.cactus.jotme.repository.db.NotesDao
 import ru.cactus.jotme.repository.entity.Note
 
-@Database(entities = [Note::class], version = 3, exportSchema = false)
+@Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase(){
     abstract fun getNotes():NotesDao
 

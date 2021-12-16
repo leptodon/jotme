@@ -35,7 +35,6 @@ class NotesAdapter(
                 tvCardText.text = shortBody
 
                 root.setOnClickListener {
-                    note.id = position
                     onViewClick.invoke(note)
                 }
             }
@@ -56,8 +55,7 @@ class NotesAdapter(
 
     override fun onBindViewHolder(holderNote: NoteViewHolder, position: Int) {
         val item = items[position]
-        item.id = position
-        Log.d("TAG", "Note ID is ${item.id} and position is $position")
+//        item.id = position
         holderNote.bind(item)
     }
 
