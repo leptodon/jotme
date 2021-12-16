@@ -11,3 +11,4 @@ const val EXTRA_BODY = "BODY"
 /** Названия фрагментов */
 const val FRG_PREV = "PREVIEW"
 const val FRG_MAIN = "MAIN"
+const val FRG_SWC = "SWIPE"

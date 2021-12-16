@@ -15,5 +15,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="new_note_hint">New note</string>
+    <string name="save_hint">save</string>
+    <string name="order_confirmation">Save the note?</string>
+    <string name="ok">Yes</string>
+    <string name="no">No</string>
 
 </resources>

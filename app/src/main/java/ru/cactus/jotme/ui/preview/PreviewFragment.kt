@@ -11,7 +11,8 @@ import ru.cactus.jotme.databinding.FragmentPreviewBinding
 import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 import ru.cactus.jotme.ui.notes.NotesFragment
-import ru.cactus.jotme.utils.*
+import ru.cactus.jotme.utils.EXTRA_NOTE
+import ru.cactus.jotme.utils.FRG_MAIN
 
 /**
  * Экран просмотра заметки без возможности редактирования
@@ -61,17 +62,10 @@ class PreviewFragment : Fragment(), PreviewContract.View {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        parentFragmentManager.beginTransaction()
-            .setReorderingAllowed(true)
-            .replace(R.id.rv_fragment, NotesFragment::class.java, null)
-            .commit()
-    }
 
     override fun startEditNoteActivity() {
         Intent(requireContext(), NoteEditActivity::class.java).apply {
-            putExtra(EXTRA_NOTE, presenter?.getNote())
+//            putExtra(EXTRA_NOTE, presenter?.getNote())
         }.also { startActivity(it) }
     }
 

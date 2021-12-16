@@ -3,7 +3,7 @@ package ru.cactus.jotme.ui.preview
 import ru.cactus.jotme.repository.entity.Note
 
 class PreviewPresenter(private val view: PreviewContract.View) : PreviewContract.Presenter {
-    private lateinit var note:Note
+    private lateinit var note: Note
 
     /**
      * Открытие экрана редактирования заметки

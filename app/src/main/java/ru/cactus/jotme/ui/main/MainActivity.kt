@@ -2,14 +2,17 @@ package ru.cactus.jotme.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.MainActivityBinding
+import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 import ru.cactus.jotme.ui.notes.NotesFragment
 import ru.cactus.jotme.utils.FRG_MAIN
-import ru.cactus.jotme.utils.FRG_PREV
 
 /**
  * Основной экран приложения
@@ -24,10 +27,23 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View, ButtonContr
 
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
+        setSupportActionBar(binding?.toolbar)
+        supportActionBar?.title = ""
         presenter = MainPresenter(this)
-
         initViews()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.app_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_save) {
+            SaveDialogFragment().show(supportFragmentManager, "TAG")
+            Toast.makeText(this, "SAVE", Toast.LENGTH_LONG).show()
+        }
+        return true
     }
 
     private fun initViews() {
@@ -55,16 +71,4 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View, ButtonContr
     override fun hideNewNoteBtn(isVisible: Boolean) {
         binding?.llAddNewNote?.isVisible = isVisible
     }
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.findFragmentByTag(FRG_PREV)?.isVisible == true) {
-            supportFragmentManager.beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.rv_fragment, NotesFragment::class.java, null, FRG_MAIN)
-                .commit()
-        } else {
-            super.onBackPressed()
-        }
-    }
-
 }

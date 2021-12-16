@@ -1,22 +1,11 @@
-package ru.cactus.jotme.ui.main
+package ru.cactus.jotme.repository
 
 import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.utils.MockString
 
-class MainPresenter(
-    private val view: MainActivityContract.View
-) : MainActivityContract.Presenter {
+open class NotesList {
     private val noteList = mutableListOf<Note>()
-
-    /**
-     * Открытие экрана редактирования заметки при нажатии "New Note"
-     */
-    override fun addNewNoteBtn() {
-        view.startEditNoteActivity()
-    }
-
-
-    fun getNotes(): List<Note>{
+    fun getNotes(): List<Note> {
         noteList.add(
             Note(
                 0,
@@ -26,42 +15,42 @@ class MainPresenter(
         )
         noteList.add(
             Note(
-                0,
+                1,
                 MockString.testNoteText2.substring(0..10),
                 MockString.testNoteText2
             )
         )
         noteList.add(
             Note(
-                0,
+                2,
                 MockString.testNoteText3.substring(0..10),
                 MockString.testNoteText3
             )
         )
         noteList.add(
             Note(
-                0,
+                3,
                 MockString.testNoteText4.substring(0..10),
                 MockString.testNoteText4
             )
         )
         noteList.add(
             Note(
-                0,
+                4,
                 MockString.testNoteText5.substring(0..10),
                 MockString.testNoteText5
             )
         )
         noteList.add(
             Note(
-                0,
+                5,
                 MockString.testNoteText6.substring(0..10),
                 MockString.testNoteText6
             )
         )
         noteList.add(
             Note(
-                0,
+                6,
                 MockString.testNoteText7.substring(0..10),
                 MockString.testNoteText7
             )

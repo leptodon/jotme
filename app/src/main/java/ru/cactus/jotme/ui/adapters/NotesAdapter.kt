@@ -1,6 +1,7 @@
 package ru.cactus.jotme.ui.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,7 @@ class NotesAdapter(
                 tvCardText.text = shortBody
 
                 root.setOnClickListener {
+                    note.id = position
                     onViewClick.invoke(note)
                 }
             }
@@ -54,6 +56,8 @@ class NotesAdapter(
 
     override fun onBindViewHolder(holderNote: NoteViewHolder, position: Int) {
         val item = items[position]
+        item.id = position
+        Log.d("TAG", "Note ID is ${item.id} and position is $position")
         holderNote.bind(item)
     }
 

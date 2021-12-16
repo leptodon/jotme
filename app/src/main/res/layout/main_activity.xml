@@ -8,18 +8,31 @@
     android:background="@color/bezh"
     tools:context=".ui.main.MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="409dp"
+        android:layout_height="40dp"
+        android:background="@color/bezh2"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_main_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/main_title"
+        android:textColor="@color/white"
         android:textSize="34sp"
         android:textStyle="bold"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.732" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -42,7 +55,12 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"/>
 
-        <androidx.fragment.app.FragmentContainerView
+<!--        <androidx.viewpager2.widget.ViewPager2-->
+<!--            android:id="@+id/pager"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
+
+                <androidx.fragment.app.FragmentContainerView
             android:id="@+id/rv_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -82,5 +100,7 @@
             android:text="@string/fab_title"
             android:textSize="16sp" />
     </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

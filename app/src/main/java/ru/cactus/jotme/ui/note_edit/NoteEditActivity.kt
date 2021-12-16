@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.repository.model.NotesDataSource
 import ru.cactus.jotme.utils.EXTRA_NOTE
 
 
