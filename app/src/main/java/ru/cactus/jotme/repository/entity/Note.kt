@@ -12,4 +12,12 @@ data class Note(
     var id: Int? = null,
     val title: String,
     val body: String
-) : Parcelable
+) : Parcelable {
+    override fun toString(): String {
+        val fullText = StringBuilder()
+        fullText.append(title)
+        fullText.append("\n")
+        fullText.append(body)
+        return fullText.toString()
+    }
+}

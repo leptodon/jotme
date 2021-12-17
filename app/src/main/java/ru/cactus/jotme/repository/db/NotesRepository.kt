@@ -10,7 +10,7 @@ import ru.cactus.jotme.repository.entity.Note
 
 class NotesRepository(private val db: AppDatabase) {
 
-    fun updateInsert(note: Note): Flow<Unit> = db.getNotesDao().insertUpdateNote(note)
+    suspend fun updateInsert(note: Note) = db.getNotesDao().insertUpdateNote(note)
 
     fun getAll(): Flow<List<Note>> {
             return db.getNotesDao().gelAll()

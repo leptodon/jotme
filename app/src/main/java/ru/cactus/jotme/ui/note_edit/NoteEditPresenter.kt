@@ -27,9 +27,7 @@ class NoteEditPresenter(
         launch(coroutineContext) {
             notesRepository.updateInsert(
                 Note(id, title, body)
-            ).catch {
-                e -> Log.d("DB", e.message.toString())
-            }.collect {}
+            )
         }
     }
 

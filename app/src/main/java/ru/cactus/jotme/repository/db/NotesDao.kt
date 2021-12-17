@@ -8,7 +8,7 @@ import ru.cactus.jotme.repository.entity.Note
 interface NotesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUpdateNote(note: Note):Flow<Unit>
+    suspend fun insertUpdateNote(note: Note)
 
     @Query("SELECT * FROM notes")
     fun gelAll(): Flow<List<Note>>

@@ -8,12 +8,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.AppDatabase
 import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
-import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.utils.EXTRA_NOTE
 
@@ -38,7 +38,8 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         setSupportActionBar(binding?.toolbar)
         supportActionBar?.title = ""
 
-        db = AppDatabase(this)
+        db = AppDatabase.getInstance(applicationContext)
+
         notesRepository = NotesRepository(db)
         intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
         note = intent.extras?.getParcelable(EXTRA_NOTE)
@@ -49,8 +50,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_save) {
-            SaveDialogFragment().show(supportFragmentManager, "TAG")
-            Toast.makeText(this, "SAVE", Toast.LENGTH_LONG).show()
+            showSaveDialog()
         }
         return true
     }
@@ -113,7 +113,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         }
     }
 
-    override fun onBackPressed() {
+    private fun saveNote() {
         binding?.apply {
             when {
                 note == null -> {
@@ -131,6 +131,10 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        saveNote()
         startActivity(intentNewNote)
 
         super.onBackPressed()
@@ -139,6 +143,21 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     override fun onDestroy() {
         binding = null
         super.onDestroy()
+    }
+
+    private fun showSaveDialog() {
+        val materialAlertDialog = MaterialAlertDialogBuilder(this)
+        materialAlertDialog.setTitle(R.string.order_confirmation)
+            .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
+                run {
+                    saveNote()
+                    Toast.makeText(this, "SAVE", Toast.LENGTH_LONG).show()
+                }
+            }
+            .setNegativeButton(resources.getString(R.string.no)) {
+                    dialog, _ -> dialog.cancel()
+            }
+            .show()
     }
 
 }

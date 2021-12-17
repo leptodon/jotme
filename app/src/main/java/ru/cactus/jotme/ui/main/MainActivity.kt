@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View, ButtonContr
     }
 
 
-
     private fun initViews() {
         binding?.apply {
             llAddNewNote.setOnClickListener {

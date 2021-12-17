@@ -35,7 +35,7 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
         savedInstanceState: Bundle?
     ): View? {
 
-        db = AppDatabase(requireContext())
+        db = AppDatabase.getInstance(requireContext())
         notesRepository = NotesRepository(db)
 
         presenter = NotesPresenter(this, notesRepository)
