@@ -2,14 +2,10 @@ package ru.cactus.jotme.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.MainActivityBinding
-import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 import ru.cactus.jotme.ui.notes.NotesFragment
 import ru.cactus.jotme.utils.FRG_MAIN

@@ -1,5 +1,7 @@
 package ru.cactus.jotme.ui.note_edit
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,12 +10,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.AppDatabase
 import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.utils.EXTRA_NOTE
 
@@ -50,7 +54,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_save) {
-            showSaveDialog()
+            SaveDialogFragment().show(supportFragmentManager, "TAG")
         }
         return true
     }
@@ -113,7 +117,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         }
     }
 
-    private fun saveNote() {
+    fun saveNote() {
         binding?.apply {
             when {
                 note == null -> {
@@ -136,28 +140,12 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     override fun onBackPressed() {
         saveNote()
         startActivity(intentNewNote)
-
         super.onBackPressed()
     }
 
     override fun onDestroy() {
         binding = null
         super.onDestroy()
-    }
-
-    private fun showSaveDialog() {
-        val materialAlertDialog = MaterialAlertDialogBuilder(this)
-        materialAlertDialog.setTitle(R.string.order_confirmation)
-            .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
-                run {
-                    saveNote()
-                    Toast.makeText(this, "SAVE", Toast.LENGTH_LONG).show()
-                }
-            }
-            .setNegativeButton(resources.getString(R.string.no)) {
-                    dialog, _ -> dialog.cancel()
-            }
-            .show()
     }
 
 }

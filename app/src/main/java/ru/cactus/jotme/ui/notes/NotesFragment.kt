@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import ru.cactus.jotme.ui.preview.FragmentSwipeContainer
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NotesListLayoutBinding
 import ru.cactus.jotme.repository.AppDatabase
@@ -14,6 +13,7 @@ import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.ButtonController
+import ru.cactus.jotme.ui.preview.FragmentSwipeContainer
 import ru.cactus.jotme.ui.preview.PreviewFragment
 import ru.cactus.jotme.utils.FRG_PREV
 import ru.cactus.jotme.utils.FRG_SWC
@@ -62,8 +62,8 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         binding = null
+        super.onDestroyView()
     }
 
     private val adapter = NotesAdapter(
@@ -90,4 +90,8 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
             .commit()
     }
 
+    override fun onDestroy() {
+        binding = null
+        super.onDestroy()
+    }
 }

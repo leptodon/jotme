@@ -77,4 +77,9 @@ class PreviewFragment : Fragment(), PreviewContract.View {
                 }
             }
     }
+
+    override fun onDestroy() {
+        binding = null
+        super.onDestroy()
+    }
 }

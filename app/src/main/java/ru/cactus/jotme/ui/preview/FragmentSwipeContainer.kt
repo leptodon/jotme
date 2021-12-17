@@ -1,7 +1,6 @@
 package ru.cactus.jotme.ui.preview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,5 +33,10 @@ class FragmentSwipeContainer(private val pos:Int, private val notesList: List<No
             val currentPosition = position+pos
             return PreviewFragment.newInstance(notesList[currentPosition])
         }
+    }
+
+    override fun onDestroy() {
+        binding = null
+        super.onDestroy()
     }
 }
