@@ -32,8 +32,16 @@
             android:layout_weight="1" />
 
         <ImageButton
+            android:id="@+id/ib_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:background="@color/transparent"
+            android:src="@drawable/ib_delete_24" />
+
+        <ImageButton
             android:id="@+id/ib_fragment_note_edit"
-            style="@android:style/Widget.Material.ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -47,18 +55,18 @@
         android:id="@+id/tv_card_info_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textIsSelectable="true"
         android:paddingBottom="10dp"
         android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textIsSelectable="true"
         tools:text="Title" />
 
     <TextView
         android:id="@+id/tv_card_info_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textIsSelectable="true"
         android:textAppearance="?attr/textAppearanceBody2"
         android:textColor="?android:attr/textColorSecondary"
+        android:textIsSelectable="true"
         tools:text="Main body text ..." />
 
 </LinearLayout>

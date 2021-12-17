@@ -28,6 +28,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     private lateinit var db: AppDatabase
     private lateinit var notesRepository: NotesRepository
     private var note: Note? = null
+    private lateinit var intentNewNote: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
 
         db = AppDatabase(this)
         notesRepository = NotesRepository(db)
-
+        intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
         note = intent.extras?.getParcelable(EXTRA_NOTE)
 
         mSetting = getPreferences(Context.MODE_PRIVATE)
@@ -72,6 +73,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
             if (note != null) {
                 etNoteTitle.setText(note!!.title)
                 etNoteBody.setText(note!!.body)
+
                 ibShare.setOnClickListener {
                     shareNote(
                         Note(
@@ -81,35 +83,14 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
                         )
                     )
                 }
+
                 ibDelete.setOnClickListener {
                     note?.id?.let { id -> presenter?.deleteNote(id) }
-                    val intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
                     startActivity(intentNewNote)
                 }
             }
         }
     }
-
-//    override fun showNote(note: Note?) {
-//        binding?.apply {
-//            if (note != null) {
-//                etNoteTitle.setText(note.title)
-//                etNoteBody.setText(note.body)
-//                ibShare.setOnClickListener {
-//                    shareNote(
-//                        Note(
-//                            null,
-//                            etNoteTitle.text.toString(),
-//                            etNoteBody.text.toString()
-//                        )
-//                    )
-//                }
-//                ibDelete.setOnClickListener {
-//                    presenter?.deleteNote(note)
-//                }
-//            }
-//        }
-//    }
 
     override fun showSaveToast() {
         Toast.makeText(applicationContext, R.string.save_note, Toast.LENGTH_SHORT).show()
@@ -137,13 +118,20 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
             when {
                 note == null -> {
                     presenter?.takeIf { etNoteTitle.text?.isNotEmpty() ?: false || etNoteBody.text?.isNotEmpty() ?: false }
-                        ?.addNewNote(etNoteTitle.text.toString(), etNoteBody.text.toString())
+                        ?.addNewNote(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
                 }
                 note != null -> {
-                    presenter?.addNewNote(etNoteTitle.text.toString(), etNoteBody.text.toString())
+                    presenter?.apply {
+                        addNewNote(
+                            note!!.id,
+                            etNoteTitle.text.toString(),
+                            etNoteBody.text.toString()
+                        )
+                    }
                 }
             }
         }
+        startActivity(intentNewNote)
 
         super.onBackPressed()
     }

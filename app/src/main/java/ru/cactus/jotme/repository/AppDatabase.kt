@@ -9,7 +9,7 @@ import ru.cactus.jotme.repository.entity.Note
 
 @Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase(){
-    abstract fun getNotes():NotesDao
+    abstract fun getNotesDao():NotesDao
 
     companion object {
 
@@ -18,7 +18,7 @@ abstract class AppDatabase: RoomDatabase(){
         private val Lock = Any()
 
         operator fun invoke(context: Context) = instance ?: synchronized(Lock){
-            instance ?: createdDatabase(context).also { articleDataBase ->
+            createdDatabase(context).also { articleDataBase ->
                 instance = articleDataBase
             }
         }

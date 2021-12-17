@@ -1,5 +1,6 @@
 package ru.cactus.jotme.ui.note_edit
 
+import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -11,7 +12,6 @@ class NoteEditPresenter(
     private val view: NoteEditContract.View,
     private val notesRepository: NotesRepository
 ) : NoteEditContract.Presenter, CoroutineScope {
-//    private var model: NoteEditContract.Model = NoteEditModel()
 
     private var job = SupervisorJob()
     override val coroutineContext: CoroutineContext
@@ -23,12 +23,13 @@ class NoteEditPresenter(
      * @param title текст заголовка заметки
      * @param body основной текст заметки
      */
-    override fun addNewNote(title: String, body: String) {
+    override fun addNewNote(id:Int?, title: String, body: String) {
         launch(coroutineContext) {
             notesRepository.updateInsert(
-                Note(null, title, body)
-            ).catch {}
-                .collect {}
+                Note(id, title, body)
+            ).catch {
+                e -> Log.d("DB", e.message.toString())
+            }.collect {}
         }
     }
 
@@ -44,22 +45,10 @@ class NoteEditPresenter(
      */
     override fun deleteNote(id:Int) {
         launch(coroutineContext) {
-            notesRepository.delete(id).catch{}.collect {}
+            notesRepository.delete(id).catch{
+                    e -> Log.d("DB", e.message.toString())
+            }.collect {}
         }
-//        model.deleteNote(sharedPref, 0)
         view.showDeleteToast()
     }
-
-//    /**
-//     * Отдаем сохраненный Note
-//     */
-//    override fun getNote(id: Int) {
-//        launch(coroutineContext) {
-//            notesRepository.getNote(id).catch { }.collect {
-//                view.showNote(it)
-//            }
-//        }
-//    }
-
-
 }
