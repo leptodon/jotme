@@ -5,7 +5,7 @@ const val SPAN_COUNT = 3
 
 /** Константы для записи в Bundle() */
 const val EXTRA_NOTE = "NOTE"
-const val EXTRA_NOTES_LIST = "NOTE_LIST"
+const val ARG_POSITION = "NOTE_LIST_POSITION"
 
 /** Названия фрагментов */
 const val FRG_PREV = "PREVIEW"
