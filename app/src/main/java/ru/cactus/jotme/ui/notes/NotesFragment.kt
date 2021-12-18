@@ -13,14 +13,13 @@ import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.ButtonController
-import ru.cactus.jotme.ui.preview.FragmentSwipeContainer
+import ru.cactus.jotme.ui.swiper.PageSwiper
 import ru.cactus.jotme.ui.preview.PreviewFragment
-import ru.cactus.jotme.utils.FRG_PREV
-import ru.cactus.jotme.utils.FRG_SWC
-import ru.cactus.jotme.utils.SPAN_COUNT
+import ru.cactus.jotme.utils.*
 
 /**
- * RecycleView fragment
+ * Класс контейнер для RecyclerView,
+ * реализующий отображение карточек заметок с возможностью прокрутки
  */
 class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     private var binding: NotesListLayoutBinding? = null
@@ -69,12 +68,13 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     private val adapter = NotesAdapter(
         onViewClick = {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.rv_fragment, FragmentSwipeContainer(notesList.indexOf(it), notesList), FRG_SWC)
+                .replace(R.id.rv_fragment, PageSwiper(), FRG_SWC)
                 .commit()
         }
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         presenter?.getNotes()
     }
 

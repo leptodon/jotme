@@ -7,6 +7,10 @@ import androidx.room.RoomDatabase
 import ru.cactus.jotme.repository.db.NotesDao
 import ru.cactus.jotme.repository.entity.Note
 
+
+/**
+ * Класс билдер объекта БД
+ */
 @Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase(){
     abstract fun getNotesDao():NotesDao
@@ -16,10 +20,13 @@ abstract class AppDatabase: RoomDatabase(){
         @Volatile
         private var instances: AppDatabase? = null
 
+        /**
+         * Получение инстанса объекта БД
+         */
         fun getInstance(context: Context): AppDatabase {
             return instances ?: synchronized(this)
             {
-                instances ?: buildDatabase(context).also { instances = it }
+                buildDatabase(context).also { instances = it }
             }
         }
 

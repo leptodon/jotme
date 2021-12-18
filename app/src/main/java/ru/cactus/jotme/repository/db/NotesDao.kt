@@ -1,21 +1,35 @@
 package ru.cactus.jotme.repository.db
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import ru.cactus.jotme.repository.entity.Note
 
+
+/**
+ * Интерфейс для работы с БД основные CRUD операции
+ */
 @Dao
 interface NotesDao {
 
+    /**
+     * Сохранение заметки в БД
+     * @param note объект заметки
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUpdateNote(note: Note)
 
+    /**
+     * Получение списка заметок из БД
+     */
     @Query("SELECT * FROM notes")
-    fun gelAll(): Flow<List<Note>>
+    suspend fun gelAll(): List<Note>
 
-    @Query("SELECT * FROM notes WHERE id LIKE :id LIMIT 1")
-    fun getNote(id:Int): Flow<Note>
-
+    /**
+     * Удаление заметки из БД
+     */
     @Query("DELETE FROM notes WHERE id = :id")
-    fun deleteNote(id: Int)
+    suspend fun deleteNote(id: Int)
 }

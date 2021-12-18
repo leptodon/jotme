@@ -7,7 +7,10 @@ import androidx.fragment.app.DialogFragment
 import ru.cactus.jotme.R
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 
-class SaveDialogFragment() : DialogFragment() {
+/**
+ * Диалог с подтверждением сохранения заметки
+ */
+class SaveDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity)

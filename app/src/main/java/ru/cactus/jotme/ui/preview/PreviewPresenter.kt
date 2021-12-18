@@ -13,7 +13,6 @@ class PreviewPresenter(private val view: PreviewContract.View) : PreviewContract
     }
     /**
      * Сохранение объекта Note из intent в MainActivity
-     * @param json объект Note в JSON формате
      */
     override fun saveIntent(note: Note) {
         this.note = note

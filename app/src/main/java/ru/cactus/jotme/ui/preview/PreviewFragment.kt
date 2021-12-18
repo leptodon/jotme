@@ -62,6 +62,9 @@ class PreviewFragment : Fragment(), PreviewContract.View {
         }
     }
 
+    /**
+     * Открываем экран редактирования заметки
+     */
     override fun startEditNoteActivity() {
         Intent(requireContext(), NoteEditActivity::class.java).apply {
             putExtra(EXTRA_NOTE, presenter?.getNote())

@@ -1,7 +1,5 @@
 package ru.cactus.jotme.ui.note_edit
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -10,8 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.AppDatabase
@@ -74,22 +70,16 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
             ivBackBtn.setOnClickListener {
                 onBackPressed()
             }
-            if (note != null) {
-                etNoteTitle.setText(note!!.title)
-                etNoteBody.setText(note!!.body)
+            note?.let { currentNote ->
+                etNoteTitle.setText(currentNote.title)
+                etNoteBody.setText(currentNote.body)
 
                 ibShare.setOnClickListener {
-                    shareNote(
-                        Note(
-                            null,
-                            etNoteTitle.text.toString(),
-                            etNoteBody.text.toString()
-                        )
-                    )
+                    shareNote(currentNote)
                 }
 
                 ibDelete.setOnClickListener {
-                    note?.id?.let { id -> presenter?.deleteNote(id) }
+                    currentNote.id?.let { id -> presenter?.deleteNote(id) }
                     startActivity(intentNewNote)
                 }
             }
@@ -105,7 +95,8 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     }
 
     override fun shareNote(note: Note?) {
-        if (note != null) {
+
+        note?.let {
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, note.toString())
@@ -117,23 +108,16 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         }
     }
 
+    /**
+     * Сохранение текущей заметки
+     */
     fun saveNote() {
         binding?.apply {
-            when {
-                note == null -> {
-                    presenter?.takeIf { etNoteTitle.text?.isNotEmpty() ?: false || etNoteBody.text?.isNotEmpty() ?: false }
-                        ?.addNewNote(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
-                }
-                note != null -> {
-                    presenter?.apply {
-                        addNewNote(
-                            note!!.id,
-                            etNoteTitle.text.toString(),
-                            etNoteBody.text.toString()
-                        )
-                    }
-                }
-            }
+            presenter?.onClickNewNoteBtn(
+                note?.id,
+                etNoteTitle.text.toString(),
+                etNoteBody.text.toString()
+            )
         }
     }
 
@@ -144,6 +128,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     }
 
     override fun onDestroy() {
+        presenter?.onDestroy()
         binding = null
         super.onDestroy()
     }

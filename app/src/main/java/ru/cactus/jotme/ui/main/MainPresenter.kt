@@ -1,5 +1,9 @@
 package ru.cactus.jotme.ui.main
 
+/**
+ * Класс обрабатывающий действия пользователя во вью
+ * @param view MainActivity Главный экран
+ */
 class MainPresenter(
     private val view: MainActivityContract.View
 ) : MainActivityContract.Presenter {
@@ -7,7 +11,7 @@ class MainPresenter(
     /**
      * Открытие экрана редактирования заметки при нажатии "New Note"
      */
-    override fun addNewNoteBtn() {
+    override fun onClickNewNoteBtn() {
         view.startEditNoteActivity()
     }
 }

@@ -5,6 +5,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
+
+/**
+ * Сущность заметки
+ * @param id идентификатор в БД
+ * @param title заголовок заметки
+ * @param body тело заметки
+ */
 @Entity(tableName = "notes")
 @Parcelize
 data class Note(
