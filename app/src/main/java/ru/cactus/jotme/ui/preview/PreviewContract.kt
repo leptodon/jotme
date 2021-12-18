@@ -3,7 +3,7 @@ package ru.cactus.jotme.ui.preview
 import ru.cactus.jotme.repository.entity.Note
 
 /**
- * Интерфейсы для работы с фрагментом отображения превью заметки
+ * Интерфейсы отображения превью заметки
  */
 interface PreviewContract {
     interface View {

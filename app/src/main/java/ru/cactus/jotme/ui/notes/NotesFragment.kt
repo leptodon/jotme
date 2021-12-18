@@ -68,13 +68,12 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     private val adapter = NotesAdapter(
         onViewClick = {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.rv_fragment, PageSwiper(), FRG_SWC)
+                .replace(R.id.rv_fragment, PageSwiper(notesList.indexOf(it)), FRG_SWC)
                 .commit()
         }
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         presenter?.getNotes()
     }
 

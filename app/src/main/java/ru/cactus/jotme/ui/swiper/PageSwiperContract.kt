@@ -2,6 +2,9 @@ package ru.cactus.jotme.ui.swiper
 
 import ru.cactus.jotme.repository.entity.Note
 
+/**
+ * Интерфейсы передачи данных из репозитория в PageSwiper
+ */
 interface PageSwiperContract {
     interface View{
         /**

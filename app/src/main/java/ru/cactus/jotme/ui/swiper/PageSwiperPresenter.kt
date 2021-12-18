@@ -1,6 +1,5 @@
 package ru.cactus.jotme.ui.swiper
 
-import android.util.Log
 import kotlinx.coroutines.*
 import ru.cactus.jotme.repository.db.NotesRepository
 import kotlin.coroutines.CoroutineContext
@@ -18,7 +17,6 @@ class PageSwiperPresenter(
     override fun getNotesList() {
         launch(coroutineContext) {
             view.addListToView(notesRepository.getAll())
-            Log.d("FROMDB_IN_PRESENTER", notesRepository.getAll().toString())
         }
     }
 

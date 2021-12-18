@@ -3,7 +3,7 @@ package ru.cactus.jotme.ui.notes
 import ru.cactus.jotme.repository.entity.Note
 
 /**
- * Интерфейсы для работы с фрагментом отображения списка заметок NotesFragment
+ * Интерфейсы для работы с фрагментом и отображения списка заметок NotesFragment
  */
 interface NotesContract {
     interface View {

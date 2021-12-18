@@ -20,24 +20,29 @@ import ru.cactus.jotme.ui.preview.PreviewFragment
  * реализующий отображение превью заметок с возможностью перелистывания
  * @param pos текущая позиция нажатого элемента в RecyclerView
  * @param notesList список со всеми заметками в RecyclerView
+ * @param globalPosition
  */
-class PageSwiper : Fragment(), PageSwiperContract.View {
+class PageSwiper(private val globalPosition:Int) : Fragment(), PageSwiperContract.View {
 
     /**
      * Адаптер для ViewPager2
      */
     inner class FragmentSlidePagerAdapter(fr: FragmentActivity) : FragmentStateAdapter(fr) {
-        private var list: List<Note> = emptyList()
+        private var currentList: List<Note> = emptyList()
 
-        override fun getItemCount(): Int = list.size
+        override fun getItemCount(): Int = currentList.size
 
         override fun createFragment(position: Int): Fragment {
-            return PreviewFragment.newInstance(list[position])
+
+            Log.d("PAGE_SWIPER", "$globalPosition = globalPosition позиция открытого фрагмента из RecyclerView")
+            Log.d("PAGE_SWIPER", "$position = position позиция назначеная фрагменту ViewPager2")
+
+            return PreviewFragment.newInstance(currentList[position])
         }
 
         @SuppressLint("NotifyDataSetChanged")
         fun setList(list: List<Note>) {
-            this.list = list
+            currentList = list
             notifyDataSetChanged()
         }
     }
@@ -47,10 +52,11 @@ class PageSwiper : Fragment(), PageSwiperContract.View {
     private lateinit var db: AppDatabase
     private lateinit var notesRepository: NotesRepository
     private var notesList: List<Note> = emptyList()
+    private lateinit var adapter: FragmentSlidePagerAdapter
 
     override fun addListToView(list: List<Note>) {
-        Log.d("FROMDB_IN_FRAGMENT_3", list.toString())
         notesList = list
+        adapter.setList(notesList)
     }
 
     override fun onCreateView(
@@ -62,18 +68,18 @@ class PageSwiper : Fragment(), PageSwiperContract.View {
         notesRepository = NotesRepository(db)
         presenter = PageSwiperPresenter(this, notesRepository)
 
-        presenter?.getNotesList()
-        Log.d("FROMDB_IN_FRAGMENT", notesList.toString())
-
-        val adapter = FragmentSlidePagerAdapter(requireActivity())
-        adapter.setList(notesList)
-
         binding = FragmentSwipeContainerBinding.inflate(inflater, container, false)
+        adapter = FragmentSlidePagerAdapter(requireActivity())
         binding?.let { it.pager.adapter = adapter }
         return binding?.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        presenter?.getNotesList()
+    }
+
     override fun onDestroy() {
+        presenter?.onDestroy()
         binding = null
         super.onDestroy()
     }
