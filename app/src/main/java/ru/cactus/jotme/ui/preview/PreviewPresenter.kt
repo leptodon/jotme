@@ -3,7 +3,7 @@ package ru.cactus.jotme.ui.preview
 import ru.cactus.jotme.repository.entity.Note
 
 class PreviewPresenter(private val view: PreviewContract.View) : PreviewContract.Presenter {
-    private lateinit var note:Note
+    private lateinit var note: Note
 
     /**
      * Открытие экрана редактирования заметки
@@ -11,9 +11,9 @@ class PreviewPresenter(private val view: PreviewContract.View) : PreviewContract
     override fun onEditNoteClick() {
         view.startEditNoteActivity()
     }
+
     /**
      * Сохранение объекта Note из intent в MainActivity
-     * @param json объект Note в JSON формате
      */
     override fun saveIntent(note: Note) {
         this.note = note
@@ -22,5 +22,5 @@ class PreviewPresenter(private val view: PreviewContract.View) : PreviewContract
     /**
      * Отдаем сохраненный Note
      */
-    override fun getNote() = note
+    override fun getNote(): Note = note
 }

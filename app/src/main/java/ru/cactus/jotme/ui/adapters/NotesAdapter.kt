@@ -7,18 +7,26 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.cactus.jotme.databinding.NotesItemLayoutBinding
 import ru.cactus.jotme.repository.entity.Note
 
+
+/**
+ * Адаптер для хранения и отображения заметок
+ * @param onViewClick callBack нажатия на карточку в recyclerView
+ */
 class NotesAdapter(
-    private val onViewClick: (Note) -> Unit
+    private val onViewClick: (Int) -> Unit
 ) :
     RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
-    private var items:List<Note> = emptyList()
+    private var items: List<Note> = emptyList()
 
     inner class NoteViewHolder(
         private val binding: NotesItemLayoutBinding,
-        private val onViewClick: (Note) -> Unit
+        private val onViewClick: (Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        /**
+         * Сеттинг данных во View
+         */
         fun bind(note: Note) {
             val shortBody = with(StringBuilder()) {
                 if (note.body.length > 30) {
@@ -34,12 +42,16 @@ class NotesAdapter(
                 tvCardText.text = shortBody
 
                 root.setOnClickListener {
-                    onViewClick.invoke(note)
+                    onViewClick.invoke(items.indexOf(note))
                 }
             }
         }
     }
 
+    /**
+     * Получаем список заметок для заполнени recyclerView
+     * @param list список заметок
+     */
     @SuppressLint("NotifyDataSetChanged")
     fun setItems(list: List<Note>) {
         items = list
@@ -57,5 +69,5 @@ class NotesAdapter(
         holderNote.bind(item)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int = items.size
 }

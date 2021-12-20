@@ -4,11 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
+import ru.cactus.jotme.repository.AppDatabase
+import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
+import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.utils.EXTRA_NOTE
 
 
@@ -19,25 +25,39 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     private var binding: NewNoteActivityBinding? = null
     private var presenter: NoteEditPresenter? = null
     private lateinit var mSetting: SharedPreferences
+    private lateinit var db: AppDatabase
+    private lateinit var notesRepository: NotesRepository
+    private var note: Note? = null
+    private lateinit var intentNewNote: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = NewNoteActivityBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        val myIntent = intent.extras?.getParcelable<Note>(EXTRA_NOTE)
+        setSupportActionBar(binding?.toolbar)
+        supportActionBar?.title = ""
+
+        db = AppDatabase.getInstance(applicationContext)
+
+        notesRepository = NotesRepository(db)
+        intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
+        note = intent.extras?.getParcelable(EXTRA_NOTE)
 
         mSetting = getPreferences(Context.MODE_PRIVATE)
-        presenter = NoteEditPresenter(mSetting, this)
+        presenter = NoteEditPresenter(this, notesRepository)
+    }
 
-        presenter?.saveIntent(
-            Note(
-                0,
-                myIntent?.title.orEmpty(),
-                myIntent?.body.orEmpty()
-            )
-        )
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_save) {
+            SaveDialogFragment(this).show(supportFragmentManager, "TAG")
+        }
+        return true
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.app_menu, menu)
+        return true
     }
 
     override fun onStart() {
@@ -46,25 +66,22 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     }
 
     private fun initView() {
-        val note = presenter?.getNote()
-
         binding?.apply {
-
-            etNoteTitle.setText(note?.title)
-            etNoteBody.setText(note?.body)
-
             ivBackBtn.setOnClickListener {
                 onBackPressed()
             }
+            note?.let { currentNote ->
+                etNoteTitle.setText(currentNote.title)
+                etNoteBody.setText(currentNote.body)
 
-            ibShare.setOnClickListener {
-                shareNote(
-                    Note(
-                        0,
-                        etNoteTitle.text.toString(),
-                        etNoteBody.text.toString()
-                    )
-                )
+                ibShare.setOnClickListener {
+                    shareNote(currentNote)
+                }
+
+                ibDelete.setOnClickListener {
+                    currentNote.id?.let { id -> presenter?.deleteNote(id) }
+                    startActivity(intentNewNote)
+                }
             }
         }
     }
@@ -77,26 +94,43 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         Toast.makeText(applicationContext, R.string.delete_note, Toast.LENGTH_SHORT).show()
     }
 
-    override fun shareNote(note: Note) {
-        val sendIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, note.toString())
-            type = "text/plain"
-        }
+    override fun shareNote(note: Note?) {
 
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        startActivity(shareIntent)
+        note?.let {
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, note.toString())
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        }
     }
 
+    /**
+     * Сохранение текущей заметки
+     */
+    override fun onClickSaveBtn() {
+        binding?.apply {
+            presenter?.saveNote(
+                note?.id,
+                etNoteTitle.text.toString(),
+                etNoteBody.text.toString()
+            )
+        }
+    }
+
+    override fun getContext(): Context = this
+
     override fun onBackPressed() {
-        presenter?.addNewNote(
-            binding?.etNoteTitle?.text.toString(),
-            binding?.etNoteBody?.text.toString()
-        )
+        onClickSaveBtn()
+        startActivity(intentNewNote)
         super.onBackPressed()
     }
 
     override fun onDestroy() {
+        presenter?.onDestroy()
         binding = null
         super.onDestroy()
     }

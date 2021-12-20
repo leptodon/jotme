@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Jot-me</string>
+    <string name="main_title">Jot me</string>
+    <string name="fab_title">New note</string>
+    <string name="hint_search">Search</string>
+    <string name="save_note">Note was save…</string>
+    <string name="delete_note">Note was delete…</string>
     <string name="new_note_hint">New note</string>
+    <string name="save_hint">save</string>
+    <string name="order_confirmation">Save the note?</string>
+    <string name="ok">Yes</string>
+    <string name="no">No</string>
+    <string name="cd_back_button">Back btn</string>
+    <string name="cd_edit_note_button">Edit note btn</string>
+    <string name="cd_share_note_botton">Share note btn</string>
+    <string name="cd_delete_button">Delete btn</string>
 </resources>

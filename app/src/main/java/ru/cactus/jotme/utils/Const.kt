@@ -1,13 +1,20 @@
 package ru.cactus.jotme.utils
 
 /** Количество столбцов заметок на экране main_activity */
-const val SPAN_COUNT = 3
+const val SPAN_COUNT: Int = 3
 
-/** Константы для записи в Bundle() */
-const val EXTRA_NOTE = "NOTE"
-const val EXTRA_TITLE = "TITLE"
-const val EXTRA_BODY = "BODY"
+/** Константы для записи объекта Note в Bundle() */
+const val EXTRA_NOTE: String = "NOTE"
+
+/** Константы для записи объекта текузей позиции заметки в Bundle() */
+const val ARG_POSITION: String = "NOTE_LIST_POSITION"
 
 /** Названия фрагментов */
-const val FRG_PREV = "PREVIEW"
-const val FRG_MAIN = "MAIN"
+/** PreviewFragment */
+const val FRG_PREV: String = "PREVIEW"
+
+/** NotesFragment */
+const val FRG_MAIN: String = "MAIN"
+
+/** PageSwiperFragment */
+const val FRG_SWC: String = "SWIPE"

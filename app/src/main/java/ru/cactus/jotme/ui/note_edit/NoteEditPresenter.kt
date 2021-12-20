@@ -1,43 +1,47 @@
 package ru.cactus.jotme.ui.note_edit
 
-import android.content.SharedPreferences
+import kotlinx.coroutines.*
+import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
+import kotlin.coroutines.CoroutineContext
 
+/**
+ * Класс обрабатывающий действия пользователя во вью
+ * и передача данных из репозитория во вью
+ * @param view NoteEditActivity экран редактирования заметки
+ * @param notesRepository репозиторий БД
+ */
 class NoteEditPresenter(
-    private val sharedPref: SharedPreferences,
-    private val view: NoteEditContract.View
-) : NoteEditContract.Presenter {
-    private var model: NoteEditContract.Model = NoteEditModel()
-    private lateinit var note: Note
+    private val view: NoteEditContract.View,
+    private val notesRepository: NotesRepository
+) : NoteEditContract.Presenter, CoroutineScope {
+
+    private var job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     /**
-     * Сохраняем заметку в shared preferences
-     * @param sharedPref передаем из активити
+     * Сохраняем заметку в бд
+     * @param id идентификатор заметки в бд
      * @param title текст заголовка заметки
      * @param body основной текст заметки
      */
-    override fun addNewNote(title: String, body: String) {
-        if (title.isNotEmpty()) {
-            model.saveNote(sharedPref, Note(0, title, body))
-            view.showSaveToast()
-        } else {
-            deleteNote(0)
+    override fun saveNote(id: Int?, title: String, body: String) {
+        when {
+            title.isNotEmpty() && body.isNotEmpty() -> {
+                launch(coroutineContext) {
+                    notesRepository.updateInsert(
+                        Note(id, title, body)
+                    )
+                }
+            }
         }
-
-    }
-
-    /**
-     * Получаем все заметки сохраненные в shared preferences
-     * @param sharedPref передаем из активити
-     */
-    override fun getAllNotes(): List<Note> {
-        return model.getAllNote(sharedPref)
     }
 
     /**
      * Вызываем intent для передачи заметки в другое приложение
      */
-    override fun shareNote(note: Note) {
+    override fun onClickShareBtn(note: Note) {
         view.shareNote(note)
     }
 
@@ -45,29 +49,17 @@ class NoteEditPresenter(
      * Удаление заметки
      */
     override fun deleteNote(id: Int) {
-        model.deleteNote(sharedPref, 0)
+        launch(coroutineContext) {
+            notesRepository.delete(id)
+        }
         view.showDeleteToast()
     }
 
     /**
-     * Проверяем есть ли сохраненная заметка
+     * Удаление coroutineContext при уничтожении presenter
+     * CoroutineScope(coroutineContext).cancel()
      */
-    override fun checkNote(): Boolean {
-        return model.getAllNote(sharedPref).isNullOrEmpty()
+    override fun onDestroy() {
+        cancel()
     }
-
-
-    /**
-     * Сохранение объекта Note из intent в MainActivity
-     */
-    override fun saveIntent(note: Note) {
-        this.note = note
-    }
-
-    /**
-     * Отдаем сохраненный Note
-     */
-    override fun getNote(): Note = note
-
-
 }
