@@ -24,7 +24,8 @@
             android:background="@color/transparent"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_back_btn" />
+            android:src="@drawable/ic_back_btn"
+            android:contentDescription="@string/cd_back_button" />
 
         <FrameLayout
             android:layout_width="0dp"
@@ -49,7 +50,8 @@
             android:background="@color/transparent"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_baseline_edit_note_24" />
+            android:src="@drawable/ic_baseline_edit_note_24"
+            android:contentDescription="@string/cd_edit_note_button" />
     </LinearLayout>
 
     <TextView

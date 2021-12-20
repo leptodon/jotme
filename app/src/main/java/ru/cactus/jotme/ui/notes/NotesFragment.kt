@@ -13,7 +13,7 @@ import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.ButtonController
-import ru.cactus.jotme.ui.swiper.PageSwiper
+import ru.cactus.jotme.ui.swiper.PageSwiperFragment
 import ru.cactus.jotme.ui.preview.PreviewFragment
 import ru.cactus.jotme.utils.*
 
@@ -26,7 +26,6 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     private var presenter: NotesPresenter? = null
     private lateinit var db: AppDatabase
     private lateinit var notesRepository: NotesRepository
-    private lateinit var notesList: List<Note>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +42,7 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
         return binding?.root
     }
 
-    private fun initViews(){
+    private fun initViews() {
         binding?.apply {
             rvNotesList.layoutManager =
                 StaggeredGridLayoutManager(SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL)
@@ -68,7 +67,7 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     private val adapter = NotesAdapter(
         onViewClick = {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.rv_fragment, PageSwiper.getInstance(notesList.indexOf(it)), FRG_SWC)
+                .replace(R.id.rv_fragment, PageSwiperFragment.getInstance(it), FRG_SWC)
                 .commit()
         }
     )
@@ -79,7 +78,6 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
 
     override fun addListToView(list: List<Note>) {
         binding?.rvNotesList?.adapter = adapter
-        notesList = list
         adapter.setItems(list)
     }
 
@@ -90,6 +88,7 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     }
 
     override fun onDestroy() {
+        presenter?.onDestroy()
         binding = null
         super.onDestroy()
     }

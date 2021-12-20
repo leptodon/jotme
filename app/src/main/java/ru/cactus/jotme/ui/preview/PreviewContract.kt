@@ -18,6 +18,7 @@ interface PreviewContract {
          * Обработка нажатия на кнопку New note в MainActivity
          */
         fun onEditNoteClick()
+
         /**
          * Получение и хранение заметки из Bundle
          */
@@ -26,6 +27,6 @@ interface PreviewContract {
         /**
          * Передача заметки во вью
          */
-        fun getNote():Note
+        fun getNote(): Note
     }
 }

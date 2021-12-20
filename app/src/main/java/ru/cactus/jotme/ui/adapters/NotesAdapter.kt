@@ -13,15 +13,15 @@ import ru.cactus.jotme.repository.entity.Note
  * @param onViewClick callBack нажатия на карточку в recyclerView
  */
 class NotesAdapter(
-    private val onViewClick: (Note) -> Unit
+    private val onViewClick: (Int) -> Unit
 ) :
     RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
-    private var items:List<Note> = emptyList()
+    private var items: List<Note> = emptyList()
 
     inner class NoteViewHolder(
         private val binding: NotesItemLayoutBinding,
-        private val onViewClick: (Note) -> Unit
+        private val onViewClick: (Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         /**
@@ -42,7 +42,7 @@ class NotesAdapter(
                 tvCardText.text = shortBody
 
                 root.setOnClickListener {
-                    onViewClick.invoke(note)
+                    onViewClick.invoke(items.indexOf(note))
                 }
             }
         }
@@ -69,5 +69,5 @@ class NotesAdapter(
         holderNote.bind(item)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int = items.size
 }

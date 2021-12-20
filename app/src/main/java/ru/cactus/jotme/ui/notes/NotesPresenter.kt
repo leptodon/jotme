@@ -1,12 +1,6 @@
 package ru.cactus.jotme.ui.notes
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
 import kotlin.coroutines.CoroutineContext
@@ -43,4 +37,13 @@ class NotesPresenter(
             view.addListToView(notesRepository.getAll())
         }
     }
+
+    /**
+     * Удаление coroutineContext при уничтожении presenter
+     * CoroutineScope(coroutineContext).cancel()
+     */
+    override fun onDestroy() {
+        cancel()
+    }
+
 }

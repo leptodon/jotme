@@ -10,7 +10,7 @@ interface NotesContract {
         /**
          * Открытие фрагмента превью заметки
          */
-        fun startPreviewFragment(note:Note)
+        fun startPreviewFragment(note: Note)
 
         /**
          * Передача списка заметок в адаптер
@@ -29,5 +29,10 @@ interface NotesContract {
          * Получение списка заметок из репозитория
          */
         fun getNotes()
+
+        /**
+         * Обработка вызова функции onDestroy во View
+         */
+        fun onDestroy()
     }
 }

@@ -11,6 +11,7 @@ class PreviewPresenter(private val view: PreviewContract.View) : PreviewContract
     override fun onEditNoteClick() {
         view.startEditNoteActivity()
     }
+
     /**
      * Сохранение объекта Note из intent в MainActivity
      */
@@ -21,5 +22,5 @@ class PreviewPresenter(private val view: PreviewContract.View) : PreviewContract
     /**
      * Отдаем сохраненный Note
      */
-    override fun getNote() = note
+    override fun getNote(): Note = note
 }

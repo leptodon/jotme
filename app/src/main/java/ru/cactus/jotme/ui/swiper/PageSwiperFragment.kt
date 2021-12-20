@@ -1,18 +1,15 @@
 package ru.cactus.jotme.ui.swiper
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import ru.cactus.jotme.databinding.FragmentSwipeContainerBinding
 import ru.cactus.jotme.repository.AppDatabase
 import ru.cactus.jotme.repository.db.NotesRepository
 import ru.cactus.jotme.repository.entity.Note
-import ru.cactus.jotme.ui.preview.PreviewFragment
+import ru.cactus.jotme.ui.adapters.FragmentSlidePagerAdapter
 import ru.cactus.jotme.utils.ARG_POSITION
 import kotlin.properties.Delegates
 
@@ -20,26 +17,7 @@ import kotlin.properties.Delegates
  * Класс контейнер для viewPager2 фрагментов,
  * реализующий отображение превью заметок с возможностью перелистывания
  */
-class PageSwiper : Fragment(), PageSwiperContract.View {
-
-    /**
-     * Адаптер для ViewPager2
-     */
-    inner class FragmentSlidePagerAdapter(fr: FragmentActivity) : FragmentStateAdapter(fr) {
-        private var currentList: List<Note> = emptyList()
-
-        override fun getItemCount(): Int = currentList.size
-
-        override fun createFragment(position: Int): Fragment {
-            return PreviewFragment.newInstance(currentList[position])
-        }
-
-        @SuppressLint("NotifyDataSetChanged")
-        fun setList(list: List<Note>) {
-            currentList = list
-            notifyDataSetChanged()
-        }
-    }
+class PageSwiperFragment : Fragment(), PageSwiperContract.View {
 
     private var binding: FragmentSwipeContainerBinding? = null
     private var presenter: PageSwiperPresenter? = null
@@ -76,8 +54,8 @@ class PageSwiper : Fragment(), PageSwiperContract.View {
     }
 
     companion object {
-        fun getInstance(notePosition: Int) =
-            PageSwiper().apply {
+        fun getInstance(notePosition: Int): PageSwiperFragment =
+            PageSwiperFragment().apply {
                 arguments = Bundle().apply { putInt(ARG_POSITION, notePosition) }
             }
     }

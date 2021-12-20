@@ -50,7 +50,7 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_save) {
-            SaveDialogFragment().show(supportFragmentManager, "TAG")
+            SaveDialogFragment(this).show(supportFragmentManager, "TAG")
         }
         return true
     }
@@ -111,9 +111,9 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
     /**
      * Сохранение текущей заметки
      */
-    fun saveNote() {
+    override fun onClickSaveBtn() {
         binding?.apply {
-            presenter?.onClickNewNoteBtn(
+            presenter?.saveNote(
                 note?.id,
                 etNoteTitle.text.toString(),
                 etNoteBody.text.toString()
@@ -121,8 +121,10 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         }
     }
 
+    override fun getContext(): Context = this
+
     override fun onBackPressed() {
-        saveNote()
+        onClickSaveBtn()
         startActivity(intentNewNote)
         super.onBackPressed()
     }

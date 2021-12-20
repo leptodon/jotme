@@ -73,7 +73,7 @@ class PreviewFragment : Fragment(), PreviewContract.View {
 
     companion object {
         @JvmStatic
-        fun newInstance(note: Note) =
+        fun newInstance(note: Note): PreviewFragment =
             PreviewFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(EXTRA_NOTE, note)

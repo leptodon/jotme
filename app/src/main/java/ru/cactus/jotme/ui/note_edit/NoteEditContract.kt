@@ -1,5 +1,6 @@
 package ru.cactus.jotme.ui.note_edit
 
+import android.content.Context
 import ru.cactus.jotme.repository.entity.Note
 
 /**
@@ -23,6 +24,16 @@ interface NoteEditContract {
          * @param note объект заметки
          */
         fun shareNote(note: Note?)
+
+        /**
+         * Сохранение текущей заметки
+         */
+        fun onClickSaveBtn()
+
+        /**
+         * Возврашаем Context по требованию
+         */
+        fun getContext(): Context
     }
 
     interface Presenter {
@@ -33,7 +44,7 @@ interface NoteEditContract {
          * @param title заголовок заметки
          * @param body тело заметки
          */
-        fun onClickNewNoteBtn(id: Int?, title: String, body: String)
+        fun saveNote(id: Int?, title: String, body: String)
 
         /**
          * Обработка нажатия на кнопку "Share"
@@ -43,7 +54,7 @@ interface NoteEditContract {
 
         /**
          * Обработка нажатия на кнопку "Delete"
-         * @param note объект заметки
+         * @param id идентификатор удаляемой заметки
          */
         fun deleteNote(id: Int)
 

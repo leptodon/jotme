@@ -21,11 +21,12 @@ class NoteEditPresenter(
         get() = job + Dispatchers.Main
 
     /**
-     * Сохраняем заметку в shared preferences
+     * Сохраняем заметку в бд
+     * @param id идентификатор заметки в бд
      * @param title текст заголовка заметки
      * @param body основной текст заметки
      */
-    override fun onClickNewNoteBtn(id: Int?, title: String, body: String) {
+    override fun saveNote(id: Int?, title: String, body: String) {
         when {
             title.isNotEmpty() && body.isNotEmpty() -> {
                 launch(coroutineContext) {
@@ -56,8 +57,9 @@ class NoteEditPresenter(
 
     /**
      * Удаление coroutineContext при уничтожении presenter
+     * CoroutineScope(coroutineContext).cancel()
      */
     override fun onDestroy() {
-        CoroutineScope(coroutineContext).cancel()
+        cancel()
     }
 }

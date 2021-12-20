@@ -12,8 +12,8 @@ import ru.cactus.jotme.repository.entity.Note
  * Класс билдер объекта БД
  */
 @Database(entities = [Note::class], version = 1, exportSchema = false)
-abstract class AppDatabase: RoomDatabase(){
-    abstract fun getNotesDao():NotesDao
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun getNotesDao(): NotesDao
 
     companion object {
 
