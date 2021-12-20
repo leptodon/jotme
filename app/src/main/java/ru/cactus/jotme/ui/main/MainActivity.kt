@@ -2,6 +2,7 @@ package ru.cactus.jotme.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import ru.cactus.jotme.R
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View, ButtonContr
         presenter = MainPresenter(this)
 
         initViews()
+        Log.d("TAG", "COMMIT FOR TEST GIT")
     }
 
 
