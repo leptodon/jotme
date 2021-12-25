@@ -10,8 +10,6 @@ const val EXTRA_NOTE: String = "NOTE"
 const val ARG_POSITION: String = "NOTE_LIST_POSITION"
 
 /** Названия фрагментов */
-/** PreviewFragment */
-const val FRG_PREV: String = "PREVIEW"
 
 /** NotesFragment */
 const val FRG_MAIN: String = "MAIN"

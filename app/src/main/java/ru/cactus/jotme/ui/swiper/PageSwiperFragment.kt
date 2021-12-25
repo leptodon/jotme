@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.FragmentSwipeContainerBinding
 import ru.cactus.jotme.repository.AppDatabase
-import ru.cactus.jotme.repository.db.NotesRepository
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.repository.db.DatabaseRepository
 import ru.cactus.jotme.ui.adapters.FragmentSlidePagerAdapter
 import ru.cactus.jotme.utils.ARG_POSITION
 import kotlin.properties.Delegates
@@ -17,40 +18,41 @@ import kotlin.properties.Delegates
  * Класс контейнер для viewPager2 фрагментов,
  * реализующий отображение превью заметок с возможностью перелистывания
  */
-class PageSwiperFragment : Fragment(), PageSwiperContract.View {
+class PageSwiperFragment : Fragment() {
 
-    private var binding: FragmentSwipeContainerBinding? = null
-    private var presenter: PageSwiperPresenter? = null
+    private lateinit var binding: FragmentSwipeContainerBinding
     private lateinit var db: AppDatabase
-    private lateinit var notesRepository: NotesRepository
+    private lateinit var databaseRepository: DatabaseRepository
     private lateinit var adapter: FragmentSlidePagerAdapter
     private var localPosition by Delegates.notNull<Int>()
+    private lateinit var viewModel: PageSwiperViewModel
 
-    override fun addListToView(list: List<Note>) {
-        adapter.setList(list)
-        binding?.pager?.setCurrentItem(localPosition, true)
+    private fun addListToView() {
+        viewModel.notesList.observe(viewLifecycleOwner) {
+            adapter.setList(it)
+            binding.pager.setCurrentItem(localPosition, true)
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentSwipeContainerBinding.inflate(inflater, container, false)
-        .also { this.binding = it }.root
+    ): View = DataBindingUtil.inflate<FragmentSwipeContainerBinding>(
+        inflater,
+        R.layout.fragment_swipe_container,
+        container, false
+    ).also { binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         localPosition = arguments?.getInt(ARG_POSITION) ?: 0
         db = AppDatabase.getInstance(requireContext())
-        notesRepository = NotesRepository(db)
-        presenter = PageSwiperPresenter(this, notesRepository)
-        adapter = FragmentSlidePagerAdapter(requireActivity())
-        binding?.let { it.pager.adapter = adapter }
-        presenter?.getNotesList()
-    }
+        databaseRepository = DatabaseRepository(db)
+        viewModel = PageSwiperViewModel(databaseRepository)
 
-    override fun onDestroy() {
-        presenter?.onDestroy()
-        binding = null
-        super.onDestroy()
+        adapter = FragmentSlidePagerAdapter(requireActivity())
+        binding.pager.adapter = adapter
+
+        addListToView()
     }
 
     companion object {

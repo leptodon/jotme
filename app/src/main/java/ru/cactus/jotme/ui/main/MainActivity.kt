@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.MainActivityBinding
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
@@ -13,29 +14,24 @@ import ru.cactus.jotme.utils.FRG_MAIN
 /**
  * Основной экран приложения
  */
-class MainActivity : AppCompatActivity(), MainActivityContract.View, ButtonController {
+class MainActivity : AppCompatActivity(), ButtonController {
 
-    private var presenter: MainPresenter? = null
-    private var binding: MainActivityBinding? = null
+    private lateinit var binding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = MainActivityBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
-        setSupportActionBar(binding?.toolbar)
+        binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.title = ""
-
-        presenter = MainPresenter(this)
 
         initViews()
     }
 
-
     private fun initViews() {
-        binding?.apply {
+        binding.apply {
             llAddNewNote.setOnClickListener {
-                presenter?.onClickNewNoteBtn()
+                startEditNoteActivity()
             }
         }
 
@@ -44,17 +40,15 @@ class MainActivity : AppCompatActivity(), MainActivityContract.View, ButtonContr
             .commit()
     }
 
-    override fun startEditNoteActivity() {
+    private fun startEditNoteActivity() {
         val intentNewNote = Intent(this, NoteEditActivity::class.java)
         startActivity(intentNewNote)
     }
 
-    override fun onDestroy() {
-        binding = null
-        super.onDestroy()
-    }
-
+    /**
+     * Функция скрытия кнопки "New note"
+     */
     override fun hideNewNoteBtn(isVisible: Boolean) {
-        binding?.llAddNewNote?.isVisible = isVisible
+        binding.llAddNewNote.isVisible = isVisible
     }
 }

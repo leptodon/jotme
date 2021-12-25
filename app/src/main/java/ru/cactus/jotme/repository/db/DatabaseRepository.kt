@@ -7,7 +7,7 @@ import ru.cactus.jotme.repository.entity.Note
  * Репозиторий для работы с интерфейсом БД
  * @param db объект базы данных
  */
-class NotesRepository(private val db: AppDatabase) {
+class DatabaseRepository(private val db: AppDatabase) {
 
     /**
      * Сохранение заметки в БД

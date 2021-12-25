@@ -3,7 +3,9 @@ package ru.cactus.jotme.ui.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NotesItemLayoutBinding
 import ru.cactus.jotme.repository.entity.Note
 
@@ -19,6 +21,11 @@ class NotesAdapter(
 
     private var items: List<Note> = emptyList()
 
+    /**
+     * Холдер для элементов во RecyclerView
+     * @param binding layout для элемента в списке
+     * @param onViewClick CallBack нажатия на элемент в списке
+     */
     inner class NoteViewHolder(
         private val binding: NotesItemLayoutBinding,
         private val onViewClick: (Int) -> Unit
@@ -60,7 +67,10 @@ class NotesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val itemBinding =
-            NotesItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            DataBindingUtil.inflate<NotesItemLayoutBinding>(
+                LayoutInflater.from(parent.context),
+                R.layout.notes_item_layout, parent, false
+            )
         return NoteViewHolder(itemBinding, onViewClick)
     }
 

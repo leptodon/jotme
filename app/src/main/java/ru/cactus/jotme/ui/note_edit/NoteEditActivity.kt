@@ -1,17 +1,16 @@
 package ru.cactus.jotme.ui.note_edit
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.AppDatabase
-import ru.cactus.jotme.repository.db.NotesRepository
+import ru.cactus.jotme.repository.db.DatabaseRepository
 import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
@@ -21,36 +20,47 @@ import ru.cactus.jotme.utils.EXTRA_NOTE
 /**
  * Экран редактирования заметки
  */
-class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
-    private var binding: NewNoteActivityBinding? = null
-    private var presenter: NoteEditPresenter? = null
-    private lateinit var mSetting: SharedPreferences
+class NoteEditActivity : AppCompatActivity() {
+    private lateinit var binding: NewNoteActivityBinding
     private lateinit var db: AppDatabase
-    private lateinit var notesRepository: NotesRepository
+    private lateinit var databaseRepository: DatabaseRepository
     private var note: Note? = null
     private lateinit var intentNewNote: Intent
+    private lateinit var viewModel: NoteEditViewModel
+    private lateinit var saveDialog: SaveDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = NewNoteActivityBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.new_note_activity)
 
-        setSupportActionBar(binding?.toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.title = ""
 
         db = AppDatabase.getInstance(applicationContext)
+        databaseRepository = DatabaseRepository(db)
+        viewModel = NoteEditViewModel(databaseRepository)
+        saveDialog = SaveDialogFragment()
 
-        notesRepository = NotesRepository(db)
         intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
         note = intent.extras?.getParcelable(EXTRA_NOTE)
-
-        mSetting = getPreferences(Context.MODE_PRIVATE)
-        presenter = NoteEditPresenter(this, notesRepository)
     }
 
+    /**
+     * Обработчик выбора и нажатия на кнопку "save" в toolbar
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_save) {
-            SaveDialogFragment(this).show(supportFragmentManager, "TAG")
+            saveDialog.apply {
+                arguments = Bundle().apply {
+                    putParcelable(
+                        EXTRA_NOTE, Note(
+                            note?.id,
+                            binding.etNoteTitle.text.toString(),
+                            binding.etNoteBody.text.toString()
+                        )
+                    )
+                }
+            }.show(supportFragmentManager, "TAG")
         }
         return true
     }
@@ -60,13 +70,15 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         return true
     }
 
+
     override fun onStart() {
         super.onStart()
         initView()
+        initObserver()
     }
 
     private fun initView() {
-        binding?.apply {
+        binding.apply {
             ivBackBtn.setOnClickListener {
                 onBackPressed()
             }
@@ -79,23 +91,44 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
                 }
 
                 ibDelete.setOnClickListener {
-                    currentNote.id?.let { id -> presenter?.deleteNote(id) }
+                    currentNote.id?.let { id -> viewModel.deleteNote(id) }
                     startActivity(intentNewNote)
                 }
             }
         }
     }
 
-    override fun showSaveToast() {
+    private fun initObserver() {
+        with(viewModel) {
+            isNoteSave.observe(this@NoteEditActivity) {
+                if (it) {
+                    showSaveToast()
+                }
+            }
+
+            isNoteDelete.observe(this@NoteEditActivity) {
+                if (it) {
+                    showDeleteToast()
+                }
+            }
+        }
+
+        saveDialog.saveNote.observe(this) {
+            viewModel.saveNote(it.id, it.title, it.body)
+        }
+    }
+
+    private fun showSaveToast() {
         Toast.makeText(applicationContext, R.string.save_note, Toast.LENGTH_SHORT).show()
+        viewModel.setNoteSave()
     }
 
-    override fun showDeleteToast() {
+    private fun showDeleteToast() {
         Toast.makeText(applicationContext, R.string.delete_note, Toast.LENGTH_SHORT).show()
+        viewModel.setNoteDelete()
     }
 
-    override fun shareNote(note: Note?) {
-
+    private fun shareNote(note: Note?) {
         note?.let {
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SEND
@@ -108,31 +141,9 @@ class NoteEditActivity : AppCompatActivity(), NoteEditContract.View {
         }
     }
 
-    /**
-     * Сохранение текущей заметки
-     */
-    override fun onClickSaveBtn() {
-        binding?.apply {
-            presenter?.saveNote(
-                note?.id,
-                etNoteTitle.text.toString(),
-                etNoteBody.text.toString()
-            )
-        }
-    }
-
-    override fun getContext(): Context = this
-
     override fun onBackPressed() {
-        onClickSaveBtn()
         startActivity(intentNewNote)
         super.onBackPressed()
-    }
-
-    override fun onDestroy() {
-        presenter?.onDestroy()
-        binding = null
-        super.onDestroy()
     }
 
 }

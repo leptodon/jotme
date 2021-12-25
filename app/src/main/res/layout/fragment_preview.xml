@@ -1,75 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp"
-    tools:context=".ui.preview.PreviewFragment">
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        tools:context=".ui.preview.PreviewFragment">
 
-        <ImageButton
-            android:id="@+id/iv_fragment_back_btn"
-            style="@android:style/Widget.Material.ImageButton"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/iv_fragment_back_btn"
+                style="@android:style/Widget.Material.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_back_btn"
+                android:contentDescription="@string/cd_back_button" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <!-- //TODO добавлю в следующей версии -->
+            <!--        <ImageButton-->
+            <!--            android:id="@+id/ib_delete"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_gravity="center"-->
+            <!--            android:layout_marginEnd="20dp"-->
+            <!--            android:background="@color/transparent"-->
+            <!--            android:src="@drawable/ib_delete_24" />-->
+
+            <ImageButton
+                android:id="@+id/ib_fragment_note_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_baseline_edit_note_24"
+                android:contentDescription="@string/cd_edit_note_button" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_card_info_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/transparent"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_back_btn"
-            android:contentDescription="@string/cd_back_button" />
+            android:paddingBottom="10dp"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textIsSelectable="true"
+            tools:text="Title" />
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-<!-- //TODO добавлю в следующей версии -->
-<!--        <ImageButton-->
-<!--            android:id="@+id/ib_delete"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginEnd="20dp"-->
-<!--            android:background="@color/transparent"-->
-<!--            android:src="@drawable/ib_delete_24" />-->
-
-        <ImageButton
-            android:id="@+id/ib_fragment_note_edit"
+        <TextView
+            android:id="@+id/tv_card_info_body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/transparent"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_baseline_edit_note_24"
-            android:contentDescription="@string/cd_edit_note_button" />
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textIsSelectable="true"
+            tools:text="Main body text ..." />
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_card_info_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        android:textIsSelectable="true"
-        tools:text="Title" />
-
-    <TextView
-        android:id="@+id/tv_card_info_body"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceBody2"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textIsSelectable="true"
-        tools:text="Main body text ..." />
-
-</LinearLayout>
+</layout>
