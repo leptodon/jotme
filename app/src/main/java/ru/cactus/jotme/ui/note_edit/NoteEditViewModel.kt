@@ -16,15 +16,15 @@ class NoteEditViewModel(
     private val databaseRepository: DatabaseRepository
 ) : ViewModel() {
 
-    private val _isNoteDelete = MutableLiveData(false)
+    private val _showDeleteToast = MutableLiveData(false)
 
-    val isNoteDelete: LiveData<Boolean>
-        get() = _isNoteDelete
+    val showDeleteToast: LiveData<Boolean>
+        get() = _showDeleteToast
 
-    private val _isNoteSave = MutableLiveData(false)
+    private val _showSaveToast = MutableLiveData(false)
 
-    val isNoteSave: LiveData<Boolean>
-        get() = _isNoteSave
+    val showSaveToast: LiveData<Boolean>
+        get() = _showSaveToast
 
     private val _note = MutableLiveData<Note>()
 
@@ -47,7 +47,7 @@ class NoteEditViewModel(
                 }
             }
         }
-        _isNoteSave.postValue(true)
+        _showSaveToast.postValue(true)
     }
 
     /**
@@ -57,7 +57,7 @@ class NoteEditViewModel(
     fun deleteNote(id: Int) {
         viewModelScope.launch {
             databaseRepository.delete(id)
-            _isNoteDelete.postValue(true)
+            _showDeleteToast.postValue(true)
         }
     }
 
@@ -65,13 +65,13 @@ class NoteEditViewModel(
      * Установка флага false в isNoteSave: LiveData
      */
     fun setNoteSave() {
-        _isNoteSave.postValue(false)
+        _showSaveToast.postValue(false)
     }
 
     /**
      * Установка флага false в isNoteDelete: LiveData
      */
     fun setNoteDelete() {
-        _isNoteDelete.postValue(false)
+        _showDeleteToast.postValue(false)
     }
 }

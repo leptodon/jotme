@@ -100,13 +100,13 @@ class NoteEditActivity : AppCompatActivity() {
 
     private fun initObserver() {
         with(viewModel) {
-            isNoteSave.observe(this@NoteEditActivity) {
+            showSaveToast.observe(this@NoteEditActivity) {
                 if (it) {
                     showSaveToast()
                 }
             }
 
-            isNoteDelete.observe(this@NoteEditActivity) {
+            showDeleteToast.observe(this@NoteEditActivity) {
                 if (it) {
                     showDeleteToast()
                 }
