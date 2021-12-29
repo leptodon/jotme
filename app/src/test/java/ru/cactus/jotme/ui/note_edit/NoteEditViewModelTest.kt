@@ -2,7 +2,9 @@ package ru.cactus.jotme.ui.note_edit
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.*
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.*
 import org.junit.runner.RunWith
@@ -10,7 +12,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
-import ru.cactus.jotme.repository.db.DatabaseRepository
+import ru.cactus.jotme.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.repository.entity.Note
 
 @ExperimentalCoroutinesApi
@@ -19,8 +21,8 @@ class NoteEditViewModelTest {
 
     @Rule
     @JvmField
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-    private lateinit var databaseRepository: DatabaseRepository
+    val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
+    private lateinit var databaseRepositoryImpl: DatabaseRepositoryImpl
     private var viewModel: NoteEditViewModel? = null
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
@@ -28,8 +30,8 @@ class NoteEditViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        databaseRepository = Mockito.mock(DatabaseRepository::class.java)
-        viewModel = NoteEditViewModel(databaseRepository)
+        databaseRepositoryImpl = Mockito.mock(DatabaseRepositoryImpl::class.java)
+        viewModel = NoteEditViewModel(databaseRepositoryImpl)
     }
 
     @After
@@ -52,10 +54,10 @@ class NoteEditViewModelTest {
 
     @Test
     fun checkSaveNewNote(): Unit = runBlocking {
-        launch(Dispatchers.Main) {
+        runTest(StandardTestDispatcher()) {
             val testNote = Note(999, "Test_title", "Test_body")
             viewModel?.saveNote(testNote.id, testNote.title, testNote.body)
-            verify(databaseRepository, times(1)).updateInsert(testNote)
+            verify(databaseRepositoryImpl, times(1)).updateInsert(testNote)
         }
     }
 

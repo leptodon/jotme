@@ -11,10 +11,12 @@ import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.AppDatabase
 import ru.cactus.jotme.repository.db.DatabaseRepository
+import ru.cactus.jotme.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.utils.EXTRA_NOTE
+import ru.cactus.jotme.utils.FRG_SDF_SAVE
 
 
 /**
@@ -27,7 +29,6 @@ class NoteEditActivity : AppCompatActivity() {
     private var note: Note? = null
     private lateinit var intentNewNote: Intent
     private lateinit var viewModel: NoteEditViewModel
-    private lateinit var saveDialog: SaveDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +38,12 @@ class NoteEditActivity : AppCompatActivity() {
         supportActionBar?.title = ""
 
         db = AppDatabase.getInstance(applicationContext)
-        databaseRepository = DatabaseRepository(db)
+        databaseRepository = DatabaseRepositoryImpl(db)
         viewModel = NoteEditViewModel(databaseRepository)
-        saveDialog = SaveDialogFragment()
 
         intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
         note = intent.extras?.getParcelable(EXTRA_NOTE)
+
     }
 
     /**
@@ -50,7 +51,7 @@ class NoteEditActivity : AppCompatActivity() {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_save) {
-            saveDialog.apply {
+            SaveDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(
                         EXTRA_NOTE, Note(
@@ -113,9 +114,23 @@ class NoteEditActivity : AppCompatActivity() {
             }
         }
 
-        saveDialog.saveNote.observe(this) {
-            viewModel.saveNote(it.id, it.title, it.body)
+        supportFragmentManager.setFragmentResultListener(FRG_SDF_SAVE, this) { key, bundle ->
+            if (bundle.getBoolean(FRG_SDF_SAVE)) saveCurrentNote()
         }
+    }
+
+    private fun saveCurrentNote() {
+        with(binding) {
+            note = if (note != null) {
+                (note ?: return@with).copy(
+                    title = etNoteTitle.text.toString(),
+                    body = etNoteBody.text.toString()
+                )
+            } else {
+                Note(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
+            }
+        }
+        viewModel.saveNote(note?.id, note?.title ?: "", note?.body ?: "")
     }
 
     private fun showSaveToast() {

@@ -64,14 +64,11 @@ class NoteEditViewModel(
     /**
      * Установка флага false в isNoteSave: LiveData
      */
-    fun setNoteSave() {
-        _showSaveToast.postValue(false)
-    }
+    fun setNoteSave(): Unit = _showSaveToast.postValue(false)
 
     /**
      * Установка флага false в isNoteDelete: LiveData
      */
-    fun setNoteDelete() {
-        _showDeleteToast.postValue(false)
-    }
+    fun setNoteDelete(): Unit = _showDeleteToast.postValue(false)
+
 }

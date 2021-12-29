@@ -12,7 +12,7 @@
     <string name="no">No</string>
     <string name="cd_back_button">Back button</string>
     <string name="cd_edit_note_button">Edit note button</string>
-    <string name="cd_share_note_botton">Share note button</string>
+    <string name="cd_share_note_button">Share note button</string>
     <string name="cd_delete_button">Delete button</string>
     <string name="edit_note_body_hint">Add your text here…</string>
 </resources>

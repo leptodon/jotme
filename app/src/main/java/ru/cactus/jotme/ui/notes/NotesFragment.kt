@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NotesListLayoutBinding
 import ru.cactus.jotme.repository.AppDatabase
-import ru.cactus.jotme.repository.db.DatabaseRepository
+import ru.cactus.jotme.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.ButtonController
 import ru.cactus.jotme.ui.swiper.PageSwiperFragment
@@ -24,7 +24,7 @@ import ru.cactus.jotme.utils.SPAN_COUNT
 class NotesFragment : Fragment(R.layout.notes_list_layout) {
     private lateinit var binding: NotesListLayoutBinding
     private lateinit var db: AppDatabase
-    private lateinit var databaseRepository: DatabaseRepository
+    private lateinit var databaseRepositoryImpl: DatabaseRepositoryImpl
     private lateinit var viewModel: NotesViewModel
 
     override fun onCreateView(
@@ -34,9 +34,9 @@ class NotesFragment : Fragment(R.layout.notes_list_layout) {
     ): View {
 
         db = AppDatabase.getInstance(requireContext())
-        databaseRepository = DatabaseRepository(db)
+        databaseRepositoryImpl = DatabaseRepositoryImpl(db)
 
-        viewModel = NotesViewModel(databaseRepository)
+        viewModel = NotesViewModel(databaseRepositoryImpl)
 
         binding = DataBindingUtil.inflate(
             inflater,

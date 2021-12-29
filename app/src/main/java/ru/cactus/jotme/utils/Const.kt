@@ -16,3 +16,6 @@ const val FRG_MAIN: String = "MAIN"
 
 /** PageSwiperFragment */
 const val FRG_SWC: String = "SWIPE"
+
+/** Константа для подтверждения сохранения заметки из DialogFragment */
+const val FRG_SDF_SAVE: String = "FRG_SDF_SAVE"

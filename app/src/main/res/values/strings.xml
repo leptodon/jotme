@@ -9,7 +9,7 @@
     <string name="no">Нет</string>
     <string name="cd_back_button">Кнопка назад</string>
     <string name="cd_edit_note_button">Кнопка отредактировать заметку</string>
-    <string name="cd_share_note_botton">Кнопка поделиться заметкой</string>
+    <string name="cd_share_note_button">Кнопка поделиться заметкой</string>
     <string name="cd_delete_button">Кнопка удаления заметки</string>
     <string name="edit_note_body_hint">Добавьте текст вашей заметки…</string>
     <string name="edit_note_title_hint">Заголовок</string>

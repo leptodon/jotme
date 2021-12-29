@@ -56,6 +56,9 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.0"
     kapt "androidx.room:room-compiler:2.4.0"
 
+    /** Fragment Result API */
+    implementation 'androidx.fragment:fragment-ktx:1.4.0'
+
     /** Testing tools **/
     testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
     testImplementation 'org.mockito:mockito-core:2.25.0'
