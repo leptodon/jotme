@@ -101,17 +101,8 @@ class NoteEditActivity : AppCompatActivity() {
 
     private fun initObserver() {
         with(viewModel) {
-            showSaveToast.observe(this@NoteEditActivity) {
-                if (it) {
-                    showSaveToast()
-                }
-            }
-
-            showDeleteToast.observe(this@NoteEditActivity) {
-                if (it) {
-                    showDeleteToast()
-                }
-            }
+            showSaveToast.observe(this@NoteEditActivity) { showSaveToast() }
+            showDeleteToast.observe(this@NoteEditActivity) { showDeleteToast() }
         }
 
         supportFragmentManager.setFragmentResultListener(FRG_SDF_SAVE, this) { key, bundle ->
@@ -135,12 +126,10 @@ class NoteEditActivity : AppCompatActivity() {
 
     private fun showSaveToast() {
         Toast.makeText(applicationContext, R.string.save_note, Toast.LENGTH_SHORT).show()
-        viewModel.setNoteSave()
     }
 
     private fun showDeleteToast() {
         Toast.makeText(applicationContext, R.string.delete_note, Toast.LENGTH_SHORT).show()
-        viewModel.setNoteDelete()
     }
 
     private fun shareNote(note: Note?) {

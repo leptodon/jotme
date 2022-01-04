@@ -1,16 +1,17 @@
 package ru.cactus.jotme.ui.note_edit
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.*
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import ru.cactus.jotme.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.repository.entity.Note
@@ -30,7 +31,7 @@ class NoteEditViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        databaseRepositoryImpl = Mockito.mock(DatabaseRepositoryImpl::class.java)
+        databaseRepositoryImpl = mock(DatabaseRepositoryImpl::class.java)
         viewModel = NoteEditViewModel(databaseRepositoryImpl)
     }
 
@@ -41,23 +42,21 @@ class NoteEditViewModelTest {
     }
 
     @Test
-    fun checkSetSaveNote() {
-        viewModel?.setNoteSave()
-        Assert.assertEquals(false, viewModel?.showSaveToast?.value)
-    }
-
-    @Test
-    fun checkSetDeleteNote() {
-        viewModel?.setNoteDelete()
-        Assert.assertEquals(false, viewModel?.showDeleteToast?.value)
-    }
-
-    @Test
     fun checkSaveNewNote(): Unit = runBlocking {
         runTest(StandardTestDispatcher()) {
             val testNote = Note(999, "Test_title", "Test_body")
             viewModel?.saveNote(testNote.id, testNote.title, testNote.body)
             verify(databaseRepositoryImpl, times(1)).updateInsert(testNote)
+            Assert.assertEquals(Unit, viewModel?.showSaveToast?.value)
+        }
+    }
+
+    @Test
+    fun checkDeleteNote(): Unit = runBlocking {
+        runTest(StandardTestDispatcher()) {
+            viewModel?.deleteNote(1)
+            verify(databaseRepositoryImpl, atLeastOnce()).delete(1)
+            Assert.assertEquals(Unit, viewModel?.showDeleteToast?.value)
         }
     }
 
