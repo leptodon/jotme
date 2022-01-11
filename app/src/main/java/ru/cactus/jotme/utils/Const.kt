@@ -10,11 +10,15 @@ const val EXTRA_NOTE: String = "NOTE"
 const val ARG_POSITION: String = "NOTE_LIST_POSITION"
 
 /** Названия фрагментов */
-/** PreviewFragment */
-const val FRG_PREV: String = "PREVIEW"
 
 /** NotesFragment */
 const val FRG_MAIN: String = "MAIN"
 
 /** PageSwiperFragment */
 const val FRG_SWC: String = "SWIPE"
+
+/** Константа для подтверждения сохранения заметки из DialogFragment */
+const val FRG_SDF_SAVE: String = "FRG_SDF_SAVE"
+
+/** Константа для подтверждения сохранения заметки из DialogFragment */
+const val FRG_BUNDLE_SAVE: String = "FRG_BUNDLE_SAVE"

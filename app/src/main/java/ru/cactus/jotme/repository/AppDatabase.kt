@@ -13,6 +13,9 @@ import ru.cactus.jotme.repository.entity.Note
  */
 @Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
+    /**
+     * Получаем заметки из БД
+     */
     abstract fun getNotesDao(): NotesDao
 
     companion object {

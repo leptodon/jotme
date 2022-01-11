@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.FragmentPreviewBinding
@@ -17,24 +18,29 @@ import ru.cactus.jotme.utils.FRG_MAIN
 /**
  * Экран просмотра заметки без возможности редактирования
  */
-class PreviewFragment : Fragment(), PreviewContract.View {
-    private var binding: FragmentPreviewBinding? = null
-    private var presenter: PreviewPresenter? = null
+class PreviewFragment : Fragment() {
+    private lateinit var binding: FragmentPreviewBinding
+    private lateinit var note: Note
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = PreviewPresenter(this)
+
         arguments?.let {
-            it.getParcelable<Note>(EXTRA_NOTE)?.let { note -> presenter?.saveIntent(note) }
+            it.getParcelable<Note>(EXTRA_NOTE)?.let { argNote -> note = argNote }
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentPreviewBinding.inflate(inflater, container, false)
-        return binding?.root
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_preview,
+            container,
+            false
+        )
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,11 +49,9 @@ class PreviewFragment : Fragment(), PreviewContract.View {
     }
 
     private fun initViews() {
-        binding?.apply {
-            presenter?.apply {
-                tvCardInfoTitle.text = getNote().title
-                tvCardInfoBody.text = getNote().body
-            }
+        binding.apply {
+            tvCardInfoTitle.text = note.title
+            tvCardInfoBody.text = note.body
 
             ivFragmentBackBtn.setOnClickListener {
                 parentFragmentManager.beginTransaction()
@@ -57,7 +61,7 @@ class PreviewFragment : Fragment(), PreviewContract.View {
             }
 
             ibFragmentNoteEdit.setOnClickListener {
-                presenter?.onEditNoteClick()
+                startEditNoteActivity()
             }
         }
     }
@@ -65,9 +69,9 @@ class PreviewFragment : Fragment(), PreviewContract.View {
     /**
      * Открываем экран редактирования заметки
      */
-    override fun startEditNoteActivity() {
+    private fun startEditNoteActivity() {
         Intent(requireContext(), NoteEditActivity::class.java).apply {
-            putExtra(EXTRA_NOTE, presenter?.getNote())
+            putExtra(EXTRA_NOTE, note)
         }.also { startActivity(it) }
     }
 
@@ -81,8 +85,4 @@ class PreviewFragment : Fragment(), PreviewContract.View {
             }
     }
 
-    override fun onDestroy() {
-        binding = null
-        super.onDestroy()
-    }
 }

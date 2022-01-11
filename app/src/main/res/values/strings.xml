@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">Jot-me</string>
-    <string name="main_title">Jot me</string>
-    <string name="fab_title">New note</string>
-    <string name="hint_search">Search</string>
-    <string name="save_note">Note was save…</string>
-    <string name="delete_note">Note was delete…</string>
-    <string name="new_note_hint">New note</string>
-    <string name="save_hint">save</string>
-    <string name="order_confirmation">Save the note?</string>
-    <string name="ok">Yes</string>
-    <string name="no">No</string>
-    <string name="cd_back_button">Back btn</string>
-    <string name="cd_edit_note_button">Edit note btn</string>
-    <string name="cd_share_note_botton">Share note btn</string>
-    <string name="cd_delete_button">Delete btn</string>
+    <string name="fab_title">Создать</string>
+    <string name="hint_search">Поиск</string>
+    <string name="save_note">Сохранено…</string>
+    <string name="delete_note">Удалено…</string>
+    <string name="order_confirmation">Сохраниь заметку?</string>
+    <string name="ok">Да</string>
+    <string name="no">Нет</string>
+    <string name="cd_back_button">Кнопка назад</string>
+    <string name="cd_edit_note_button">Кнопка отредактировать заметку</string>
+    <string name="cd_share_note_button">Кнопка поделиться заметкой</string>
+    <string name="cd_delete_button">Кнопка удаления заметки</string>
+    <string name="edit_note_body_hint">Добавьте текст вашей заметки…</string>
+    <string name="edit_note_title_hint">Заголовок</string>
+    <string name="save_hint">Сохранить</string>
 </resources>

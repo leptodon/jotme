@@ -4,46 +4,52 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NotesListLayoutBinding
 import ru.cactus.jotme.repository.AppDatabase
-import ru.cactus.jotme.repository.db.NotesRepository
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.ButtonController
 import ru.cactus.jotme.ui.swiper.PageSwiperFragment
-import ru.cactus.jotme.ui.preview.PreviewFragment
-import ru.cactus.jotme.utils.*
+import ru.cactus.jotme.utils.FRG_SWC
+import ru.cactus.jotme.utils.SPAN_COUNT
 
 /**
  * Класс контейнер для RecyclerView,
  * реализующий отображение карточек заметок с возможностью прокрутки
  */
-class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
-    private var binding: NotesListLayoutBinding? = null
-    private var presenter: NotesPresenter? = null
+class NotesFragment : Fragment(R.layout.notes_list_layout) {
+    private lateinit var binding: NotesListLayoutBinding
     private lateinit var db: AppDatabase
-    private lateinit var notesRepository: NotesRepository
+    private lateinit var databaseRepositoryImpl: DatabaseRepositoryImpl
+    private lateinit var viewModel: NotesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         db = AppDatabase.getInstance(requireContext())
-        notesRepository = NotesRepository(db)
+        databaseRepositoryImpl = DatabaseRepositoryImpl(db)
 
-        presenter = NotesPresenter(this, notesRepository)
-        binding = NotesListLayoutBinding.inflate(inflater, container, false)
+        viewModel = NotesViewModel(databaseRepositoryImpl)
+
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.notes_list_layout,
+            container,
+            false
+        )
         initViews()
-        return binding?.root
+        return binding.root
     }
 
     private fun initViews() {
-        binding?.apply {
+        binding.apply {
             rvNotesList.layoutManager =
                 StaggeredGridLayoutManager(SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL)
         }
@@ -59,11 +65,6 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
         (requireActivity() as? ButtonController)?.hideNewNoteBtn(false)
     }
 
-    override fun onDestroyView() {
-        binding = null
-        super.onDestroyView()
-    }
-
     private val adapter = NotesAdapter(
         onViewClick = {
             parentFragmentManager.beginTransaction()
@@ -73,23 +74,9 @@ class NotesFragment : Fragment(R.layout.notes_list_layout), NotesContract.View {
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        presenter?.getNotes()
-    }
-
-    override fun addListToView(list: List<Note>) {
-        binding?.rvNotesList?.adapter = adapter
-        adapter.setItems(list)
-    }
-
-    override fun startPreviewFragment(note: Note) {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.rv_fragment, PreviewFragment.newInstance(note), FRG_PREV)
-            .commit()
-    }
-
-    override fun onDestroy() {
-        presenter?.onDestroy()
-        binding = null
-        super.onDestroy()
+        binding.rvNotesList.adapter = adapter
+        viewModel.notesList.observe(viewLifecycleOwner) {
+            adapter.setItems(it)
+        }
     }
 }
