@@ -16,6 +16,7 @@ import ru.cactus.jotme.repository.entity.Note
 import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.utils.EXTRA_NOTE
+import ru.cactus.jotme.utils.FRG_BUNDLE_SAVE
 import ru.cactus.jotme.utils.FRG_SDF_SAVE
 
 
@@ -51,17 +52,7 @@ class NoteEditActivity : AppCompatActivity() {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_save) {
-            SaveDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(
-                        EXTRA_NOTE, Note(
-                            note?.id,
-                            binding.etNoteTitle.text.toString(),
-                            binding.etNoteBody.text.toString()
-                        )
-                    )
-                }
-            }.show(supportFragmentManager, "TAG")
+            SaveDialogFragment().show(supportFragmentManager, "TAG")
         }
         return true
     }
@@ -105,21 +96,17 @@ class NoteEditActivity : AppCompatActivity() {
             showDeleteToast.observe(this@NoteEditActivity) { showDeleteToast() }
         }
 
-        supportFragmentManager.setFragmentResultListener(FRG_SDF_SAVE, this) { key, bundle ->
+        supportFragmentManager.setFragmentResultListener(FRG_BUNDLE_SAVE, this) { _, bundle ->
             if (bundle.getBoolean(FRG_SDF_SAVE)) saveCurrentNote()
         }
     }
 
     private fun saveCurrentNote() {
         with(binding) {
-            note = if (note != null) {
-                (note ?: return@with).copy(
-                    title = etNoteTitle.text.toString(),
-                    body = etNoteBody.text.toString()
-                )
-            } else {
-                Note(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
-            }
+            note = note?.copy(
+                title = etNoteTitle.text.toString(),
+                body = etNoteBody.text.toString()
+            ) ?: Note(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
         }
         viewModel.saveNote(note?.id, note?.title ?: "", note?.body ?: "")
     }

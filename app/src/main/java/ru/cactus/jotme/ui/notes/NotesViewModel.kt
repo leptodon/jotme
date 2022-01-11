@@ -17,11 +17,7 @@ class NotesViewModel(private val databaseRepository: DatabaseRepository) : ViewM
 
     private val _notesList = MutableLiveData<List<Note>>()
 
-    val notesList: LiveData<List<Note>>
-        get() {
-            getNotes()
-            return _notesList
-        }
+    val notesList: LiveData<List<Note>> = _notesList
 
     init {
         getNotes()

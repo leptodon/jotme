@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import ru.cactus.jotme.R
+import ru.cactus.jotme.utils.FRG_BUNDLE_SAVE
 import ru.cactus.jotme.utils.FRG_SDF_SAVE
 
 /**
@@ -18,7 +19,7 @@ class SaveDialogFragment : DialogFragment() {
         val builder = AlertDialog.Builder(context)
         builder.setMessage(getString(R.string.order_confirmation))
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                setFragmentResult(FRG_SDF_SAVE, bundleOf(FRG_SDF_SAVE to true))
+                setFragmentResult(FRG_BUNDLE_SAVE, bundleOf(FRG_SDF_SAVE to true))
             }
             .setNegativeButton(getString(R.string.no)) { dialog, _ -> dialog.cancel() }
 
