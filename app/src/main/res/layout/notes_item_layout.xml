@@ -10,6 +10,8 @@
         android:layout_margin="8dp"
         android:clickable="true"
         android:focusable="true"
+        android:background="?attr/colorAppBackground_4"
+        android:backgroundTint="?attr/colorAppBackground_4"
         app:cardCornerRadius="@dimen/card_corner">
 
         <LinearLayout
@@ -23,15 +25,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textAppearance="?attr/textAppearanceHeadline6"
+                style="@style/CardText.Title"
                 tools:text="Title" />
             <TextView
                 android:id="@+id/tv_card_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary"
+                style="@style/CardText.Body"
                 tools:text="Supporting text" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

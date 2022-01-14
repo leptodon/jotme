@@ -13,7 +13,7 @@
             android:id="@+id/toolbar"
             android:layout_width="409dp"
             android:layout_height="40dp"
-            android:background="@color/bezh2"
+            android:background="?attr/colorAppBackground_2"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
@@ -23,6 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/colorAppBackground_2"
             android:orientation="horizontal"
             android:paddingTop="20dp"
             android:paddingBottom="10dp">
@@ -46,7 +47,8 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:layout_weight="1"
-                android:background="@null"
+                android:background="@color/transparent"
+                style="@style/CardText.Title"
                 android:hint="@string/edit_note_title_hint" />
 
             <ImageButton
@@ -75,13 +77,14 @@
             android:id="@+id/et_note_body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@null"
+            android:background="?attr/colorAppBackground_2"
             android:gravity="top|start"
             android:hint="@string/edit_note_body_hint"
             android:paddingStart="30dp"
             android:paddingTop="10dp"
             android:paddingEnd="30dp"
             android:paddingBottom="30dp"
+            style="@style/CardText.Body"
             tools:hint="Add text here..." />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

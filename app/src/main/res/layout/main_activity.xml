@@ -6,14 +6,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bezh"
+        android:background="?attr/colorAppBackground_1"
         tools:context=".ui.main.MainActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="409dp"
             android:layout_height="40dp"
-            android:background="@color/bezh2"
+            android:background="?attr/colorAppBackground_1"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,15 +30,13 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.732" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="630dp"
             android:background="@drawable/shape_rect"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +57,8 @@
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/rv_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="?attr/colorAppBackground_2"/>
         </LinearLayout>
 
         <LinearLayout
@@ -74,7 +73,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/linearLayout"
-            app:layout_constraintVertical_bias="0.9">
+            app:layout_constraintVertical_bias="0.95">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -93,8 +92,7 @@
                 android:layout_marginEnd="25dp"
                 android:layout_marginBottom="10dp"
                 android:text="@string/fab_title"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                style="@style/ButtonText"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

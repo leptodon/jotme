@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="color" name="colorAppBackground_1"/>
+    <attr format="color" name="colorAppBackground_2"/>
+    <attr format="color" name="colorAppBackground_3"/>
+    <attr format="color" name="colorAppBackground_4"/>
+    <attr format="color" name="colorButtonBackground_1"/>
+    <attr format="color" name="colorButtonBackground_2"/>
+    <attr format="color" name="colorTextMain"/>
+    <attr format="color" name="colorTextSecondary"/>
+    <attr format="color" name="colorTextAlt"/>
+</resources>

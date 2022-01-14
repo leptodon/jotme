@@ -7,4 +7,23 @@
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+
+    <style name="ButtonText" parent="AppTheme">
+        <item name="android:textColor">?attr/colorTextAlt</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="CardText" parent="AppTheme">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="CardText.Title">
+        <item name="android:textColor">?attr/colorTextMain</item>
+        <item name="android:textColorHint">?attr/colorTextMain</item>
+    </style>
+
+    <style name="CardText.Body">
+        <item name="android:textColor">?attr/colorTextSecondary</item>
+        <item name="android:textColorHint">?attr/colorTextSecondary</item>
+    </style>
 </resources>
