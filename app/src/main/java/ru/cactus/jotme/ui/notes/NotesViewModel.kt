@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.cactus.jotme.repository.db.DatabaseRepository
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.repository.db.entity.Note
 
 /**
  * ViewModel класса NotesFragment получает данные из бд и подготавливает для

@@ -1,7 +1,7 @@
 package ru.cactus.jotme.repository.db
 
 import ru.cactus.jotme.repository.AppDatabase
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.repository.db.entity.Note
 
 /**
  * Репозиторий для работы с интерфейсом БД

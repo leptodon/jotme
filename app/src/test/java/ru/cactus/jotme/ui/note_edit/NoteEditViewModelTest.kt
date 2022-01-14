@@ -14,7 +14,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import ru.cactus.jotme.repository.db.DatabaseRepositoryImpl
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.repository.db.entity.Note
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.repository.db.entity.Note
 import ru.cactus.jotme.ui.preview.PreviewFragment
 
 

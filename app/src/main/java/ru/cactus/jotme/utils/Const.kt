@@ -22,3 +22,6 @@ const val FRG_SDF_SAVE: String = "FRG_SDF_SAVE"
 
 /** Константа для подтверждения сохранения заметки из DialogFragment */
 const val FRG_BUNDLE_SAVE: String = "FRG_BUNDLE_SAVE"
+
+/** Константа для работы с Broadcast Receiver */
+const val ACTION: String = "ru.cactus.jotme.action_saving"

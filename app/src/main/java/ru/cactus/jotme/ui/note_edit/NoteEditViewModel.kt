@@ -1,19 +1,20 @@
 package ru.cactus.jotme.ui.note_edit
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.cactus.jotme.repository.db.DatabaseRepository
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.repository.db.entity.Note
+import ru.cactus.jotme.repository.network.NetworkRepository
+import ru.cactus.jotme.utils.Resource
 
 /**
  * ViewModel класса NoteEditActivity. Работает с бд
  * @param databaseRepository репозиторий базы данных
  */
 class NoteEditViewModel(
-    private val databaseRepository: DatabaseRepository
+    private val databaseRepository: DatabaseRepository,
+    private val networkRepository: NetworkRepository
 ) : ViewModel() {
 
     private val _showDeleteToast = MutableLiveData<Unit>()
@@ -30,6 +31,19 @@ class NoteEditViewModel(
 
     val note: LiveData<Note>
         get() = _note
+
+    /**
+     * Получение заметки из network
+     * @param id идентификатор заметки
+     */
+    fun getNoteFromNetwork(id: Int) = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = networkRepository.getNote(id)))
+        } catch (e: Exception) {
+            emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
+        }
+    }
 
     /**
      * Сохранение заметки в бд

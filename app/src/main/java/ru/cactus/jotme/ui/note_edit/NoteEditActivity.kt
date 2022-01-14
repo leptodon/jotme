@@ -12,13 +12,17 @@ import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.repository.AppDatabase
 import ru.cactus.jotme.repository.db.DatabaseRepository
 import ru.cactus.jotme.repository.db.DatabaseRepositoryImpl
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.repository.db.entity.Note
+import ru.cactus.jotme.repository.network.ApiHelper
+import ru.cactus.jotme.repository.network.NetworkRepository
+import ru.cactus.jotme.repository.network.RetrofitBuilder
 import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
+import ru.cactus.jotme.utils.ACTION
 import ru.cactus.jotme.utils.EXTRA_NOTE
 import ru.cactus.jotme.utils.FRG_BUNDLE_SAVE
 import ru.cactus.jotme.utils.FRG_SDF_SAVE
-
+import ru.cactus.jotme.utils.Status.*
 
 /**
  * Экран редактирования заметки
@@ -27,6 +31,7 @@ class NoteEditActivity : AppCompatActivity() {
     private lateinit var binding: NewNoteActivityBinding
     private lateinit var db: AppDatabase
     private lateinit var databaseRepository: DatabaseRepository
+    private lateinit var networkRepository: NetworkRepository
     private var note: Note? = null
     private lateinit var intentNewNote: Intent
     private lateinit var viewModel: NoteEditViewModel
@@ -39,8 +44,11 @@ class NoteEditActivity : AppCompatActivity() {
         supportActionBar?.title = ""
 
         db = AppDatabase.getInstance(applicationContext)
+        val apiHelper = ApiHelper(RetrofitBuilder.apiService)
         databaseRepository = DatabaseRepositoryImpl(db)
-        viewModel = NoteEditViewModel(databaseRepository)
+        networkRepository = NetworkRepository(apiHelper)
+
+        viewModel = NoteEditViewModel(databaseRepository, networkRepository)
 
         intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
         note = intent.extras?.getParcelable(EXTRA_NOTE)
@@ -51,8 +59,13 @@ class NoteEditActivity : AppCompatActivity() {
      * Обработчик выбора и нажатия на кнопку "save" в toolbar
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_save) {
-            SaveDialogFragment().show(supportFragmentManager, "TAG")
+        when (item.itemId) {
+            R.id.action_save -> {
+                SaveDialogFragment().show(supportFragmentManager, "TAG")
+            }
+            R.id.action_download -> {
+                getNoteFromNetwork()
+            }
         }
         return true
     }
@@ -94,6 +107,7 @@ class NoteEditActivity : AppCompatActivity() {
         with(viewModel) {
             showSaveToast.observe(this@NoteEditActivity) { showSaveToast() }
             showDeleteToast.observe(this@NoteEditActivity) { showDeleteToast() }
+
         }
 
         supportFragmentManager.setFragmentResultListener(FRG_BUNDLE_SAVE, this) { _, bundle ->
@@ -108,6 +122,10 @@ class NoteEditActivity : AppCompatActivity() {
                 body = etNoteBody.text.toString()
             ) ?: Note(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
         }
+        this.sendBroadcast(Intent().apply {
+            action = ACTION
+            putExtra(EXTRA_NOTE, note.toString())
+        })
         viewModel.saveNote(note?.id, note?.title ?: "", note?.body ?: "")
     }
 
@@ -135,6 +153,39 @@ class NoteEditActivity : AppCompatActivity() {
     override fun onBackPressed() {
         startActivity(intentNewNote)
         super.onBackPressed()
+    }
+
+    private fun getNoteFromNetwork() {
+        val randomId = (110..120).random()
+        viewModel.getNoteFromNetwork(randomId).observe(this@NoteEditActivity, {
+            it?.let { (status, data) ->
+                when (status) {
+                    SUCCESS -> {
+                        binding.etNoteTitle.setText(data?.title)
+                        binding.etNoteBody.setText(data?.body)
+                        Toast.makeText(
+                            applicationContext,
+                            resources.getString(R.string.load_success),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    ERROR -> {
+                        Toast.makeText(
+                            applicationContext,
+                            resources.getString(R.string.load_error),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    LOADING -> {
+                        Toast.makeText(
+                            applicationContext,
+                            resources.getString(R.string.load_loading),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+        })
     }
 
 }

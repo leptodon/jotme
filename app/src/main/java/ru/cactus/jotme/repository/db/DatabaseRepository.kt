@@ -1,6 +1,6 @@
 package ru.cactus.jotme.repository.db
 
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.repository.db.entity.Note
 
 interface DatabaseRepository {
     suspend fun updateInsert(note: Note)
