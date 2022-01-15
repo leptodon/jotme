@@ -33,33 +33,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="630dp"
-            android:background="@drawable/shape_rect"
             android:orientation="vertical"
+            android:background="@drawable/shape_rect"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <EditText
-                android:id="@+id/et_search_field"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="20dp"
-                android:background="@drawable/shape_search"
-                android:drawableStart="@drawable/ic_search_24"
-                android:hint="@string/hint_search"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
-
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/rv_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/colorAppBackground_2"/>
-        </LinearLayout>
+                android:layout_height="match_parent"/>
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/ll_add_new_note"

@@ -18,6 +18,7 @@
             android:configChanges="orientation"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
