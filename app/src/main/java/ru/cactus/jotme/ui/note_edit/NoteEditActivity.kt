@@ -8,21 +8,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import ru.cactus.jotme.R
-import ru.cactus.jotme.databinding.NewNoteActivityBinding
 import ru.cactus.jotme.data.repository.AppDatabase
 import ru.cactus.jotme.data.repository.db.DatabaseRepository
 import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.data.repository.db.entity.DbNote
-import ru.cactus.jotme.data.repository.network.ApiHelper
 import ru.cactus.jotme.data.repository.network.NetworkRepository
+import ru.cactus.jotme.data.repository.network.NetworkResult
 import ru.cactus.jotme.data.repository.network.RetrofitBuilder
+import ru.cactus.jotme.databinding.NewNoteActivityBinding
+import ru.cactus.jotme.domain.entity.Note
 import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
-import ru.cactus.jotme.utils.ACTION
-import ru.cactus.jotme.utils.EXTRA_NOTE
-import ru.cactus.jotme.utils.FRG_BUNDLE_SAVE
-import ru.cactus.jotme.utils.FRG_SDF_SAVE
-import ru.cactus.jotme.utils.Status.*
+import ru.cactus.jotme.utils.*
 
 /**
  * Экран редактирования заметки
@@ -44,9 +41,8 @@ class NoteEditActivity : AppCompatActivity() {
         supportActionBar?.title = ""
 
         db = AppDatabase.getInstance(applicationContext)
-        val apiHelper = ApiHelper(RetrofitBuilder.apiService)
         databaseRepository = DatabaseRepositoryImpl(db)
-        networkRepository = NetworkRepository(apiHelper)
+        networkRepository = NetworkRepository(RetrofitBuilder.apiService)
 
         viewModel = NoteEditViewModel(databaseRepository, networkRepository)
 
@@ -64,7 +60,7 @@ class NoteEditActivity : AppCompatActivity() {
                 SaveDialogFragment().show(supportFragmentManager, "TAG")
             }
             R.id.action_download -> {
-                getNoteFromNetwork()
+                viewModel.fetchResponse()
             }
         }
         return true
@@ -107,7 +103,7 @@ class NoteEditActivity : AppCompatActivity() {
         with(viewModel) {
             showSaveToast.observe(this@NoteEditActivity) { showSaveToast() }
             showDeleteToast.observe(this@NoteEditActivity) { showDeleteToast() }
-
+            networkResponse.observe(this@NoteEditActivity) { getNoteFromNetwork(it) }
         }
 
         supportFragmentManager.setFragmentResultListener(FRG_BUNDLE_SAVE, this) { _, bundle ->
@@ -155,37 +151,31 @@ class NoteEditActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    private fun getNoteFromNetwork() {
-        val randomId = (110..120).random()
-        viewModel.getNoteFromNetwork(randomId).observe(this@NoteEditActivity, {
-            it?.let { (status, data) ->
-                when (status) {
-                    SUCCESS -> {
-                        binding.etNoteTitle.setText(data?.title)
-                        binding.etNoteBody.setText(data?.body)
-                        Toast.makeText(
-                            applicationContext,
-                            resources.getString(R.string.load_success),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    ERROR -> {
-                        Toast.makeText(
-                            applicationContext,
-                            resources.getString(R.string.load_error),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    LOADING -> {
-                        Toast.makeText(
-                            applicationContext,
-                            resources.getString(R.string.load_loading),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
+    private fun getNoteFromNetwork(networkResult: NetworkResult<Note>) {
+        when (networkResult) {
+            is NetworkResult.Success -> {
+                binding.etNoteTitle.setText(networkResult.data.title)
+                binding.etNoteBody.setText(networkResult.data.body)
+                Toast.makeText(
+                    applicationContext,
+                    resources.getString(R.string.load_success),
+                    Toast.LENGTH_LONG
+                ).show()
             }
-        })
+            is NetworkResult.Error -> {
+                Toast.makeText(
+                    applicationContext,
+                    resources.getString(R.string.load_error),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            is NetworkResult.Loading -> {
+                Toast.makeText(
+                    applicationContext,
+                    resources.getString(R.string.load_loading),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
     }
-
 }
