@@ -28,9 +28,5 @@ class NotesViewModel(private val databaseRepository: DatabaseRepository) : ViewM
             _notesList.postValue(databaseRepository.getAll())
         }
     }
-
-    fun setNotes(list: List<Note>) {
-        _notesList.postValue(list)
-    }
-
+    
 }
