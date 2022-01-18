@@ -26,8 +26,6 @@ class MainActivity : AppCompatActivity(), ButtonController {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = ""
 
         initViews()
         initWorker()

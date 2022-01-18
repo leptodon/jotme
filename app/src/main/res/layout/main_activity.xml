@@ -9,25 +9,12 @@
         android:background="?attr/colorAppBackground_1"
         tools:context=".ui.main.MainActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="409dp"
-            android:layout_height="40dp"
-            android:background="?attr/colorAppBackground_1"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/tv_main_title"
+            style="@style/AppTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:textSize="34sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,8 +24,8 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="630dp"
-            android:orientation="vertical"
             android:background="@drawable/shape_rect"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -46,41 +33,21 @@
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/rv_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
         </FrameLayout>
 
-        <LinearLayout
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/ll_add_new_note"
+            style="@style/AddNewNoteBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_add_new_note"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal"
+            android:text="@string/fab_title"
+            app:backgroundTint="@null"
+            app:icon="@drawable/ic_baseline_add_wite"
             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/linearLayout"
-            app:layout_constraintVertical_bias="0.95">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_baseline_add_wite"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/fab_title"
-                style="@style/ButtonText"/>
-        </LinearLayout>
+            app:layout_constraintVertical_bias="0.95" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

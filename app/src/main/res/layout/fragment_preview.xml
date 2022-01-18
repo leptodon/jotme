@@ -19,14 +19,8 @@
 
             <ImageButton
                 android:id="@+id/iv_fragment_back_btn"
-                style="@android:style/Widget.Material.ImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@color/transparent"
-                android:clickable="true"
+                style="@style/NavButtons"
                 android:contentDescription="@string/cd_back_button"
-                android:focusable="true"
                 android:src="@drawable/ic_back_btn" />
 
             <FrameLayout
@@ -36,13 +30,8 @@
 
             <ImageButton
                 android:id="@+id/ib_fragment_note_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@color/transparent"
-                android:clickable="true"
+                style="@style/NavButtons"
                 android:contentDescription="@string/cd_edit_note_button"
-                android:focusable="true"
                 android:src="@drawable/ic_baseline_edit_note_24" />
         </LinearLayout>
 
