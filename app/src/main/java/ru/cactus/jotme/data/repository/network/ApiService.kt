@@ -1,8 +1,8 @@
-package ru.cactus.jotme.repository.network
+package ru.cactus.jotme.data.repository.network
 
 import retrofit2.http.GET
 import retrofit2.http.Path
-import ru.cactus.jotme.repository.network.entity.NetworkNote
+import ru.cactus.jotme.data.repository.network.entity.NetworkNote
 
 interface ApiService {
     @GET("notes/{id}/")

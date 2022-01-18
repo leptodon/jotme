@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NotesListLayoutBinding
-import ru.cactus.jotme.repository.AppDatabase
-import ru.cactus.jotme.repository.db.DatabaseRepositoryImpl
+import ru.cactus.jotme.data.repository.AppDatabase
+import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.ButtonController
 import ru.cactus.jotme.ui.swiper.PageSwiperFragment

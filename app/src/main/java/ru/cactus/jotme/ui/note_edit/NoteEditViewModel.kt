@@ -3,9 +3,9 @@ package ru.cactus.jotme.ui.note_edit
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.cactus.jotme.repository.db.DatabaseRepository
-import ru.cactus.jotme.repository.db.entity.Note
-import ru.cactus.jotme.repository.network.NetworkRepository
+import ru.cactus.jotme.data.repository.db.DatabaseRepository
+import ru.cactus.jotme.data.repository.db.entity.DbNote
+import ru.cactus.jotme.data.repository.network.NetworkRepository
 import ru.cactus.jotme.utils.Resource
 
 /**
@@ -27,9 +27,9 @@ class NoteEditViewModel(
     val showSaveToast: LiveData<Unit>
         get() = _showSaveToast
 
-    private val _note = MutableLiveData<Note>()
+    private val _note = MutableLiveData<DbNote>()
 
-    val note: LiveData<Note>
+    val dbNote: LiveData<DbNote>
         get() = _note
 
     /**
@@ -56,7 +56,7 @@ class NoteEditViewModel(
             title.isNotEmpty() && body.isNotEmpty() -> {
                 viewModelScope.launch {
                     databaseRepository.updateInsert(
-                        Note(id, title, body)
+                        DbNote(id, title, body)
                     )
                 }
             }

@@ -1,4 +1,4 @@
-package ru.cactus.jotme.repository.db.entity
+package ru.cactus.jotme.data.repository.db.entity
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -14,7 +14,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Entity(tableName = "notes")
 @Parcelize
-data class Note(
+data class DbNote(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val title: String,

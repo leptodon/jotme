@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.cactus.jotme.repository.db.DatabaseRepository
-import ru.cactus.jotme.repository.db.entity.Note
+import ru.cactus.jotme.data.repository.db.DatabaseRepository
+import ru.cactus.jotme.data.repository.db.entity.DbNote
 
 /**
  * ViewModel класса NotesFragment получает данные из бд и подготавливает для
@@ -15,9 +15,9 @@ import ru.cactus.jotme.repository.db.entity.Note
  */
 class NotesViewModel(private val databaseRepository: DatabaseRepository) : ViewModel() {
 
-    private val _notesList = MutableLiveData<List<Note>>()
+    private val _notesList = MutableLiveData<List<DbNote>>()
 
-    val notesList: LiveData<List<Note>> = _notesList
+    val notesList: LiveData<List<DbNote>> = _notesList
 
     init {
         getNotes()
@@ -29,7 +29,7 @@ class NotesViewModel(private val databaseRepository: DatabaseRepository) : ViewM
         }
     }
 
-    fun setNotes(list: List<Note>) {
+    fun setNotes(list: List<DbNote>) {
         _notesList.postValue(list)
     }
 

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import ru.cactus.jotme.repository.db.entity.Note
+import ru.cactus.jotme.data.repository.db.entity.DbNote
 import ru.cactus.jotme.ui.preview.PreviewFragment
 
 
@@ -12,7 +12,7 @@ import ru.cactus.jotme.ui.preview.PreviewFragment
  * Адаптер для ViewPager2
  */
 class FragmentSlidePagerAdapter(fr: FragmentActivity) : FragmentStateAdapter(fr) {
-    private var currentList: List<Note> = emptyList()
+    private var currentList: List<DbNote> = emptyList()
 
     /**
      * Возвращаем количество элементов
@@ -32,7 +32,7 @@ class FragmentSlidePagerAdapter(fr: FragmentActivity) : FragmentStateAdapter(fr)
      * @param list список всех заметок
      */
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<Note>) {
+    fun setList(list: List<DbNote>) {
         currentList = list
         notifyDataSetChanged()
     }

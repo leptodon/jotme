@@ -1,10 +1,10 @@
-package ru.cactus.jotme.repository.db
+package ru.cactus.jotme.data.repository.db
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import ru.cactus.jotme.repository.db.entity.Note
+import ru.cactus.jotme.data.repository.db.entity.DbNote
 
 
 /**
@@ -15,16 +15,16 @@ interface NotesDao {
 
     /**
      * Сохранение заметки в БД
-     * @param note объект заметки
+     * @param dbNote объект заметки
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUpdateNote(note: Note)
+    suspend fun insertUpdateNote(dbNote: DbNote)
 
     /**
      * Получение списка заметок из БД
      */
     @Query("SELECT * FROM notes")
-    suspend fun gelAll(): List<Note>
+    suspend fun gelAll(): List<DbNote>
 
     /**
      * Удаление заметки из БД
