@@ -2,11 +2,12 @@ package ru.cactus.jotme.ui.note_edit
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import ru.cactus.jotme.data.fromNetworkModelConverter
 import ru.cactus.jotme.data.repository.db.DatabaseRepository
-import ru.cactus.jotme.data.repository.db.entity.DbNote
 import ru.cactus.jotme.data.repository.network.NetworkRepository
 import ru.cactus.jotme.domain.entity.Note
 import ru.cactus.jotme.data.repository.network.NetworkResult
+import ru.cactus.jotme.data.toDatabaseModelConverter
 import java.lang.Exception
 
 /**
@@ -28,9 +29,9 @@ class NoteEditViewModel(
     val showSaveToast: LiveData<Unit>
         get() = _showSaveToast
 
-    private val _note = MutableLiveData<DbNote>()
+    private val _note = MutableLiveData<Note>()
 
-    val dbNote: LiveData<DbNote>
+    val note: LiveData<Note>
         get() = _note
 
     val networkResponse: MutableLiveData<NetworkResult<Note>> = MutableLiveData()
@@ -44,7 +45,7 @@ class NoteEditViewModel(
             try {
                 val randomId = (110..120).random()
                 val response = networkRepository.getNote(randomId)
-                networkResponse.postValue(NetworkResult.Success(response))
+                networkResponse.postValue(NetworkResult.Success(fromNetworkModelConverter(response)))
             } catch (e: Exception) {
                 networkResponse.postValue(NetworkResult.Error(e.message.toString()))
             }
@@ -62,7 +63,7 @@ class NoteEditViewModel(
             title.isNotEmpty() && body.isNotEmpty() -> {
                 viewModelScope.launch {
                     databaseRepository.updateInsert(
-                        DbNote(id, title, body)
+                        toDatabaseModelConverter(Note(id, title, body))
                     )
                 }
             }

@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.FragmentPreviewBinding
-import ru.cactus.jotme.data.repository.db.entity.DbNote
+import ru.cactus.jotme.domain.entity.Note
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 import ru.cactus.jotme.ui.notes.NotesFragment
 import ru.cactus.jotme.utils.EXTRA_NOTE
@@ -20,13 +20,13 @@ import ru.cactus.jotme.utils.FRG_MAIN
  */
 class PreviewFragment : Fragment() {
     private lateinit var binding: FragmentPreviewBinding
-    private lateinit var dbNote: DbNote
+    private lateinit var note: Note
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            it.getParcelable<DbNote>(EXTRA_NOTE)?.let { argNote -> dbNote = argNote }
+            it.getParcelable<Note>(EXTRA_NOTE)?.let { argNote -> note = argNote }
         }
     }
 
@@ -50,8 +50,8 @@ class PreviewFragment : Fragment() {
 
     private fun initViews() {
         binding.apply {
-            tvCardInfoTitle.text = dbNote.title
-            tvCardInfoBody.text = dbNote.body
+            tvCardInfoTitle.text = note.title
+            tvCardInfoBody.text = note.body
 
             ivFragmentBackBtn.setOnClickListener {
                 parentFragmentManager.beginTransaction()
@@ -71,16 +71,16 @@ class PreviewFragment : Fragment() {
      */
     private fun startEditNoteActivity() {
         Intent(requireContext(), NoteEditActivity::class.java).apply {
-            putExtra(EXTRA_NOTE, dbNote)
+            putExtra(EXTRA_NOTE, note)
         }.also { startActivity(it) }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(dbNote: DbNote): PreviewFragment =
+        fun newInstance(note: Note): PreviewFragment =
             PreviewFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(EXTRA_NOTE, dbNote)
+                    putParcelable(EXTRA_NOTE, note)
                 }
             }
     }

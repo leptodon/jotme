@@ -11,7 +11,6 @@ import ru.cactus.jotme.R
 import ru.cactus.jotme.data.repository.AppDatabase
 import ru.cactus.jotme.data.repository.db.DatabaseRepository
 import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
-import ru.cactus.jotme.data.repository.db.entity.DbNote
 import ru.cactus.jotme.data.repository.network.NetworkRepository
 import ru.cactus.jotme.data.repository.network.NetworkResult
 import ru.cactus.jotme.data.repository.network.RetrofitBuilder
@@ -29,7 +28,7 @@ class NoteEditActivity : AppCompatActivity() {
     private lateinit var db: AppDatabase
     private lateinit var databaseRepository: DatabaseRepository
     private lateinit var networkRepository: NetworkRepository
-    private var dbNote: DbNote? = null
+    private var note: Note? = null
     private lateinit var intentNewNote: Intent
     private lateinit var viewModel: NoteEditViewModel
 
@@ -47,7 +46,7 @@ class NoteEditActivity : AppCompatActivity() {
         viewModel = NoteEditViewModel(databaseRepository, networkRepository)
 
         intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
-        dbNote = intent.extras?.getParcelable(EXTRA_NOTE)
+        note = intent.extras?.getParcelable(EXTRA_NOTE)
 
     }
 
@@ -83,7 +82,7 @@ class NoteEditActivity : AppCompatActivity() {
             ivBackBtn.setOnClickListener {
                 onBackPressed()
             }
-            dbNote?.let { currentNote ->
+            note?.let { currentNote ->
                 etNoteTitle.setText(currentNote.title)
                 etNoteBody.setText(currentNote.body)
 
@@ -113,16 +112,16 @@ class NoteEditActivity : AppCompatActivity() {
 
     private fun saveCurrentNote() {
         with(binding) {
-            dbNote = dbNote?.copy(
+            note = note?.copy(
                 title = etNoteTitle.text.toString(),
                 body = etNoteBody.text.toString()
-            ) ?: DbNote(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
+            ) ?: Note(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
         }
         this.sendBroadcast(Intent().apply {
             action = ACTION
-            putExtra(EXTRA_NOTE, dbNote.toString())
+            putExtra(EXTRA_NOTE, note.toString())
         })
-        viewModel.saveNote(dbNote?.id, dbNote?.title ?: "", dbNote?.body ?: "")
+        viewModel.saveNote(note?.id, note?.title ?: "", note?.body ?: "")
     }
 
     private fun showSaveToast() {
@@ -133,11 +132,11 @@ class NoteEditActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, R.string.delete_note, Toast.LENGTH_SHORT).show()
     }
 
-    private fun shareNote(dbNote: DbNote?) {
-        dbNote?.let {
+    private fun shareNote(note: Note?) {
+        note?.let {
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, dbNote.toString())
+                putExtra(Intent.EXTRA_TEXT, note.toString())
                 type = "text/plain"
             }
 

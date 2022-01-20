@@ -7,7 +7,7 @@
     <string name="delete_note">Note was delete…</string>
     <string name="edit_note_title_hint">New note</string>
     <string name="save_hint">Save</string>
-    <string name="download_hint">Скачать</string>
+    <string name="download_hint">Download</string>
     <string name="order_confirmation">Save the note?</string>
     <string name="ok">Yes</string>
     <string name="no">No</string>
