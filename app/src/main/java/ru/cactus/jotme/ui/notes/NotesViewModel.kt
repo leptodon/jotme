@@ -26,7 +26,7 @@ class NotesViewModel(private val databaseRepository: DatabaseRepository) : ViewM
 
     private fun getNotes() {
         viewModelScope.launch {
-            _notesList.postValue(databaseRepository.getAll().map { fromDbModelConverter(it) })
+            _notesList.postValue(databaseRepository.getAll())
         }
     }
 

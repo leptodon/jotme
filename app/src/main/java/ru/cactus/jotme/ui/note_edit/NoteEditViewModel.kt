@@ -45,7 +45,7 @@ class NoteEditViewModel(
             try {
                 val randomId = (110..120).random()
                 val response = networkRepository.getNote(randomId)
-                networkResponse.postValue(NetworkResult.Success(fromNetworkModelConverter(response)))
+                networkResponse.postValue(NetworkResult.Success(response))
             } catch (e: Exception) {
                 networkResponse.postValue(NetworkResult.Error(e.message.toString()))
             }
@@ -63,7 +63,7 @@ class NoteEditViewModel(
             title.isNotEmpty() && body.isNotEmpty() -> {
                 viewModelScope.launch {
                     databaseRepository.updateInsert(
-                        toDatabaseModelConverter(Note(id, title, body))
+                        Note(id, title, body)
                     )
                 }
             }
