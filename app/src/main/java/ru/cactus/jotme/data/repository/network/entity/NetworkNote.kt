@@ -1,4 +1,4 @@
-package ru.cactus.jotme.repository.network.entity
+package ru.cactus.jotme.data.repository.network.entity
 
 import com.google.gson.annotations.SerializedName
 

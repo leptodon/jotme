@@ -1,4 +1,4 @@
-package ru.cactus.jotme.repository.network
+package ru.cactus.jotme.data.repository.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

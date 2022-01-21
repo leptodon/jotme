@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.cactus.jotme.repository.db.DatabaseRepository
-import ru.cactus.jotme.repository.db.entity.Note
+import ru.cactus.jotme.data.repository.db.DatabaseRepository
+import ru.cactus.jotme.domain.entity.Note
 
 /**
  * ViewModel класса PageSwiperFragment получает данные из бд и подготавливает для
@@ -29,7 +29,9 @@ class PageSwiperViewModel(private val databaseRepository: DatabaseRepository) : 
 
     private fun getNotesList() {
         viewModelScope.launch {
-            _notesList.postValue(databaseRepository.getAll())
+            _notesList.postValue(
+                databaseRepository.getAll()
+            )
         }
     }
 }

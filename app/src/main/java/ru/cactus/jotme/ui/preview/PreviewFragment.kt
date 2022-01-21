@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.FragmentPreviewBinding
-import ru.cactus.jotme.repository.db.entity.Note
+import ru.cactus.jotme.domain.entity.Note
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 import ru.cactus.jotme.ui.notes.NotesFragment
 import ru.cactus.jotme.utils.EXTRA_NOTE

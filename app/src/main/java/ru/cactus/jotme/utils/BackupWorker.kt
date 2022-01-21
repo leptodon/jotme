@@ -11,7 +11,6 @@ class BackupWorker(
 ) : Worker(context, workerParameters) {
     override fun doWork(): Result {
         Log.d("TAG", "DO-WORK")
-//        Toast.makeText(context, "Upload all notes", Toast.LENGTH_SHORT).show()
         return Result.success()
     }
 

@@ -1,12 +1,14 @@
 package ru.cactus.jotme.ui.note_edit
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.cactus.jotme.repository.db.DatabaseRepository
-import ru.cactus.jotme.repository.db.entity.Note
-import ru.cactus.jotme.repository.network.NetworkRepository
-import ru.cactus.jotme.utils.Resource
+import ru.cactus.jotme.data.fromNetworkModelConverter
+import ru.cactus.jotme.data.repository.db.DatabaseRepository
+import ru.cactus.jotme.data.repository.network.NetworkRepository
+import ru.cactus.jotme.domain.entity.Note
+import ru.cactus.jotme.data.repository.network.NetworkResult
+import ru.cactus.jotme.data.toDatabaseModelConverter
+import java.lang.Exception
 
 /**
  * ViewModel класса NoteEditActivity. Работает с бд
@@ -32,16 +34,21 @@ class NoteEditViewModel(
     val note: LiveData<Note>
         get() = _note
 
+    val networkResponse: MutableLiveData<NetworkResult<Note>> = MutableLiveData()
+
     /**
      * Получение заметки из network
      * @param id идентификатор заметки
      */
-    fun getNoteFromNetwork(id: Int) = liveData(Dispatchers.IO) {
-        emit(Resource.loading(data = null))
-        try {
-            emit(Resource.success(data = networkRepository.getNote(id)))
-        } catch (e: Exception) {
-            emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
+    fun fetchResponse() {
+        viewModelScope.launch {
+            try {
+                val randomId = (110..120).random()
+                val response = networkRepository.getNote(randomId)
+                networkResponse.postValue(NetworkResult.Success(response))
+            } catch (e: Exception) {
+                networkResponse.postValue(NetworkResult.Error(e.message.toString()))
+            }
         }
     }
 
