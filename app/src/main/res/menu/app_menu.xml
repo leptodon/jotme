@@ -2,8 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_download"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_file_download_24"
+        android:title="@string/download_hint" />
+
+    <item
         android:id="@+id/action_save"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_baseline_save"
         android:title="@string/save_hint" />
 </menu>

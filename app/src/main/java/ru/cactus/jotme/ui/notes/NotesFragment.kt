@@ -4,18 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NotesListLayoutBinding
-import ru.cactus.jotme.repository.AppDatabase
-import ru.cactus.jotme.repository.db.DatabaseRepositoryImpl
+import ru.cactus.jotme.data.repository.AppDatabase
+import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.ButtonController
 import ru.cactus.jotme.ui.swiper.PageSwiperFragment
 import ru.cactus.jotme.utils.FRG_SWC
 import ru.cactus.jotme.utils.SPAN_COUNT
+import java.util.*
 
 /**
  * Класс контейнер для RecyclerView,
@@ -52,6 +54,14 @@ class NotesFragment : Fragment(R.layout.notes_list_layout) {
         binding.apply {
             rvNotesList.layoutManager =
                 StaggeredGridLayoutManager(SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL)
+
+            etSearchField.doOnTextChanged { text, _, _, _ ->
+                adapter.setItems(viewModel.notesList.value?.filter {
+                    it.toString().lowercase(Locale.getDefault()).contains(
+                        text.toString().lowercase(Locale.getDefault())
+                    )
+                } ?: emptyList())
+            }
         }
     }
 

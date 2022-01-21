@@ -7,4 +7,79 @@
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+
+    <style name="Toolbar">
+        <item name="android:theme">?attr/actionBarTheme</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorAppBackground_2</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingStart">10dp</item>
+    </style>
+
+    <style name="AppTitle" parent="AppTheme">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">34sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ButtonText" parent="AppTheme">
+        <item name="android:textColor">?attr/colorTextAlt</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="CardText" parent="AppTheme">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="CardText.Title">
+        <item name="android:textColor">?attr/colorTextMain</item>
+        <item name="android:textColorHint">?attr/colorTextMain</item>
+    </style>
+
+    <style name="CardText.Body">
+        <item name="android:textColor">?attr/colorTextSecondary</item>
+        <item name="android:textColorHint">?attr/colorTextSecondary</item>
+    </style>
+
+    <style name="AddNewNoteBtn">
+        <item name="android:background">@drawable/shape_add_new_note</item>
+        <item name="android:textAppearance">@style/ButtonText</item>
+    </style>
+
+    <style name="NavButtons" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="CardText.Title.Editable">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="CardText.Body.Editable">
+        <item name="android:gravity">top|start</item>
+        <item name="android:background">?attr/colorAppBackground_2</item>
+        <item name="android:paddingStart">30dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingEnd">30dp</item>
+        <item name="android:paddingBottom">30dp</item>
+    </style>
+
+    <style name="CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?attr/colorAppBackground_4</item>
+        <item name="android:backgroundTint">@color/transparent</item>
+    </style>
+
+    <style name="SearchField" parent="AppTheme">
+        <item name="android:background">@drawable/shape_search</item>
+        <item name="android:drawableStart">@drawable/ic_search_24</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
 </resources>

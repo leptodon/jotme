@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NotesItemLayoutBinding
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.domain.entity.Note
 
 
 /**

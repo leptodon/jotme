@@ -1,17 +1,17 @@
-package ru.cactus.jotme.repository
+package ru.cactus.jotme.data.repository
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import ru.cactus.jotme.repository.db.NotesDao
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.data.repository.db.NotesDao
+import ru.cactus.jotme.data.repository.db.entity.DbNote
 
 
 /**
  * Класс билдер объекта БД
  */
-@Database(entities = [Note::class], version = 1, exportSchema = false)
+@Database(entities = [DbNote::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     /**
      * Получаем заметки из БД

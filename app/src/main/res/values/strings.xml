@@ -14,4 +14,8 @@
     <string name="edit_note_body_hint">Добавьте текст вашей заметки…</string>
     <string name="edit_note_title_hint">Заголовок</string>
     <string name="save_hint">Сохранить</string>
+    <string name="download_hint">Скачать</string>
+    <string name="load_success">Загружено</string>
+    <string name="load_error">Ошибка!</string>
+    <string name="load_loading">Загрузка</string>
 </resources>

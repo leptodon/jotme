@@ -11,11 +11,9 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="409dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/bezh2"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+            style="@style/Toolbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -23,66 +21,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/colorAppBackground_2"
             android:orientation="horizontal"
-            android:paddingTop="20dp"
+            android:paddingTop="10dp"
             android:paddingBottom="10dp">
 
             <ImageButton
                 android:id="@+id/iv_back_btn"
-                style="@android:style/Widget.Material.ImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                style="@style/NavButtons"
                 android:layout_marginStart="20dp"
-                android:background="@color/transparent"
                 android:contentDescription="@string/cd_back_button"
                 android:src="@drawable/ic_back_btn" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_note_title"
+                style="@style/CardText.Title.Editable"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:layout_weight="1"
-                android:background="@null"
                 android:hint="@string/edit_note_title_hint" />
 
             <ImageButton
                 android:id="@+id/ib_share"
-                style="@android:style/Widget.Material.ImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                style="@style/NavButtons"
                 android:layout_marginEnd="20dp"
-                android:background="@color/transparent"
                 android:contentDescription="@string/cd_share_note_button"
                 android:src="@drawable/ic_baseline_share_24" />
 
             <ImageButton
                 android:id="@+id/ib_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/NavButtons"
                 android:layout_marginEnd="20dp"
-                android:background="@color/transparent"
                 android:contentDescription="@string/cd_delete_button"
                 android:src="@drawable/ib_delete_24" />
-
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_note_body"
+            style="@style/CardText.Body.Editable"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@null"
-            android:gravity="top|start"
             android:hint="@string/edit_note_body_hint"
-            android:paddingStart="30dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="30dp"
-            android:paddingBottom="30dp"
             tools:hint="Add text here..." />
-
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

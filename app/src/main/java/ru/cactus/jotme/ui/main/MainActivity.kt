@@ -5,11 +5,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.MainActivityBinding
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 import ru.cactus.jotme.ui.notes.NotesFragment
+import ru.cactus.jotme.utils.BackupWorker
 import ru.cactus.jotme.utils.FRG_MAIN
+import java.util.concurrent.TimeUnit
 
 /**
  * Основной экран приложения
@@ -22,10 +26,18 @@ class MainActivity : AppCompatActivity(), ButtonController {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = ""
 
         initViews()
+        initWorker()
+    }
+
+    private fun initWorker() {
+        WorkManager.getInstance(applicationContext)
+            .enqueue(
+                PeriodicWorkRequest
+                    .Builder(BackupWorker::class.java, 6, TimeUnit.MINUTES)
+                    .build()
+            )
     }
 
     private fun initViews() {

@@ -1,19 +1,22 @@
 package ru.cactus.jotme.ui.note_edit
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import ru.cactus.jotme.repository.db.DatabaseRepository
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.data.fromNetworkModelConverter
+import ru.cactus.jotme.data.repository.db.DatabaseRepository
+import ru.cactus.jotme.data.repository.network.NetworkRepository
+import ru.cactus.jotme.domain.entity.Note
+import ru.cactus.jotme.data.repository.network.NetworkResult
+import ru.cactus.jotme.data.toDatabaseModelConverter
+import java.lang.Exception
 
 /**
  * ViewModel класса NoteEditActivity. Работает с бд
  * @param databaseRepository репозиторий базы данных
  */
 class NoteEditViewModel(
-    private val databaseRepository: DatabaseRepository
+    private val databaseRepository: DatabaseRepository,
+    private val networkRepository: NetworkRepository
 ) : ViewModel() {
 
     private val _showDeleteToast = MutableLiveData<Unit>()
@@ -30,6 +33,24 @@ class NoteEditViewModel(
 
     val note: LiveData<Note>
         get() = _note
+
+    val networkResponse: MutableLiveData<NetworkResult<Note>> = MutableLiveData()
+
+    /**
+     * Получение заметки из network
+     * @param id идентификатор заметки
+     */
+    fun fetchResponse() {
+        viewModelScope.launch {
+            try {
+                val randomId = (110..120).random()
+                val response = networkRepository.getNote(randomId)
+                networkResponse.postValue(NetworkResult.Success(response))
+            } catch (e: Exception) {
+                networkResponse.postValue(NetworkResult.Error(e.message.toString()))
+            }
+        }
+    }
 
     /**
      * Сохранение заметки в бд

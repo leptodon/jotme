@@ -1,16 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Jotme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="colorAppBackground_1">@color/black_2</item>
+        <item name="colorAppBackground_2">@color/grey_2</item>
+        <item name="colorAppBackground_3">@color/grey_3</item>
+        <item name="colorAppBackground_4">@color/grey_5</item>
+        <item name="colorButtonBackground_1">@color/purple_700</item>
+        <item name="colorButtonBackground_2">@color/grey</item>
+        <item name="colorTextMain">@color/grey</item>
+        <item name="colorTextSecondary">@color/grey</item>
+        <item name="colorTextAlt">@color/grey_4</item>
     </style>
 </resources>

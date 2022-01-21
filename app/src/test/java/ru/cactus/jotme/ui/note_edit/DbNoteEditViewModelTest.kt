@@ -13,12 +13,12 @@ import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import ru.cactus.jotme.repository.db.DatabaseRepositoryImpl
-import ru.cactus.jotme.repository.entity.Note
+import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
+import ru.cactus.jotme.data.repository.db.entity.DbNote
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class NoteEditViewModelTest {
+class DbNoteEditViewModelTest {
 
     @Rule
     @JvmField
@@ -44,7 +44,7 @@ class NoteEditViewModelTest {
     @Test
     fun checkSaveNewNote(): Unit = runBlocking {
         runTest(StandardTestDispatcher()) {
-            val testNote = Note(999, "Test_title", "Test_body")
+            val testNote = DbNote(999, "Test_title", "Test_body")
             viewModel?.saveNote(testNote.id, testNote.title, testNote.body)
             verify(databaseRepositoryImpl, times(1)).updateInsert(testNote)
             Assert.assertEquals(Unit, viewModel?.showSaveToast?.value)
