@@ -1,0 +1,59 @@
+package ru.cactus.jotme.ui.custom
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.text.Editable
+import android.text.Html
+import android.util.AttributeSet
+import android.widget.EditText
+import ru.cactus.jotme.R
+
+@SuppressLint("ViewConstructor")
+class CustomEditText @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = R.attr.editTextStyle,
+) : EditText(context, attrs, defStyleAttr) {
+
+    var htmlText: String? = null
+        set(value) {
+            field = value
+            if (!text.isNullOrEmpty()) text = Html.fromHtml(value) as Editable
+        }
+
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        super.setText(text, type)
+    }
+
+    override fun onTextChanged(
+        text: CharSequence?,
+        start: Int,
+        lengthBefore: Int,
+        lengthAfter: Int
+    ) {
+        super.onTextChanged(
+            htmlText,
+            start,
+            lengthBefore,
+            lengthAfter
+        )
+    }
+
+    private fun convert(text: CharSequence?): String {
+        val startH2tag = "<h2>"
+        val endH2tag = "</h2>"
+        return "$startH2tag$text$endH2tag"
+    }
+
+    init {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.CustomEditText,
+            defStyleAttr,
+            0
+        ).also { typedArray ->
+            htmlText = typedArray.getString(R.styleable.CustomEditText_htmlText)
+        }.recycle()
+    }
+
+}

@@ -10,7 +10,7 @@ class BackupWorker(
     workerParameters: WorkerParameters
 ) : Worker(context, workerParameters) {
     override fun doWork(): Result {
-        Log.d("TAG", "DO-WORK")
+//        Log.d("TAG", "DO-WORK")
         return Result.success()
     }
 
