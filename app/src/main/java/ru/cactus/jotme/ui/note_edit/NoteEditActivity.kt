@@ -107,7 +107,7 @@ class NoteEditActivity : AppCompatActivity() {
             }
             note?.let { currentNote ->
                 etNoteTitle.setText(currentNote.title)
-                etNoteBody.setText(Html.fromHtml(currentNote.body))
+                etNoteBody.setText(Html.fromHtml(currentNote.body, 0))
 
                 ibShare.setOnClickListener {
                     shareNote(currentNote)
@@ -134,8 +134,8 @@ class NoteEditActivity : AppCompatActivity() {
     private fun setLocationText(location: Location) {
         val bodyText = binding.etNoteBody.text
         val locStr = "${location.latitude},${location.longitude}"
-        val htmlText = Html.toHtml(bodyText).toString().replace("</p>", "<br>$locStr</p>")
-        binding.etNoteBody.setText(Html.fromHtml(htmlText))
+        val htmlText = Html.toHtml(bodyText, 0).toString().replace("</p>", "<br>$locStr</p>")
+        binding.etNoteBody.setText(Html.fromHtml(htmlText, 0))
     }
 
     private fun initObserver() {
@@ -155,7 +155,7 @@ class NoteEditActivity : AppCompatActivity() {
             note = note?.copy(
                 title = etNoteTitle.text.toString(),
                 body = Html.toHtml(
-                    binding.etNoteBody.text?.toSpanned()
+                    binding.etNoteBody.text?.toSpanned(), 0
                 ).toString()
             ) ?: Note(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
         }
@@ -224,8 +224,8 @@ class NoteEditActivity : AppCompatActivity() {
         if (text.isNotEmpty()) {
             binding.etNoteBody.text = Html.fromHtml(
                 Html.toHtml(
-                    binding.etNoteBody.text?.toSpanned()
-                ).toString().replace(text, newText)
+                    binding.etNoteBody.text?.toSpanned(), 0
+                ).toString().replace(text, newText), 0
             ) as Editable
         }
     }
@@ -236,17 +236,13 @@ class NoteEditActivity : AppCompatActivity() {
         val text = binding.etNoteBody.text?.subSequence(start, end).toString()
 
         val rawText = Html.toHtml(
-            binding.etNoteBody.text?.toSpanned()
+            binding.etNoteBody.text?.toSpanned(), 0
         ).toString()
 
+        Log.d("FORMAT", rawText)
+
         if (rawText.contains(formatString(text, format), ignoreCase = true)) {
-            if (text.isNotEmpty()) {
-                binding.etNoteBody.text = Html.fromHtml(
-                    Html.toHtml(
-                        binding.etNoteBody.text?.toSpanned()
-                    ).toString().replace(formatString(text, format), text)
-                ) as Editable
-            }
+            setHtmlText(formatString(text, format), text)
         } else {
             setHtmlText(text, formatString(text, format))
         }
