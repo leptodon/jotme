@@ -1,17 +1,17 @@
 package ru.cactus.jotme.ui.note_edit
 
 import android.Manifest
+import android.animation.*
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
-import android.text.Spannable
-import android.text.SpannableString
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -31,6 +31,7 @@ import ru.cactus.jotme.domain.entity.Note
 import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.utils.*
+import kotlin.math.nextDown
 
 /**
  * Экран редактирования заметки
@@ -71,6 +72,22 @@ class NoteEditActivity : AppCompatActivity() {
             99
         )
 
+    }
+
+    private fun blinkAnimate(view: View) {
+        val valueAnimator = AnimatorInflater.loadAnimator(
+            this,
+            R.animator.blink
+        ) as ValueAnimator
+        valueAnimator.addUpdateListener { animatorValue ->
+            view.alpha = animatorValue.animatedValue as Float
+        }
+        valueAnimator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                binding.etNoteBody.alpha = 1.0f
+            }
+        })
+        valueAnimator.start()
     }
 
     /**
@@ -159,11 +176,15 @@ class NoteEditActivity : AppCompatActivity() {
                 ).toString()
             ) ?: Note(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
         }
+
         this.sendBroadcast(Intent().apply {
             action = ACTION
             putExtra(EXTRA_NOTE, note.toString())
         })
+
         viewModel.saveNote(note?.id, note?.title ?: "", note?.body ?: "")
+
+        blinkAnimate(binding.etNoteBody)
     }
 
     private fun showSaveToast() {
@@ -254,4 +275,6 @@ class NoteEditActivity : AppCompatActivity() {
         "underlined" -> "<u>${text}</u>"
         else -> text
     }
+
+
 }
