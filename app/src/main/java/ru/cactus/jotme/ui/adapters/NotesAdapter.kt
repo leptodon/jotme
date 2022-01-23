@@ -1,6 +1,7 @@
 package ru.cactus.jotme.ui.adapters
 
 import android.annotation.SuppressLint
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -36,17 +37,17 @@ class NotesAdapter(
          */
         fun bind(note: Note) {
             val shortBody = with(StringBuilder()) {
-                if (note.body.length > 30) {
-                    append(note.body.substring(0..30))
+                if (Html.fromHtml(note.body).length > 30) {
+                    append(Html.fromHtml(note.body).substring(0..30))
                     append("...")
                 } else {
-                    append(note.body)
+                    append(Html.fromHtml(note.body))
                 }
                 toString()
             }
             with(binding) {
                 tvCardTitle.text = note.title
-                tvCardText.text = shortBody
+                tvCardText.text = Html.fromHtml(shortBody)
 
                 root.setOnClickListener {
                     onViewClick.invoke(items.indexOf(note))

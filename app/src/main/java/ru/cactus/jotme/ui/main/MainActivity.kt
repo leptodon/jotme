@@ -9,9 +9,9 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.MainActivityBinding
-import ru.cactus.jotme.ui.about.AboutActivity
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 import ru.cactus.jotme.ui.notes.NotesFragment
+import ru.cactus.jotme.ui.webview.WebViewActivity
 import ru.cactus.jotme.utils.BackupWorker
 import ru.cactus.jotme.utils.FRG_MAIN
 import java.util.concurrent.TimeUnit
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), ButtonController {
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
 
         initViews()
-//        initWorker()
+        initWorker()
     }
 
     private fun initWorker() {
@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity(), ButtonController {
                 startEditNoteActivity()
             }
 
-            aboutBtn.setOnClickListener {
-                startAboutActivity()
+            gitBtn.setOnClickListener {
+                startWebViewActivity()
             }
         }
 
@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity(), ButtonController {
         startActivity(intentNewNote)
     }
 
-    private fun startAboutActivity() {
-        val intentNewNote = Intent(this, AboutActivity::class.java)
+    private fun startWebViewActivity() {
+        val intentNewNote = Intent(this, WebViewActivity::class.java)
         startActivity(intentNewNote)
     }
 

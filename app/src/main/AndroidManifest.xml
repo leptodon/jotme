@@ -4,6 +4,8 @@
     package="ru.cactus.jotme">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="false"
@@ -31,9 +33,11 @@
             android:configChanges="orientation"
             android:exported="false"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
+
         <activity
-            android:name=".ui.about.AboutActivity"
+            android:name=".ui.webview.WebViewActivity"
             android:configChanges="orientation"
             android:exported="false"
             android:screenOrientation="portrait"

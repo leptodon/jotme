@@ -1,12 +1,24 @@
 package ru.cactus.jotme.ui.note_edit
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
+import android.text.Editable
+import android.text.Html
+import android.text.Spannable
+import android.text.SpannableString
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.text.toSpanned
 import androidx.databinding.DataBindingUtil
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import ru.cactus.jotme.R
 import ru.cactus.jotme.data.repository.AppDatabase
 import ru.cactus.jotme.data.repository.db.DatabaseRepository
@@ -31,6 +43,7 @@ class NoteEditActivity : AppCompatActivity() {
     private var note: Note? = null
     private lateinit var intentNewNote: Intent
     private lateinit var viewModel: NoteEditViewModel
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +51,7 @@ class NoteEditActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = ""
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         db = AppDatabase.getInstance(applicationContext)
         databaseRepository = DatabaseRepositoryImpl(db)
@@ -47,6 +61,15 @@ class NoteEditActivity : AppCompatActivity() {
 
         intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
         note = intent.extras?.getParcelable(EXTRA_NOTE)
+
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            99
+        )
 
     }
 
@@ -84,7 +107,7 @@ class NoteEditActivity : AppCompatActivity() {
             }
             note?.let { currentNote ->
                 etNoteTitle.setText(currentNote.title)
-                etNoteBody.setText(currentNote.body)
+                etNoteBody.setText(Html.fromHtml(currentNote.body))
 
                 ibShare.setOnClickListener {
                     shareNote(currentNote)
@@ -95,7 +118,24 @@ class NoteEditActivity : AppCompatActivity() {
                     startActivity(intentNewNote)
                 }
             }
+            ibBoldText.setOnClickListener { setFormattedText("bold") }
+            ibItalicText.setOnClickListener { setFormattedText("italic") }
+            ibUnderlinedText.setOnClickListener { setFormattedText("underlined") }
+            ibClear.setOnClickListener {
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location: Location? ->
+                        if (location != null) setLocationText(location)
+                    }
+            }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setLocationText(location: Location) {
+        val bodyText = binding.etNoteBody.text
+        val locStr = "${location.latitude},${location.longitude}"
+        val htmlText = Html.toHtml(bodyText).toString().replace("</p>", "<br>$locStr</p>")
+        binding.etNoteBody.setText(Html.fromHtml(htmlText))
     }
 
     private fun initObserver() {
@@ -114,7 +154,9 @@ class NoteEditActivity : AppCompatActivity() {
         with(binding) {
             note = note?.copy(
                 title = etNoteTitle.text.toString(),
-                body = etNoteBody.text.toString()
+                body = Html.toHtml(
+                    binding.etNoteBody.text?.toSpanned()
+                ).toString()
             ) ?: Note(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
         }
         this.sendBroadcast(Intent().apply {
@@ -176,5 +218,44 @@ class NoteEditActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    private fun setHtmlText(text: String, newText: String) {
+        if (text.isNotEmpty()) {
+            binding.etNoteBody.text = Html.fromHtml(
+                Html.toHtml(
+                    binding.etNoteBody.text?.toSpanned()
+                ).toString().replace(text, newText)
+            ) as Editable
+        }
+    }
+
+    private fun setFormattedText(format: String) {
+        val start = binding.etNoteBody.selectionStart
+        val end = binding.etNoteBody.selectionEnd
+        val text = binding.etNoteBody.text?.subSequence(start, end).toString()
+
+        val rawText = Html.toHtml(
+            binding.etNoteBody.text?.toSpanned()
+        ).toString()
+
+        if (rawText.contains(formatString(text, format), ignoreCase = true)) {
+            if (text.isNotEmpty()) {
+                binding.etNoteBody.text = Html.fromHtml(
+                    Html.toHtml(
+                        binding.etNoteBody.text?.toSpanned()
+                    ).toString().replace(formatString(text, format), text)
+                ) as Editable
+            }
+        } else {
+            setHtmlText(text, formatString(text, format))
+        }
+    }
+
+    private fun formatString(text: String, format: String): String = when (format) {
+        "bold" -> "<b>${text}</b>"
+        "italic" -> "<i>${text}</i>"
+        "underlined" -> "<u>${text}</u>"
+        else -> text
     }
 }

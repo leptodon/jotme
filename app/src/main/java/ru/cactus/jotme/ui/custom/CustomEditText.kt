@@ -5,7 +5,7 @@ import android.content.Context
 import android.text.Editable
 import android.text.Html
 import android.util.AttributeSet
-import android.widget.EditText
+import com.google.android.material.textfield.TextInputEditText
 import ru.cactus.jotme.R
 
 @SuppressLint("ViewConstructor")
@@ -13,7 +13,7 @@ class CustomEditText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.editTextStyle,
-) : EditText(context, attrs, defStyleAttr) {
+) : TextInputEditText(context, attrs, defStyleAttr) {
 
     var htmlText: String? = null
         set(value) {
@@ -23,26 +23,6 @@ class CustomEditText @JvmOverloads constructor(
 
     override fun setText(text: CharSequence?, type: BufferType?) {
         super.setText(text, type)
-    }
-
-    override fun onTextChanged(
-        text: CharSequence?,
-        start: Int,
-        lengthBefore: Int,
-        lengthAfter: Int
-    ) {
-        super.onTextChanged(
-            htmlText,
-            start,
-            lengthBefore,
-            lengthAfter
-        )
-    }
-
-    private fun convert(text: CharSequence?): String {
-        val startH2tag = "<h2>"
-        val endH2tag = "</h2>"
-        return "$startH2tag$text$endH2tag"
     }
 
     init {
