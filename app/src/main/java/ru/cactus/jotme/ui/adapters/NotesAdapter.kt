@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.cactus.jotme.R
 import ru.cactus.jotme.databinding.NotesItemLayoutBinding
 import ru.cactus.jotme.domain.entity.Note
+import ru.cactus.jotme.utils.HtmlCompat
 
 
 /**
@@ -19,7 +20,6 @@ class NotesAdapter(
     private val onViewClick: (Int) -> Unit
 ) :
     RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
-
     private var items: List<Note> = emptyList()
 
     /**
@@ -37,17 +37,17 @@ class NotesAdapter(
          */
         fun bind(note: Note) {
             val shortBody = with(StringBuilder()) {
-                if (Html.fromHtml(note.body).length > 30) {
-                    append(Html.fromHtml(note.body).substring(0..30))
+                if (HtmlCompat.fromHtml(note.body).length > TEXT_LENGTH) {
+                    append(HtmlCompat.fromHtml(note.body).substring(0..TEXT_LENGTH))
                     append("...")
                 } else {
-                    append(Html.fromHtml(note.body))
+                    append(HtmlCompat.fromHtml(note.body))
                 }
                 toString()
             }
             with(binding) {
                 tvCardTitle.text = note.title
-                tvCardText.text = Html.fromHtml(shortBody)
+                tvCardText.text = HtmlCompat.fromHtml(shortBody)
 
                 root.setOnClickListener {
                     onViewClick.invoke(items.indexOf(note))
@@ -81,4 +81,8 @@ class NotesAdapter(
     }
 
     override fun getItemCount(): Int = items.size
+
+    companion object {
+        private const val TEXT_LENGTH = 30
+    }
 }

@@ -19,4 +19,9 @@
     <string name="load_success">Loading is complete</string>
     <string name="load_error">Loading is fail!</string>
     <string name="load_loading">Loading…</string>
+    <string name="geolocation_permission_available">Geolocation permission is available.</string>
+    <string name="geolocation_access_required">Geolocation access is required to display your location.</string>
+    <string name="geolocation_permission_not_available">Permission is not available. Requesting geolocation permission.</string>
+    <string name="geolocation_permission_granted">Geolocation permission was granted.</string>
+    <string name="geolocation_permission_denied">Geolocation permission request was denied.</string>
 </resources>

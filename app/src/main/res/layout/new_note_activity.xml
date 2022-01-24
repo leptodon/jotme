@@ -103,7 +103,7 @@
                 android:src="@drawable/ic_baseline_format_underlined_24" />
 
             <ImageButton
-                android:id="@+id/ib_clear"
+                android:id="@+id/ib_geo"
                 style="@style/NavButtons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

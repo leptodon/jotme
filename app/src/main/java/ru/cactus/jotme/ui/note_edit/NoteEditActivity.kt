@@ -4,6 +4,7 @@ import android.Manifest
 import android.animation.*
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.text.Editable
@@ -18,7 +19,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.text.toSpanned
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.material.snackbar.Snackbar
 import ru.cactus.jotme.R
 import ru.cactus.jotme.data.repository.AppDatabase
 import ru.cactus.jotme.data.repository.db.DatabaseRepository
@@ -31,7 +35,8 @@ import ru.cactus.jotme.domain.entity.Note
 import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
 import ru.cactus.jotme.utils.*
-import kotlin.math.nextDown
+
+const val PERMISSION_REQUEST_LOCATION: Int = 1000
 
 /**
  * Экран редактирования заметки
@@ -62,16 +67,6 @@ class NoteEditActivity : AppCompatActivity() {
 
         intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
         note = intent.extras?.getParcelable(EXTRA_NOTE)
-
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ),
-            99
-        )
-
     }
 
     private fun blinkAnimate(view: View) {
@@ -124,7 +119,7 @@ class NoteEditActivity : AppCompatActivity() {
             }
             note?.let { currentNote ->
                 etNoteTitle.setText(currentNote.title)
-                etNoteBody.setText(Html.fromHtml(currentNote.body, 0))
+                etNoteBody.setText(HtmlCompat.fromHtml(currentNote.body))
 
                 ibShare.setOnClickListener {
                     shareNote(currentNote)
@@ -135,14 +130,12 @@ class NoteEditActivity : AppCompatActivity() {
                     startActivity(intentNewNote)
                 }
             }
-            ibBoldText.setOnClickListener { setFormattedText("bold") }
-            ibItalicText.setOnClickListener { setFormattedText("italic") }
-            ibUnderlinedText.setOnClickListener { setFormattedText("underlined") }
-            ibClear.setOnClickListener {
-                fusedLocationClient.lastLocation
-                    .addOnSuccessListener { location: Location? ->
-                        if (location != null) setLocationText(location)
-                    }
+
+            ibBoldText.setOnClickListener { setFormattedText(Font.BOLD) }
+            ibItalicText.setOnClickListener { setFormattedText(Font.ITALIC) }
+            ibUnderlinedText.setOnClickListener { setFormattedText(Font.UNDERLINED) }
+            ibGeo.setOnClickListener {
+                checkGeoPermission()
             }
         }
     }
@@ -151,8 +144,8 @@ class NoteEditActivity : AppCompatActivity() {
     private fun setLocationText(location: Location) {
         val bodyText = binding.etNoteBody.text
         val locStr = "${location.latitude},${location.longitude}"
-        val htmlText = Html.toHtml(bodyText, 0).toString().replace("</p>", "<br>$locStr</p>")
-        binding.etNoteBody.setText(Html.fromHtml(htmlText, 0))
+        val htmlText = HtmlCompat.toHtml(bodyText).replace("</p>", "<br>$locStr</p>")
+        binding.etNoteBody.setText(HtmlCompat.fromHtml(htmlText))
     }
 
     private fun initObserver() {
@@ -171,9 +164,9 @@ class NoteEditActivity : AppCompatActivity() {
         with(binding) {
             note = note?.copy(
                 title = etNoteTitle.text.toString(),
-                body = Html.toHtml(
-                    binding.etNoteBody.text?.toSpanned(), 0
-                ).toString()
+                body = HtmlCompat.toHtml(
+                    binding.etNoteBody.text?.toSpanned()
+                )
             ) ?: Note(null, etNoteTitle.text.toString(), etNoteBody.text.toString())
         }
 
@@ -243,23 +236,22 @@ class NoteEditActivity : AppCompatActivity() {
 
     private fun setHtmlText(text: String, newText: String) {
         if (text.isNotEmpty()) {
-            binding.etNoteBody.text = Html.fromHtml(
-                Html.toHtml(
-                    binding.etNoteBody.text?.toSpanned(), 0
-                ).toString().replace(text, newText), 0
+            binding.etNoteBody.text = HtmlCompat.fromHtml(
+                HtmlCompat.toHtml(
+                    binding.etNoteBody.text?.toSpanned()
+                ).replace(text, newText)
             ) as Editable
         }
     }
 
-    private fun setFormattedText(format: String) {
+    private fun setFormattedText(format: Font) {
         val start = binding.etNoteBody.selectionStart
         val end = binding.etNoteBody.selectionEnd
         val text = binding.etNoteBody.text?.subSequence(start, end).toString()
 
-        val rawText = Html.toHtml(
-            binding.etNoteBody.text?.toSpanned(), 0
-        ).toString()
-
+        val rawText = HtmlCompat.toHtml(
+            binding.etNoteBody.text?.toSpanned()
+        )
         Log.d("FORMAT", rawText)
 
         if (rawText.contains(formatString(text, format), ignoreCase = true)) {
@@ -269,12 +261,87 @@ class NoteEditActivity : AppCompatActivity() {
         }
     }
 
-    private fun formatString(text: String, format: String): String = when (format) {
-        "bold" -> "<b>${text}</b>"
-        "italic" -> "<i>${text}</i>"
-        "underlined" -> "<u>${text}</u>"
-        else -> text
+    private fun formatString(text: String, format: Font): String = when (format) {
+        Font.BOLD -> "<b>${text}</b>"
+        Font.ITALIC -> "<i>${text}</i>"
+        Font.UNDERLINED -> "<u>${text}</u>"
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == PERMISSION_REQUEST_LOCATION) {
+            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLocation()
+            } else {
+                binding.root.showSnackbar(
+                    R.string.geolocation_permission_denied,
+                    Snackbar.LENGTH_SHORT
+                )
+            }
+        }
+    }
 
+    private fun checkGeoPermission() {
+        if (checkSelfPermissionCompat(Manifest.permission.ACCESS_FINE_LOCATION) ==
+            PackageManager.PERMISSION_GRANTED && checkSelfPermissionCompat(Manifest.permission.ACCESS_COARSE_LOCATION) ==
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            getLocation()
+        } else {
+            requestGeolocationPermission()
+        }
+    }
+
+    private fun requestGeolocationPermission() {
+        if (showRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION) && showRequestPermission(
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        ) {
+            binding.root.showSnackbar(
+                R.string.geolocation_access_required,
+                Snackbar.LENGTH_INDEFINITE, R.string.ok
+            ) {
+                requestPermissionsCompat(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ),
+                    PERMISSION_REQUEST_LOCATION
+                )
+            }
+
+        } else {
+            binding.root.showSnackbar(
+                R.string.geolocation_permission_not_available,
+                Snackbar.LENGTH_SHORT
+            )
+            requestPermissionsCompat(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ), PERMISSION_REQUEST_LOCATION
+            )
+        }
+    }
+
+    private fun getLocation() {
+        val cancellationTokenSource = CancellationTokenSource()
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    setLocationText(location)
+                } else {
+                    fusedLocationClient.getCurrentLocation(
+                        LocationRequest.PRIORITY_HIGH_ACCURACY,
+                        cancellationTokenSource.token
+                    ).addOnSuccessListener { refreshLocation: Location? ->
+                        refreshLocation?.let { setLocationText(it) }
+                    }
+                }
+            }
+    }
 }
