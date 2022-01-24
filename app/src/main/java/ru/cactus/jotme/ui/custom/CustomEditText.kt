@@ -21,10 +21,6 @@ class CustomEditText @JvmOverloads constructor(
             if (!text.isNullOrEmpty()) text = Html.fromHtml(value) as Editable
         }
 
-    override fun setText(text: CharSequence?, type: BufferType?) {
-        super.setText(text, type)
-    }
-
     init {
         context.theme.obtainStyledAttributes(
             attrs,
