@@ -336,7 +336,7 @@ class NoteEditActivity : AppCompatActivity() {
                     setLocationText(location)
                 } else {
                     fusedLocationClient.getCurrentLocation(
-                        LocationRequest.PRIORITY_LOW_POWER,
+                        LocationRequest.PRIORITY_HIGH_ACCURACY,
                         cancellationTokenSource.token
                     ).addOnSuccessListener { refreshLocation: Location? ->
                         refreshLocation?.let { setLocationText(it) }
