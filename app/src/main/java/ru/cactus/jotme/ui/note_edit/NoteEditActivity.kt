@@ -265,7 +265,6 @@ class NoteEditActivity : AppCompatActivity() {
         Font.BOLD -> "<b>${text}</b>"
         Font.ITALIC -> "<i>${text}</i>"
         Font.UNDERLINED -> "<u>${text}</u>"
-        else -> text
     }
 
     override fun onRequestPermissionsResult(
@@ -275,10 +274,6 @@ class NoteEditActivity : AppCompatActivity() {
     ) {
         if (requestCode == PERMISSION_REQUEST_LOCATION) {
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                binding.root.showSnackbar(
-                    R.string.geolocation_permission_granted,
-                    Snackbar.LENGTH_SHORT
-                )
                 getLocation()
             } else {
                 binding.root.showSnackbar(
@@ -294,10 +289,6 @@ class NoteEditActivity : AppCompatActivity() {
             PackageManager.PERMISSION_GRANTED && checkSelfPermissionCompat(Manifest.permission.ACCESS_COARSE_LOCATION) ==
             PackageManager.PERMISSION_GRANTED
         ) {
-            binding.root.showSnackbar(
-                R.string.geolocation_permission_available,
-                Snackbar.LENGTH_SHORT
-            )
             getLocation()
         } else {
             requestGeolocationPermission()

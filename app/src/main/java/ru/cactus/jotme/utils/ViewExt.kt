@@ -4,7 +4,7 @@ import android.view.View
 import com.google.android.material.snackbar.Snackbar
 
 fun View.showSnackbar(msgId: Int, length: Int) {
-    showSnackbar(context.getString(msgId), length)
+    showSnackbar(resources.getString(msgId), length)
 }
 
 fun View.showSnackbar(msg: String, length: Int) {
@@ -31,5 +31,7 @@ fun View.showSnackbar(
         snackbar.setAction(actionMessage) {
             action(this)
         }.show()
+    } else {
+        snackbar.show()
     }
 }
