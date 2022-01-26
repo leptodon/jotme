@@ -9,4 +9,8 @@
     <attr format="color" name="colorTextMain"/>
     <attr format="color" name="colorTextSecondary"/>
     <attr format="color" name="colorTextAlt"/>
+
+    <declare-styleable name="CustomEditText">
+        <attr name="htmlText" format="string"/>
+    </declare-styleable>
 </resources>

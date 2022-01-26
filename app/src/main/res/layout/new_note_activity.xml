@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -11,9 +11,9 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            style="@style/Toolbar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            style="@style/Toolbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -56,14 +56,60 @@
                 android:layout_marginEnd="20dp"
                 android:contentDescription="@string/cd_delete_button"
                 android:src="@drawable/ib_delete_24" />
+
+
         </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
+        <ru.cactus.jotme.ui.custom.CustomEditText
             android:id="@+id/et_note_body"
             style="@style/CardText.Body.Editable"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/edit_note_body_hint"
-            tools:hint="Add text here..." />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ib_bold_text"
+                style="@style/NavButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_baseline_format_bold_24" />
+
+            <ImageButton
+                android:id="@+id/ib_italic_text"
+                style="@style/NavButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_baseline_format_italic_24" />
+
+            <ImageButton
+                android:id="@+id/ib_underlined_text"
+                style="@style/NavButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_baseline_format_underlined_24" />
+
+            <ImageButton
+                android:id="@+id/ib_geo"
+                style="@style/NavButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_baseline_location_on_24" />
+        </LinearLayout>
+    </LinearLayout>
 </layout>
