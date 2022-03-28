@@ -13,8 +13,12 @@ import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
+import ru.cactus.jotme.data.repository.db.DatabaseRepository
 import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.data.repository.db.entity.DbNote
+import ru.cactus.jotme.data.repository.network.NetworkRepositoryImpl
+import ru.cactus.jotme.domain.entity.Note
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -24,6 +28,7 @@ class DbNoteEditViewModelTest {
     @JvmField
     val instantTaskExecutorRule: InstantTaskExecutorRule = InstantTaskExecutorRule()
     private lateinit var databaseRepositoryImpl: DatabaseRepositoryImpl
+    private lateinit var networkRepositoryImpl: NetworkRepositoryImpl
     private var viewModel: NoteEditViewModel? = null
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
@@ -32,7 +37,8 @@ class DbNoteEditViewModelTest {
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
         databaseRepositoryImpl = mock(DatabaseRepositoryImpl::class.java)
-        viewModel = NoteEditViewModel(databaseRepositoryImpl)
+        networkRepositoryImpl = mock(NetworkRepositoryImpl::class.java)
+        viewModel = NoteEditViewModel(databaseRepositoryImpl, networkRepositoryImpl)
     }
 
     @After
@@ -44,7 +50,7 @@ class DbNoteEditViewModelTest {
     @Test
     fun checkSaveNewNote(): Unit = runBlocking {
         runTest(StandardTestDispatcher()) {
-            val testNote = DbNote(999, "Test_title", "Test_body")
+            val testNote = Note(999, "Test_title", "Test_body")
             viewModel?.saveNote(testNote.id, testNote.title, testNote.body)
             verify(databaseRepositoryImpl, times(1)).updateInsert(testNote)
             Assert.assertEquals(Unit, viewModel?.showSaveToast?.value)

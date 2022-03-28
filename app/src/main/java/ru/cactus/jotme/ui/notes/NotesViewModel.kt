@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.cactus.jotme.data.repository.db.DatabaseRepository
 import ru.cactus.jotme.domain.entity.Note
+import javax.inject.Inject
 
 
 /**
@@ -14,7 +15,9 @@ import ru.cactus.jotme.domain.entity.Note
  * работы с адаптером recyclerView
  * @param databaseRepository репозиторий базы данных
  */
-class NotesViewModel(private val databaseRepository: DatabaseRepository) : ViewModel() {
+class NotesViewModel @Inject constructor(
+    private val databaseRepository: DatabaseRepository
+) : ViewModel() {
 
     private val _notesList = MutableLiveData<List<Note>>()
 
@@ -29,5 +32,5 @@ class NotesViewModel(private val databaseRepository: DatabaseRepository) : ViewM
             _notesList.postValue(databaseRepository.getAll())
         }
     }
-    
+
 }

@@ -11,7 +11,11 @@ import ru.cactus.jotme.data.repository.db.entity.DbNote
 /**
  * Класс билдер объекта БД
  */
-@Database(entities = [DbNote::class], version = 1, exportSchema = false)
+@Database(
+    entities = [DbNote::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     /**
      * Получаем заметки из БД

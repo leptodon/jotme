@@ -3,19 +3,19 @@ package ru.cactus.jotme.ui.note_edit
 import android.Manifest
 import android.animation.*
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.text.Editable
-import android.text.Html
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.text.toSpanned
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -24,13 +24,11 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import ru.cactus.jotme.R
-import ru.cactus.jotme.data.repository.AppDatabase
-import ru.cactus.jotme.data.repository.db.DatabaseRepository
-import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
-import ru.cactus.jotme.data.repository.network.NetworkRepository
+import ru.cactus.jotme.app.App
+import ru.cactus.jotme.app.appComponent
 import ru.cactus.jotme.data.repository.network.NetworkResult
-import ru.cactus.jotme.data.repository.network.RetrofitBuilder
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
+import ru.cactus.jotme.di.AppComponent
 import ru.cactus.jotme.domain.entity.Note
 import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
@@ -42,14 +40,14 @@ const val PERMISSION_REQUEST_LOCATION: Int = 1000
  * Экран редактирования заметки
  */
 class NoteEditActivity : AppCompatActivity() {
+
     private lateinit var binding: NewNoteActivityBinding
-    private lateinit var db: AppDatabase
-    private lateinit var databaseRepository: DatabaseRepository
-    private lateinit var networkRepository: NetworkRepository
     private var note: Note? = null
     private lateinit var intentNewNote: Intent
-    private lateinit var viewModel: NoteEditViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val viewModel: NoteEditViewModel by viewModels {
+        appComponent.noteEditViewModelFactory()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +56,6 @@ class NoteEditActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = ""
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-        db = AppDatabase.getInstance(applicationContext)
-        databaseRepository = DatabaseRepositoryImpl(db)
-        networkRepository = NetworkRepository(RetrofitBuilder.apiService)
-
-        viewModel = NoteEditViewModel(databaseRepository, networkRepository)
 
         intentNewNote = Intent(this@NoteEditActivity, MainActivity::class.java)
         note = intent.extras?.getParcelable(EXTRA_NOTE)

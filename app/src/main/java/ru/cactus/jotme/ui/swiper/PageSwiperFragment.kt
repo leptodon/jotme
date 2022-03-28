@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import dagger.android.support.AndroidSupportInjection
 import ru.cactus.jotme.R
-import ru.cactus.jotme.data.repository.AppDatabase
-import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
+import ru.cactus.jotme.app.App
+import ru.cactus.jotme.app.appComponent
 import ru.cactus.jotme.databinding.FragmentSwipeContainerBinding
+import ru.cactus.jotme.di.AppComponent
 import ru.cactus.jotme.ui.adapters.FragmentSlidePagerAdapter
 import ru.cactus.jotme.utils.ARG_POSITION
 import kotlin.properties.Delegates
@@ -21,11 +24,14 @@ import kotlin.properties.Delegates
 class PageSwiperFragment : Fragment() {
 
     private lateinit var binding: FragmentSwipeContainerBinding
-    private lateinit var db: AppDatabase
-    private lateinit var databaseRepositoryImpl: DatabaseRepositoryImpl
     private lateinit var adapter: FragmentSlidePagerAdapter
     private var localPosition by Delegates.notNull<Int>()
-    private lateinit var viewModel: PageSwiperViewModel
+
+    private val viewModel: PageSwiperViewModel by viewModels {
+        getAppComponent().pageSwiperViewModelFactory()
+    }
+
+    private fun Fragment.getAppComponent(): AppComponent = requireContext().appComponent
 
     private fun initObservers() {
         viewModel.notesList.observe(viewLifecycleOwner) {
@@ -45,9 +51,6 @@ class PageSwiperFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         localPosition = arguments?.getInt(ARG_POSITION) ?: 0
-        db = AppDatabase.getInstance(requireContext())
-        databaseRepositoryImpl = DatabaseRepositoryImpl(db)
-        viewModel = PageSwiperViewModel(databaseRepositoryImpl)
 
         adapter = FragmentSlidePagerAdapter(requireActivity())
         binding.pager.adapter = adapter

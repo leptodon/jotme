@@ -6,14 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.cactus.jotme.data.repository.db.DatabaseRepository
+import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.domain.entity.Note
+import javax.inject.Inject
 
 /**
  * ViewModel класса PageSwiperFragment получает данные из бд и подготавливает для
  * работы с адаптером viewPager2
  * @param databaseRepository репозиторий базы данных
  */
-class PageSwiperViewModel(private val databaseRepository: DatabaseRepository) : ViewModel() {
+class PageSwiperViewModel @Inject constructor(
+    val databaseRepository: DatabaseRepository
+) : ViewModel() {
 
     private val _notesList = MutableLiveData<List<Note>>()
 
