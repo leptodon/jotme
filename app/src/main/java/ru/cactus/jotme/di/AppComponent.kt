@@ -1,5 +1,7 @@
 package ru.cactus.jotme.di
 
+import android.content.Context
+import dagger.BindsInstance
 import dagger.Component
 import ru.cactus.jotme.ui.note_edit.NoteEditActivity
 import ru.cactus.jotme.ui.note_edit.NoteEditViewModelFactory
@@ -9,7 +11,7 @@ import ru.cactus.jotme.ui.swiper.PageSwiperViewModelFactory
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, DataModule::class])
+@Component(modules = [AppModule::class])
 interface AppComponent {
 
     fun inject(noteEditActivity: NoteEditActivity)
@@ -17,4 +19,11 @@ interface AppComponent {
     fun noteEditViewModelFactory(): NoteEditViewModelFactory
     fun pageSwiperViewModelFactory(): PageSwiperViewModelFactory
     fun notesViewModelFactory(): NotesViewModelFactory
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun context(context: Context): Builder
+        fun build(): AppComponent
+    }
 }

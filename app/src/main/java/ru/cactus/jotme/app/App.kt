@@ -2,13 +2,8 @@ package ru.cactus.jotme.app
 
 import android.app.Application
 import android.content.Context
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
 import ru.cactus.jotme.di.AppComponent
-import ru.cactus.jotme.di.AppModule
 import ru.cactus.jotme.di.DaggerAppComponent
-import javax.inject.Inject
 
 class App : Application() {
 
@@ -20,7 +15,7 @@ class App : Application() {
 
         appComponent = DaggerAppComponent
             .builder()
-            .appModule(AppModule(context = this))
+            .context(this)
             .build()
     }
 }
