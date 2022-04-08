@@ -4,12 +4,13 @@ import ru.cactus.jotme.data.fromDbModelConverter
 import ru.cactus.jotme.data.repository.AppDatabase
 import ru.cactus.jotme.data.toDatabaseModelConverter
 import ru.cactus.jotme.domain.entity.Note
+import javax.inject.Inject
 
 /**
  * Репозиторий для работы с интерфейсом БД
  * @param db объект базы данных
  */
-class DatabaseRepositoryImpl(private val db: AppDatabase) :
+class DatabaseRepositoryImpl @Inject constructor(private val db: AppDatabase) :
     DatabaseRepository {
 
     /**

@@ -10,16 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ru.cactus.jotme.R
-import ru.cactus.jotme.app.App
-import ru.cactus.jotme.app.appComponent
+import ru.cactus.jotme.app.featureComponent
 import ru.cactus.jotme.databinding.NotesListLayoutBinding
-import ru.cactus.jotme.data.repository.AppDatabase
-import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
-import ru.cactus.jotme.di.AppComponent
+import ru.cactus.jotme.di.FeatureComponent
 import ru.cactus.jotme.ui.adapters.NotesAdapter
 import ru.cactus.jotme.ui.main.ButtonController
 import ru.cactus.jotme.ui.swiper.PageSwiperFragment
-import ru.cactus.jotme.ui.swiper.PageSwiperViewModel
 import ru.cactus.jotme.utils.FRG_SWC
 import ru.cactus.jotme.utils.SPAN_COUNT
 import java.util.*
@@ -31,10 +27,10 @@ import java.util.*
 class NotesFragment : Fragment(R.layout.notes_list_layout) {
     private lateinit var binding: NotesListLayoutBinding
     private val viewModel: NotesViewModel by viewModels {
-        getAppComponent().notesViewModelFactory()
+        getFeatureComponent().notesViewModelFactory()
     }
 
-    private fun Fragment.getAppComponent(): AppComponent = requireContext().appComponent
+    private fun Fragment.getFeatureComponent(): FeatureComponent = requireContext().featureComponent
 
     override fun onCreateView(
         inflater: LayoutInflater,

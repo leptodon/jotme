@@ -1,9 +1,13 @@
 package ru.cactus.jotme.ui.note_edit
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import ru.cactus.jotme.data.repository.db.DatabaseRepository
+import ru.cactus.jotme.data.repository.db.DatabaseRepositoryImpl
 import ru.cactus.jotme.data.repository.network.NetworkRepository
+import ru.cactus.jotme.data.repository.network.NetworkRepositoryImpl
 import ru.cactus.jotme.data.repository.network.NetworkResult
 import ru.cactus.jotme.domain.entity.Note
 import javax.inject.Inject
@@ -14,8 +18,8 @@ import javax.inject.Inject
  * @param networkRepository репозиторий данных из сети
  */
 class NoteEditViewModel @Inject constructor(
-    val databaseRepository: DatabaseRepository,
-    val networkRepository: NetworkRepository
+    private val databaseRepository: DatabaseRepository,
+    private val networkRepository: NetworkRepository
 ) : ViewModel() {
 
     private val _showDeleteToast = MutableLiveData<Unit>()
@@ -32,6 +36,11 @@ class NoteEditViewModel @Inject constructor(
 
     val note: LiveData<Note>
         get() = _note
+
+//    @Inject
+//    fun testOnceInject(context: Context) {
+//        Toast.makeText(context, "Проверка Inject", Toast.LENGTH_LONG).show()
+//    }
 
     val networkResponse: MutableLiveData<NetworkResult<Note>> = MutableLiveData()
 
@@ -81,4 +90,12 @@ class NoteEditViewModel @Inject constructor(
         }
     }
 
+//    class Factory() : ViewModelProvider.Factory {
+//        @Suppress("UNCHECKED_CAST")
+//        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//            return NoteEditViewModel() as T
+//        }
+//    }
 }
+
+

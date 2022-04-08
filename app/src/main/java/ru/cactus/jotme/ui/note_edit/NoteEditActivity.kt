@@ -1,9 +1,11 @@
 package ru.cactus.jotme.ui.note_edit
 
 import android.Manifest
-import android.animation.*
+import android.animation.Animator
+import android.animation.AnimatorInflater
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -24,11 +26,9 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import ru.cactus.jotme.R
-import ru.cactus.jotme.app.App
-import ru.cactus.jotme.app.appComponent
+import ru.cactus.jotme.app.featureComponent
 import ru.cactus.jotme.data.repository.network.NetworkResult
 import ru.cactus.jotme.databinding.NewNoteActivityBinding
-import ru.cactus.jotme.di.AppComponent
 import ru.cactus.jotme.domain.entity.Note
 import ru.cactus.jotme.ui.dialogs.SaveDialogFragment
 import ru.cactus.jotme.ui.main.MainActivity
@@ -45,8 +45,9 @@ class NoteEditActivity : AppCompatActivity() {
     private var note: Note? = null
     private lateinit var intentNewNote: Intent
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     private val viewModel: NoteEditViewModel by viewModels {
-        appComponent.noteEditViewModelFactory()
+        featureComponent.noteEditViewModelFactory()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

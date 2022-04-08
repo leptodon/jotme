@@ -13,6 +13,7 @@ class NotesViewModelFactory @Inject constructor(
         NotesViewModel::class.java to notesViewModelProvider
     )
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return providers[modelClass]!!.get() as T
     }

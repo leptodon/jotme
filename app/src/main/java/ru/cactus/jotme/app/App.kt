@@ -2,26 +2,32 @@ package ru.cactus.jotme.app
 
 import android.app.Application
 import android.content.Context
-import ru.cactus.jotme.di.AppComponent
-import ru.cactus.jotme.di.DaggerAppComponent
+import ru.cactus.jotme.di.*
 
 class App : Application() {
 
     lateinit var appComponent: AppComponent
         private set
 
+    lateinit var featureComponent: FeatureComponent
+        private set
+
     override fun onCreate() {
         super.onCreate()
 
-        appComponent = DaggerAppComponent
-            .builder()
-            .context(this)
-            .build()
+        appComponent = DaggerAppComponent.builder().application(this).build()
+
+        featureComponent = DaggerFeatureComponent.builder().deps(FeatureDepsImpl()).build()
+
+    }
+
+    private inner class FeatureDepsImpl : FeatureDeps {
+        override fun context(): Application = this@App
     }
 }
 
-val Context.appComponent: AppComponent
+val Context.featureComponent: FeatureComponent
     get() = when (this) {
-        is App -> appComponent
-        else -> applicationContext.appComponent
+        is App -> featureComponent
+        else -> applicationContext.featureComponent
     }

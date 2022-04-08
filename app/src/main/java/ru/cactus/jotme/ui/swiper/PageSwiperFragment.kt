@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import dagger.android.support.AndroidSupportInjection
 import ru.cactus.jotme.R
-import ru.cactus.jotme.app.App
-import ru.cactus.jotme.app.appComponent
+import ru.cactus.jotme.app.featureComponent
 import ru.cactus.jotme.databinding.FragmentSwipeContainerBinding
-import ru.cactus.jotme.di.AppComponent
+import ru.cactus.jotme.di.FeatureComponent
 import ru.cactus.jotme.ui.adapters.FragmentSlidePagerAdapter
 import ru.cactus.jotme.utils.ARG_POSITION
 import kotlin.properties.Delegates
@@ -28,10 +26,10 @@ class PageSwiperFragment : Fragment() {
     private var localPosition by Delegates.notNull<Int>()
 
     private val viewModel: PageSwiperViewModel by viewModels {
-        getAppComponent().pageSwiperViewModelFactory()
+        getFeatureComponent().pageSwiperViewModelFactory()
     }
 
-    private fun Fragment.getAppComponent(): AppComponent = requireContext().appComponent
+    private fun Fragment.getFeatureComponent(): FeatureComponent = requireContext().featureComponent
 
     private fun initObservers() {
         viewModel.notesList.observe(viewLifecycleOwner) {
